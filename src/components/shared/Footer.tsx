@@ -1,6 +1,6 @@
 import React from 'react';
-import rssLogo from '../../../assets/img/rs_school.svg';
-import ghLogo from '../../../assets/img/GitHub.svg';
+import rssLogo from '../../assets/img/rs_school.svg';
+import ghLogo from '../../assets/img/GitHub.svg';
 import './footer.scss';
 
 class Footer extends React.PureComponent {
