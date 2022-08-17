@@ -1,5 +1,5 @@
 import React from 'react';
-import './style.scss';
+import './sidebar.scss';
 import home from '../../assets/img/home.svg';
 import team from '../../assets/img/team.svg';
 import book from '../../assets/img/book.svg';
