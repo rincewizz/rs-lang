@@ -1,1 +1,15 @@
 @import url(../../../node_modules/normalize.css/normalize.css);
+@import './fonts.scss';
+
+a,
+a:visited,
+a:focus,
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+.wrap {
+  margin: 0 auto;
+  width: 100%;
+}
