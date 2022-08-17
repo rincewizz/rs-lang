@@ -1,7 +1,7 @@
 import React from 'react';
 import guy from '../../assets/img/guy.svg';
-import userImg from '../../assets/img/user.svg';
-import logo from '../../assets/img/logo.svg';
+import userImg from '../../../assets/img/user.svg';
+import logo from '../../../assets/img/logo.svg';
 import './header.scss';
 
 class Header extends React.PureComponent {
