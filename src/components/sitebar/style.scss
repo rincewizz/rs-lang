@@ -1,0 +1,111 @@
+$navW: 60px;
+$navColor: black;
+$sizes: ("xs":320px, "sm":576px, "md":768px, "lg":992px, "xl":1200px);
+@mixin media($minmax, $media) {
+  @each $size, $resolution in $sizes {
+    @if $media == $size {
+      @media screen and (#{$minmax}-device-width: $resolution) {
+        @content;
+      }
+    }
+  }
+}
+
+.aside {
+  position: fixed;
+  left: 10px;
+  top: 10px;
+  display: flex;
+  flex-direction: column;
+  width: $navW;
+  height: calc(100vh - 30px);
+  background-color: black;
+  border-radius: 24px;
+  transition: all 300ms ease;
+  overflow: hidden;
+  z-index: 1;
+  @media screen and (max-device-width:768px) {
+    height: 40px;
+    width: 40px;
+    top: 8px;
+    left: 8px;
+  }
+}
+.aside:hover {
+  width: $navW * 3;
+  height: calc(100vh - 30px);
+  ul {
+    display: table;
+  }
+  .bar {
+    display: none;
+    transition: 0.5s;
+  }
+}
+ul {
+  list-style: none;
+  display: table;
+  justify-content: space-between;
+  flex-direction: column;
+  width: $navW * 3;
+  height: 200px;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  @include media("max", "md") {
+    display: none;
+  }
+}
+li {
+  display: table-row;
+  width: $navW * 3;
+} 
+li:hover {
+  background: lighten($navColor, 10%);
+  cursor: pointer;
+}
+li:active {
+  background: lighten($navColor, 20%);
+  cursor: pointer;
+}
+.aside-cell {
+  height: $navW;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+.link-list-name {
+  text-align: start;
+  color: white;
+}
+.img-item {
+  width: 60px;
+}
+.b-a {
+  transition: all .25s;
+  content: "";
+  position: absolute;
+  left: 0;
+  height: 6px;
+  width: 30px;
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.95);
+}
+.bar {
+  display: none;
+  @extend .b-a;
+  position: fixed;
+  left: 12px;
+  top: 24px;
+  &:before {
+     @extend .b-a;
+     top: -8px;
+  }
+  &:after {
+     @extend .b-a;
+     top: 8px;
+  }
+  @include media("max", "md") {
+    display: block;
+  }
+}
