@@ -8,7 +8,16 @@
     "build": "webpack --config ./webpack.config.js --env mode=prod",
     "lint": "eslint . --ext .tsx,.ts",
     "test": "jest",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": "eslint --max-warnings=0 --config ./.eslintrc.json"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "author": "",
   "license": "ISC",
@@ -54,7 +63,8 @@
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.10.0",
-    "webpack-merge": "^5.8.0"
+    "webpack-merge": "^5.8.0",
+    "husky": "^8.0.0"
   },
   "dependencies": {
     "normalize.css": "^8.0.1",
