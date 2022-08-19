@@ -9,7 +9,8 @@ export type SidebarItemProps = {
 export type Advantages = {
   number: string;
   text: string;
-  
+}
+
 export type Word = {
   id: string;
   group: number;
