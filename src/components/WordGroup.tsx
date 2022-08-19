@@ -15,7 +15,7 @@ export default function WordGroup(props: {
           key={el.id}
           type="button"
           onClick={() => onClickWordGroup(el.id)}
-          className={`button textbook__group ${
+          className={`textbook__group ${
             el.id === currentGroup + 1 ? 'textbook__group--active' : ''
           }`}
         >

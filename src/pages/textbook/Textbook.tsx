@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getWords } from '../../services/api/Words';
+import { wordApi } from '../../services/api/Words';
 import { Word } from '../../types';
 import Pagination from '../../components/shared/Pagination';
 import './style.scss';
@@ -13,7 +13,7 @@ export default function Textbook() {
   const [currentPage, setCurrentPage] = useState(0);
 
   async function loadWords(group = 0, page = 0) {
-    const newWords = await getWords(group, page);
+    const newWords = await wordApi.getWords(group, page);
     setWords(newWords);
     setCurrentPage(page);
     setCurrentGroup(group);
