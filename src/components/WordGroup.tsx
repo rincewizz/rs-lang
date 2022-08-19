@@ -10,18 +10,19 @@ export default function WordGroup(props: {
 
   return (
     <div className="textbook__groups">
-      {wordGroup.map((el) => (
-        <button
-          key={el.id}
-          type="button"
-          onClick={() => onClickWordGroup(el.id)}
-          className={`textbook__group ${
-            el.id === currentGroup + 1 ? 'textbook__group--active' : ''
-          }`}
-        >
-          {el.id.toString()}
-        </button>
-      ))}
+      {wordGroup.map((el) => {
+        const active = el.id === currentGroup + 1 ? 'textbook__group--active' : '';
+        return (
+          <button
+            key={el.id}
+            type="button"
+            onClick={() => onClickWordGroup(el.id)}
+            className={`textbook__group ${active}`}
+          >
+            {el.id.toString()}
+          </button>
+        );
+      })}
     </div>
   );
 }

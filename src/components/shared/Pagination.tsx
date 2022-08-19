@@ -5,14 +5,12 @@ export default function Pagination(props: {
   currentPage: number;
   onClickPagination: (arg: number) => void;
 }) {
-  const { currentPage } = props;
+  const { currentPage, onClickPagination } = props;
   const handlePrevClick = () => {
-    const { onClickPagination } = props;
     onClickPagination(currentPage - 1);
   };
 
   const handleNextClick = () => {
-    const { onClickPagination } = props;
     onClickPagination(currentPage + 1);
   };
 
