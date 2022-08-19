@@ -53,7 +53,7 @@ $sizes: (
   }
 }
 
-ul {
+.link-list {
   list-style: none;
   display: table;
   justify-content: space-between;
@@ -62,12 +62,13 @@ ul {
   height: 200px;
   margin: 0;
   padding: 0;
+  margin-top: 30px;
   align-items: center;
   @include media('max', 'md') {
     display: none;
   }
 }
-li {
+.link-list__item {
   display: table-row;
   width: $navW * 3;
   &:hover {
@@ -121,7 +122,7 @@ li {
     display: block;
   }
 }
-img {
+.img-item__picture {
   width: 30px;
   height: 30px;
 }
