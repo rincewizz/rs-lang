@@ -3,6 +3,10 @@ export type SidebarItemProps = {
     img: string;
     alt: string;
     name: string;
-    width?: string;
   };
 };
+
+export type Advantages = {
+  number: string;
+  text: string;
+}
