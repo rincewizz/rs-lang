@@ -1,27 +1,20 @@
+import axios from 'axios';
+import { Word } from '../../types';
+
 const HOST = 'http://localhost:8082/';
 
-export const getWords = async (group = 0, page = 0) => {
-  const rawResponse = await fetch(`${HOST}words?group=${group}&page=${page}`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  });
-  const content = await rawResponse.json();
+export interface IWordApi {
+  getWords: (group: number, page: number) => Promise<Word[]>;
+  getWordById: (id: string) => Promise<Word>;
+}
 
-  return content;
-};
-
-export const getWordById = async (id: string) => {
-  const rawResponse = await fetch(`${HOST}words/${id}`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  });
-  const content = await rawResponse.json();
-
-  return content;
+export const wordApi: IWordApi = {
+  async getWords(group = 0, page = 0) {
+    const response = await axios.get(`${HOST}words?group=${group}&page=${page}`);
+    return response.data;
+  },
+  async getWordById(id: string) {
+    const response = await axios.get(`${HOST}words/${id}`);
+    return response.data;
+  },
 };
