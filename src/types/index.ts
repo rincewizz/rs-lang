@@ -3,8 +3,12 @@ export type SidebarItemProps = {
     img: string;
     alt: string;
     name: string;
-    width?: string;
   };
+};
+
+export type Advantages = {
+  number: string;
+  text: string;
 };
 
 export type Word = {
@@ -39,13 +43,13 @@ export interface ILoginUser {
   password: string;
 }
 export interface IAuth {
-  message: 'string';
-  token: 'string';
-  refreshToken: 'string';
-  userId: 'string';
-  name: 'string';
+  message: string;
+  token: string;
+  refreshToken: string;
+  userId: string;
+  name: string;
 }
 export interface IParamAuth {
-  userId: 'string';
-  token: 'string';
+  userId: string;
+  token: string;
 }

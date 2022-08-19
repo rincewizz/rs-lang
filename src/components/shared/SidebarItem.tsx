@@ -8,9 +8,9 @@ class SidebarItem extends React.PureComponent<SidebarItemProps> {
       el: { img, alt, name },
     } = this.props;
     return (
-      <li>
+      <li className="link-list__item">
         <div className="img-item aside-cell">
-          <img src={img} alt={alt} />
+          <img className="img-item__picture" src={img} alt={alt} />
         </div>
         <div className="link-list-name aside-cell">{name}</div>
       </li>
