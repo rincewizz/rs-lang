@@ -23,3 +23,29 @@ export type Word = {
   textMeaningTranslate: string;
   textExampleTranslate: string;
 };
+
+export interface ICreateUser {
+  name: string;
+  email: string;
+  password: string;
+}
+export interface IUser {
+  id: string;
+  name: string;
+  email: string;
+}
+export interface ILoginUser {
+  email: string;
+  password: string;
+}
+export interface IAuth {
+  message: 'string';
+  token: 'string';
+  refreshToken: 'string';
+  userId: 'string';
+  name: 'string';
+}
+export interface IParamAuth {
+  userId: 'string';
+  token: 'string';
+}
