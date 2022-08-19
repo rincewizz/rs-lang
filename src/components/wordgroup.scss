@@ -1,0 +1,23 @@
+
+.textbook {
+    &__groups {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+    &__group {
+        color: #0C0B0B;
+        background: transparent;
+        border: 2px solid #0C0B0B;
+        border-radius: 8px;
+        padding: 10px 20px;
+        cursor: pointer;
+
+        &--active {
+            color: #fff;
+            background: #0C0B0B;
+            border: 2px solid #0C0B0B;
+        }
+
+    }
+}
