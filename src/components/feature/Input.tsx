@@ -1,7 +1,8 @@
 import React from 'react';
+import { IInputProps } from '../../types';
 import './form.scss';
 
-function Input(props: { setValue: any; value: string; type: string; placeholder: string }) {
+function Input(props: IInputProps) {
   const { setValue, value, type, placeholder } = props;
   return (
     <input

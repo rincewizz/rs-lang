@@ -52,3 +52,9 @@ export interface IParamAuth {
   userId: string;
   token: string;
 }
+export interface IInputProps {
+  setValue: any;
+  value: string;
+  type: string;
+  placeholder: string;
+}
