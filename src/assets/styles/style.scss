@@ -1,5 +1,6 @@
 @import url(../../../node_modules/normalize.css/normalize.css);
 @import './fonts.scss';
+@import './const.scss';
 
 a,
 a:visited,
@@ -7,6 +8,10 @@ a:focus,
 a:hover {
   text-decoration: none;
   color: inherit;
+}
+
+button {
+  cursor: pointer;
 }
 
 .wrap {
