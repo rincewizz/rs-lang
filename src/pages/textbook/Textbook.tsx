@@ -6,11 +6,13 @@ import './style.scss';
 import WordGroup from '../../components/WordGroup';
 import Footer from '../../components/shared/Footer';
 import Header from '../../components/shared/Header';
+import WordCard from '../../components/WordCard';
 
 export default function Textbook() {
   const [words, setWords] = useState<Word[]>([]);
   const [currentGroup, setCurrentGroup] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
+  const [playStatus, setPlayStatus] = useState(false);
 
   async function loadWords(group = 0, page = 0) {
     const newWords = await wordApi.getWords(group, page);
@@ -43,7 +45,7 @@ export default function Textbook() {
         <h2>Слова</h2>
         <div className="textbook__words">
           {words.map((el) => (
-            <div key={el.id}>{el.word}</div>
+            <WordCard key={el.id} word={el} playStatus={playStatus} setPlayStatus={setPlayStatus} />
           ))}
         </div>
         <Pagination currentPage={currentPage} onClickPagination={handleWordPageClick} />
