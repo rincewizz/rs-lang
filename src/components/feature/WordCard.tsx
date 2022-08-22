@@ -1,15 +1,11 @@
 /* eslint-disable react/no-danger */
 import React, { useState, useEffect } from 'react';
-import { Word } from '../types';
+import { IWordCardProps } from '../../types';
 import './wordcard.scss';
-import soundIco from '../assets/img/sound.svg';
+import soundIco from '../../assets/img/sound.svg';
 
 const HOST = 'http://localhost:8082/';
-export default function WordGroup(props: {
-  word: Word;
-  playStatus: boolean;
-  setPlayStatus: (status: boolean) => void;
-}) {
+export default function WordGroup(props: IWordCardProps) {
   const { word, playStatus, setPlayStatus } = props;
 
   const [audio] = useState(new Audio());

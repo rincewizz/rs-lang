@@ -54,8 +54,19 @@ export interface IParamAuth {
   token: string;
 }
 export interface IInputProps {
-  setValue: any;
+  setValue: (value: string) => void;
   value: string;
   type: string;
   placeholder: string;
+}
+
+export interface IWordGroupProps {
+  onClickWordGroup: (group: number) => void;
+  currentGroup: number;
+}
+
+export interface IWordCardProps {
+  word: Word;
+  playStatus: boolean;
+  setPlayStatus: (status: boolean) => void;
 }

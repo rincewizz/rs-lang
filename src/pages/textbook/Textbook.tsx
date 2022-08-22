@@ -3,11 +3,11 @@ import { wordApi } from '../../services/api/Words';
 import { Word } from '../../types';
 import Pagination from '../../components/shared/Pagination';
 import './style.scss';
-import WordGroup from '../../components/WordGroup';
 import Footer from '../../components/shared/Footer';
 import Header from '../../components/shared/Header';
-import WordCard from '../../components/WordCard';
 import Sidebar from '../../components/shared/Sidebar';
+import WordGroup from '../../components/feature/WordGroup';
+import WordCard from '../../components/feature/WordCard';
 
 export default function Textbook() {
   const [words, setWords] = useState<Word[]>([]);
