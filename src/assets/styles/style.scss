@@ -13,6 +13,16 @@ a:hover {
 button {
   cursor: pointer;
 }
+#root {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: #0C0B0B;
+}
+
+.main {
+  flex: 1 1 auto;
+}
 
 .wrap {
   margin: 0 auto;

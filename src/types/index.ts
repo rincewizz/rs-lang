@@ -59,6 +59,9 @@ export interface IInputProps {
   type: string;
   placeholder: string;
 }
+export interface IpropsCardDev {
+  [key: string]: { foto: string; name: string; text: string };
+}
 
 export interface IWordGroupProps {
   onClickWordGroup: (group: number) => void;
