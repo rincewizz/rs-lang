@@ -7,6 +7,7 @@ import WordGroup from '../../components/WordGroup';
 import Footer from '../../components/shared/Footer';
 import Header from '../../components/shared/Header';
 import WordCard from '../../components/WordCard';
+import Sidebar from '../../components/shared/Sidebar';
 
 export default function Textbook() {
   const [words, setWords] = useState<Word[]>([]);
@@ -37,6 +38,7 @@ export default function Textbook() {
 
   return (
     <>
+      <Sidebar />
       <Header />
       <main className="textbook container">
         <h1>Учебник</h1>
