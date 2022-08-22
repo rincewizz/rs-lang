@@ -12,7 +12,15 @@
   padding: 20px;
   margin: 0 auto;
   font-size: 20px;
-  
+    .modal__btn {
+        align-self: flex-end;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        img {
+          height: 100%;
+        }
+    }
     & .login-form {
     display: flex;
     flex-direction: column;
@@ -66,9 +74,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    display: none;
+    /* display: none;
     
       &.active {
         display: block;
-      }
+      } */
 }

@@ -3,8 +3,10 @@ import guy from '../../assets/img/guy.svg';
 import userImg from '../../assets/img/user.svg';
 import logo from '../../assets/img/logo.svg';
 import './header.scss';
+import { IHeaderProps } from '../../types';
 
-function Header() {
+function Header(props: IHeaderProps) {
+  const { handleClick } = props;
   return (
     <div className="wrap wrap-header">
       <header className="header">
@@ -16,7 +18,7 @@ function Header() {
           <p>It’s good to see you again.</p>
         </div>
         <img src={guy} className="header__img" alt="" />
-        <div className="logo-user">
+        <div className="logo-user" role="button" tabIndex={0} onClick={handleClick}>
           <img src={userImg} alt="" />
         </div>
       </header>

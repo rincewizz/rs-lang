@@ -7,30 +7,38 @@ const urlServerSign = `${urlServer}/signin`;
 
 interface IUserApi {
   createUser: (payload: ICreateUser) => Promise<{ dataUser: IUser; message: string }>;
-  signIn: (payload: ILoginUser) => Promise<IAuth>;
+  signIn: (payload: ILoginUser) => Promise<{ userAuth: IAuth; message: string }>;
   getUserData: ({ userId, token }: IParamAuth) => Promise<any>;
 }
 
 const userApi: IUserApi = {
   async createUser(payload) {
-    let mes = 'Пользователь успешно зарегистрирован';
     try {
       const response = await axios.post(urlServerUsers, payload);
       return {
         dataUser: response.data,
-        message: mes,
+        message: 'Пользователь успешно зарегистрирован',
       };
     } catch (error) {
-      mes = 'Не корректные данные пользователя';
       return {
         dataUser: null,
-        message: mes,
+        message: 'Не корректные данные пользователя',
       };
     }
   },
   async signIn(payload) {
-    const response = await axios.post(urlServerSign, payload);
-    return response.data;
+    try {
+      const response = await axios.post(urlServerSign, payload);
+      return {
+        userAuth: response.data,
+        message: 'Успешная авторизация',
+      };
+    } catch (error) {
+      return {
+        userAuth: null,
+        message: 'Не корректные данные пользователя',
+      };
+    }
   },
   async getUserData({ userId, token }) {
     const response = await axios.get(`${urlServerUsers}/${userId}`, {

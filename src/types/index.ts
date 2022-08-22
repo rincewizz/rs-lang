@@ -73,3 +73,6 @@ export interface IWordCardProps {
   playStatus: boolean;
   setPlayStatus: (status: boolean) => void;
 }
+export interface IHeaderProps {
+  handleClick: () => void;
+}

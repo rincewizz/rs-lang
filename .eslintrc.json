@@ -53,6 +53,8 @@
         "prettier"
     ],
     "rules": {
+      "jsx-a11y/click-events-have-key-events":0
+
     },
     "ignorePatterns": ["tsconfig.json", "webpack.config.js", "webpack.dev.config.js", "jest.config.js", "tests"]
 }
