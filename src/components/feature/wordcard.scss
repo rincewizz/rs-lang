@@ -1,0 +1,30 @@
+.word-card {
+    display: flex;
+    background: #F5F5F7;
+    border-radius: 14px;
+    margin-top: 20px;
+    overflow: hidden;
+
+    &__img {
+        width: 40%;
+        background-size: cover;
+        background-position: center;
+    }
+    &__text {
+        padding: 20px;
+    }
+
+    &__word {
+        font-size: 28px;
+        font-weight: 600;
+    }
+
+    &__audio {
+        vertical-align: middle;
+        background: none;
+        border: none;
+    }
+    &__audio-img {
+        display: block;
+    }
+}
