@@ -1,6 +1,6 @@
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
-import { IAuthStore, IUserStore } from '../../types';
+import { IUserStore } from '../../types';
 
 const useUserStore = create<IUserStore>()(
   persist(
@@ -16,18 +16,4 @@ const useUserStore = create<IUserStore>()(
   )
 );
 
-const useAuthStore = create<IAuthStore>()(
-  persist(
-    (set, get) => ({
-      auth: {},
-      setAuth: (auth) => set(() => ({ auth })),
-      getAuth: () => get().auth,
-    }),
-    {
-      name: 'auth-storage',
-      getStorage: () => localStorage,
-    }
-  )
-);
-
-export { useUserStore, useAuthStore };
+export default { useUserStore };
