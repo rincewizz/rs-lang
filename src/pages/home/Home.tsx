@@ -25,35 +25,33 @@ function addAdvantages(props: Advantages) {
   );
 }
 
-export default class Home extends React.PureComponent {
-  render() {
-    const greetingComponent = () => {
-      return (
-        <div className="main">
-          <div className="main__greeting">
-            <div className="greeting">
-              <p className="greeting__start">Start learning English right now!</p>
-              <p className="greeting__text">
-                <span className="greeting__rslang">RSLang</span> - the best application of studing
-                English you have ever met!
-              </p>
-            </div>
-            <img className="greeting__picture" src={pinguin} alt="martin" />
-          </div>
-          <div className="main__advantages">
-            <img className="advantages__picture" src={martin} alt="pinguin" />
-            <div className="advantages">{ADVANTAGES.map((item) => addAdvantages(item))}</div>
-          </div>
-        </div>
-      );
-    };
+export default function Home() {
+  const greetingComponent = () => {
     return (
-      <div className="wrapper">
-        <Sidebar />
-        <Header />
-        {greetingComponent()}
-        <Footer />
+      <div className="main">
+        <div className="main__greeting">
+          <div className="greeting">
+            <p className="greeting__start">Start learning English right now!</p>
+            <p className="greeting__text">
+              <span className="greeting__rslang">RSLang</span> - the best application of studing
+              English you have ever met!
+            </p>
+          </div>
+          <img className="greeting__picture" src={pinguin} alt="martin" />
+        </div>
+        <div className="main__advantages">
+          <img className="advantages__picture" src={martin} alt="pinguin" />
+          <div className="advantages">{ADVANTAGES.map((item) => addAdvantages(item))}</div>
+        </div>
       </div>
     );
-  }
+  };
+  return (
+    <div className="wrapper">
+      <Sidebar />
+      <Header />
+      {greetingComponent()}
+      <Footer />
+    </div>
+  );
 }

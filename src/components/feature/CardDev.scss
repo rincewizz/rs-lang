@@ -1,0 +1,44 @@
+@import '../../assets/styles/const.scss';
+
+.card-dev {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px 0px;
+  border-radius: 14px;
+  box-shadow: $shadow-grey;
+  height: 370px;
+  width: 270px;
+  padding: 10px;
+
+  img {
+    width: 150px;
+    border-radius: 50%;
+  }
+
+  h2 {
+    font-family: 'Baloo Bhai';
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 38px;
+  }
+
+  p {
+    align-self: flex-start;
+  }
+}
+.info-devs {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap:20px;
+  h2 {
+    text-align: center;
+  }
+}

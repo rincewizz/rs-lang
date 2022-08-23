@@ -53,6 +53,7 @@ export interface IParamAuth {
   userId: string;
   token: string;
 }
+<<<<<<< HEAD
 
 export type Numbers = {
   number: string;
@@ -62,3 +63,37 @@ export type Answer = {
   name: Word;
   answer: boolean;
 };
+=======
+export interface IInputProps {
+  setValue: (value: string) => void;
+  value: string;
+  type: string;
+  placeholder: string;
+}
+export interface IpropsCardDev {
+  [key: string]: { foto: string; name: string; text: string };
+}
+
+export interface IWordGroupProps {
+  onClickWordGroup: (group: number) => void;
+  currentGroup: number;
+}
+
+export interface IWordCardProps {
+  word: Word;
+  playStatus: boolean;
+  setPlayStatus: (status: boolean) => void;
+}
+
+export interface IUserStore {
+  user: Partial<IUser>;
+  setUser: (user: Partial<IUser>) => void;
+  getUser: () => Partial<IUser>;
+}
+
+export interface IAuthStore {
+  auth: Partial<IAuth>;
+  setAuth: (user: Partial<IAuth>) => void;
+  getAuth: () => Partial<IAuth>;
+}
+>>>>>>> develop

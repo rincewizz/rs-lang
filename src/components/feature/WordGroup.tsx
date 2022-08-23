@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
+import { IWordGroupProps } from '../../types';
 import './wordgroup.scss';
 
-export default function WordGroup(props: {
-  onClickWordGroup: (group: number) => void;
-  currentGroup: number;
-}) {
+export default function WordGroup(props: IWordGroupProps) {
   const { onClickWordGroup, currentGroup } = props;
   const [wordGroup] = useState([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }]);
 

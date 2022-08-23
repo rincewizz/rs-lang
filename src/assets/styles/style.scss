@@ -1,5 +1,6 @@
 @import url(../../../node_modules/normalize.css/normalize.css);
 @import './fonts.scss';
+@import './const.scss';
 
 a,
 a:visited,
@@ -7,6 +8,20 @@ a:focus,
 a:hover {
   text-decoration: none;
   color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+#root {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: #0C0B0B;
+}
+
+.main {
+  flex: 1 1 auto;
 }
 
 .wrap {
