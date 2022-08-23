@@ -53,3 +53,12 @@ export interface IParamAuth {
   userId: string;
   token: string;
 }
+
+export type Numbers = {
+  number: string;
+  words: string;
+};
+export type Answer = {
+  name: Word;
+  answer: boolean;
+};
