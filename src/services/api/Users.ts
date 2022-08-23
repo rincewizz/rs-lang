@@ -8,7 +8,7 @@ const urlServerSign = `${urlServer}/signin`;
 interface IUserApi {
   createUser: (payload: ICreateUser) => Promise<{ dataUser: IUser; message: string }>;
   signIn: (payload: ILoginUser) => Promise<IAuth>;
-  getUserData: ({ userId, token }: IParamAuth) => Promise<any>;
+  getUserData: ({ userId, token }: IParamAuth) => Promise<IUser>;
 }
 
 const userApi: IUserApi = {

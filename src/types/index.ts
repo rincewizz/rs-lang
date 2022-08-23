@@ -70,3 +70,15 @@ export interface IWordCardProps {
   playStatus: boolean;
   setPlayStatus: (status: boolean) => void;
 }
+
+export interface IUserStore {
+  user: Partial<IUser>;
+  setUser: (user: Partial<IUser>) => void;
+  getUser: () => Partial<IUser>;
+}
+
+export interface IAuthStore {
+  auth: Partial<IAuth>;
+  setAuth: (user: Partial<IAuth>) => void;
+  getAuth: () => Partial<IAuth>;
+}
