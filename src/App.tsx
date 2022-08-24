@@ -1,6 +1,10 @@
 import React from 'react';
-import Home from './pages/home/Home';
+import VoiceGameRound from './pages/voiceGame/VoicegameRound';
+/* import Home from './pages/home/Home';
+ */
 
 export default function App() {
-  return <Home />;
+  return <VoiceGameRound />;
+  /*   return <Home />;
+   */
 }

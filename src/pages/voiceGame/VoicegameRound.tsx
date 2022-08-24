@@ -16,6 +16,7 @@ function addAnswer() {
   const [isFinish, setFinish] = useState<string>();
   const [isDisabledAudio, setDisableAudio] = useState<boolean>();
   const [isDisabledNext, setDisableNext] = useState<boolean>();
+  const [itemColorClass, setItemColorClass] = useState<string>();
   async function loadWords(group = 0, page = 0) {
     const newWords = await wordApi.getWords(group, page);
     setWords(newWords);
@@ -29,20 +30,17 @@ function addAnswer() {
     loadWords();
   }, []);
 
-  function isRightAnswer(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.KeyboardEvent<HTMLButtonElement>
-  ) {
+  function isRightAnswer(ans: Word) {
     const obj: Answer = { name: word as Word, answer: false };
-    const target = e.target as HTMLElement;
     setClick(false);
-    if (target.innerHTML === (word as Word).wordTranslate) {
-      target.style.backgroundColor = '#96eda7';
+    if (ans.wordTranslate === (word as Word).wordTranslate) {
+      setItemColorClass('right-answer');
       obj.answer = true;
     } else {
-      target.style.backgroundColor = '#ed9696';
+      setItemColorClass('false-answer');
     }
     setTimeout(() => {
-      target.style.backgroundColor = '#d2d2d8';
+      setItemColorClass('');
     }, 1000);
     result.push(obj);
     setResult(result);
@@ -67,8 +65,8 @@ function addAnswer() {
         <button
           type="button"
           className="answer-item__button"
-          onClick={(e) => (click === true ? isRightAnswer(e) : 0)}
-          onKeyDown={(e) => (click === true ? isRightAnswer(e) : 0)}
+          onClick={() => (click === true ? isRightAnswer(el) : 0)}
+          onKeyDown={() => (click === true ? isRightAnswer(el) : 0)}
         >
           {el.wordTranslate}
         </button>
@@ -116,7 +114,7 @@ function addAnswer() {
         Play
       </button>
 
-      <ul className="answer-list">{pageList.map((el) => renderList(el))}</ul>
+      <ul className={`answer-list ${itemColorClass}`}>{pageList.map((el) => renderList(el))}</ul>
       <button
         type="button"
         className="next-button"

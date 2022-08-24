@@ -21,8 +21,9 @@ function addNumbers(props: Numbers) {
 }
 
 export default function VoiceGame() {
-  const numberComponent = () => {
-    return (
+  return (
+    <>
+      <Sidebar />
       <div className="game-container">
         <div className="game">
           <h3 className="game__header">Аудиовызов</h3>
@@ -33,12 +34,6 @@ export default function VoiceGame() {
           <ul className="game__level-list">{NUMBERS.map((item) => addNumbers(item))}</ul>
         </div>
       </div>
-    );
-  };
-  return (
-    <>
-      <Sidebar />
-      {numberComponent()}
     </>
   );
 }
