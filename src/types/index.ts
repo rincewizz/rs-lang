@@ -89,3 +89,10 @@ export interface IAuthStore {
   setAuth: (user: Partial<IAuth>) => void;
   getAuth: () => Partial<IAuth>;
 }
+export type Answer = {
+  name: Word;
+  answer: boolean;
+};
+export type Numbers = {
+  number: string;
+};
