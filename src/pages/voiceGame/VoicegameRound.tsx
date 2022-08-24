@@ -3,6 +3,7 @@ import './voicegameRound.scss';
 import Sidebar from '../../components/shared/Sidebar';
 import { Answer, Word } from '../../types';
 import { wordApi } from '../../services/api/Words';
+import FinishGame from './VoicegameFinish';
 
 const HOST = 'http://localhost:8082/';
 
@@ -40,7 +41,7 @@ function addAnswer() {
     }, 1000);
     result.push(obj);
     setResult(result);
-    if (result.length === 20) {
+    if (result.length === 2) {
       const finish = document.querySelector('.finish-game') as HTMLElement;
       finish.style.display = 'flex';
     }
@@ -86,27 +87,6 @@ function addAnswer() {
     document.querySelector('.next-button')?.setAttribute('disabled', 'true');
   }
 
-  function finishGame(el: Answer) {
-    return (
-      <tr>
-        <td>{el.name.word}</td>
-        <td>{el.name.transcription}</td>
-        <td>{el.name.wordTranslate}</td>
-        <td>
-          <img
-            className="answer-img"
-            src={
-              el.answer === true
-                ? 'https://svgsilh.com/svg/27406.svg'
-                : 'https://svgsilh.com/svg/31226.svg'
-            }
-            alt="answer"
-          />
-        </td>
-      </tr>
-    );
-  }
-
   return (
     <>
       <button className="audio-button" type="button" onClick={() => playAudio()}>
@@ -124,7 +104,7 @@ function addAnswer() {
         <button className="start-again" type="button" onClick={() => startAgain()}>
           Start again
         </button>
-        <table className="score-table">{result.map((el) => finishGame(el))}</table>
+        <table className="score-table">{result.map((el) => FinishGame(el))}</table>
       </div>
     </>
   );
@@ -135,7 +115,7 @@ export default function VoiceGameRound() {
     <>
       <Sidebar />
       <div className="round-container">
-        <div className="main">{addAnswer()}</div>
+        <div className="game-container">{addAnswer()}</div>
       </div>
     </>
   );

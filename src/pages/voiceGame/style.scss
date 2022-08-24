@@ -16,7 +16,7 @@
   @media screen and (max-device-width: 1150px) {
     width: 90%;
   }
-  .main {
+  .game {
     display: flex;
     flex-direction: column;
     width: 60%;
@@ -25,38 +25,38 @@
     box-shadow: 1px 3px 4px rgb(0 0 0 / 10%);
     background: #f5f5f7;
     border-radius: 14px;
-    .main__header {
+    .game__header {
       font-family: 'Baloo Bhai';
       font-weight: 700;
       font-size: 30px;
     }
-    .main__description,
-    .main__choose-level {
+    .game__description,
+    .game__choose-level {
       width: 80%;
     }
-    .main__level-list {
+    .game__level-list {
       display: flex;
       justify-content: space-between;
       width: 80%;
       list-style: none;
       padding: 0;
-      .main__level-item {
-        font-family: 'Baloo Bhai';
-        font-weight: 700;
-        font-size: 30px;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #e6e6eb;
-        &:hover {
-          box-shadow: 1px 3px 4px rgb(0 0 0 / 10%);
-          background: #d2d2d8;
-          cursor: pointer;
-        }
-      }
+    }
+  }
+  .game__level-item {
+    font-family: 'Baloo Bhai';
+    font-weight: 700;
+    font-size: 30px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #e6e6eb;
+    &:hover {
+      box-shadow: 1px 3px 4px rgb(0 0 0 / 10%);
+      background: #d2d2d8;
+      cursor: pointer;
     }
   }
 }
