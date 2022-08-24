@@ -11,8 +11,9 @@ export type Advantages = {
   text: string;
 };
 
-export type Word = {
-  id: string;
+interface WordBase {
+  id?: string;
+  _id?: string;
   group: number;
   page: number;
   word: string;
@@ -26,7 +27,26 @@ export type Word = {
   wordTranslate: string;
   textMeaningTranslate: string;
   textExampleTranslate: string;
-};
+  userWord?: {
+    difficulty: string;
+    optional?: object;
+  };
+}
+
+interface IdWord extends WordBase {
+  id: string;
+}
+
+interface DashIdWord extends WordBase {
+  _id: string;
+}
+
+export type Word = IdWord | DashIdWord;
+
+export interface IAggregatedWords {
+  paginatedResults: DashIdWord[];
+  totalCount: { count: number }[];
+}
 
 export interface ICreateUser {
   name: string;
@@ -65,6 +85,7 @@ export interface IpropsCardDev {
 
 export interface IWordGroupProps {
   onClickWordGroup: (group: number) => void;
+  onClickDifficultWordGroup: () => void;
   currentGroup: number;
 }
 
@@ -84,4 +105,10 @@ export interface IAuthStore {
   auth: Partial<IAuth>;
   setAuth: (user: Partial<IAuth>) => void;
   getAuth: () => Partial<IAuth>;
+}
+export interface IUserWord {
+  id: string;
+  difficulty: string;
+  wordId: string;
+  optional?: object;
 }

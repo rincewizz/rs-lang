@@ -1,8 +1,12 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react/no-danger */
 import React, { useState, useEffect } from 'react';
 import { IWordCardProps } from '../../types';
 import './wordcard.scss';
 import soundIco from '../../assets/img/sound.svg';
+import useAuthStore from '../../services/storage/Auth';
+import { usersWordsApi } from '../../services/api/UsersWords';
+import useUserStore from '../../services/storage/User';
 
 const HOST = 'http://localhost:8082/';
 export default function WordGroup(props: IWordCardProps) {
@@ -11,6 +15,13 @@ export default function WordGroup(props: IWordCardProps) {
   const [audio] = useState(new Audio());
   const audioArr = [word.audio, word.audioMeaning, word.audioExample];
   const [audioIndex, setAudioIndex] = useState(-1);
+
+  const auth = useAuthStore((state) => state.auth);
+
+  const user = useUserStore((state) => state.user);
+
+  const isAuth = auth.message === 'Authenticated';
+  const [isDifficult, setDifficult] = useState(word.userWord?.difficulty === 'difficult');
 
   audio.addEventListener('ended', () => setAudioIndex(audioIndex + 1));
 
@@ -31,6 +42,36 @@ export default function WordGroup(props: IWordCardProps) {
 
   const handleAudioClick = () => {
     if (!playStatus) setAudioIndex(0);
+  };
+
+  const handleDifficultBtnClick = async () => {
+    if (auth.token && user.id && word._id) {
+      let difficultStatus;
+      if (word.userWord) {
+        difficultStatus = await usersWordsApi.updateUserWord({
+          token: auth.token,
+          userId: user.id,
+          wordId: word._id,
+          request: {
+            difficulty: isDifficult ? 'none' : 'difficult',
+            optional: {},
+          },
+        });
+      }
+
+      if (!word.userWord) {
+        difficultStatus = await usersWordsApi.createUserWord({
+          token: auth.token,
+          userId: user.id,
+          wordId: word._id,
+          request: {
+            difficulty: 'difficult',
+            optional: {},
+          },
+        });
+      }
+      setDifficult(difficultStatus?.difficulty === 'difficult');
+    }
   };
 
   return (
@@ -54,6 +95,11 @@ export default function WordGroup(props: IWordCardProps) {
           <div dangerouslySetInnerHTML={{ __html: word.textExample }} />
           <div>{word.textExampleTranslate}</div>
         </div>
+        {isAuth && (
+          <button type="button" onClick={handleDifficultBtnClick}>
+            {isDifficult ? '-' : '+'} Сложное слово
+          </button>
+        )}
       </div>
     </div>
   );
