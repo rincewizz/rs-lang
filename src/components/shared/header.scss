@@ -40,22 +40,27 @@ $shadow: 1px 3px 4px rgb(0 0 0 / 20%);
 }
 
 .logo-user {
-  img {
-    width: 70px;
-  }
+  border: transparent;
+  width: 70px;
+  height: 70px;  
   &:hover {
-    cursor: pointer;
     border-radius: 50%;
     box-shadow: $shadow;
   }
 }
+.logout {
+  background: url('../../assets/img/logout.svg')0 0 / 100% auto no-repeat;
+}
+
+.lognin {
+  background: url('../../assets/img/user.svg')0 0 / 100% auto no-repeat;
+}
 .logo img {
   width: 70px;
-  margin: 3px;
+  padding: 3px;
+  &:hover {
+      border-radius: 50%;
+      box-shadow: 1px 3px 4px rgb(0 0 0 / 20%);
+    }
 }
-.logo {
-  &:hover{
-    border-radius: 50%;
-    box-shadow: 1px 3px 4px rgb(0 0 0 / 20%);;
-  }
-}
+

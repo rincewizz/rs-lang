@@ -74,6 +74,10 @@ export interface IWordCardProps {
   setPlayStatus: (status: boolean) => void;
 }
 
+export interface IHeaderProps {
+  handleClick: () => void;
+}
+
 export interface IUserStore {
   user: Partial<IUser>;
   setUser: (user: Partial<IUser>) => void;
