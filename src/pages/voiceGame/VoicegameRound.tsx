@@ -13,11 +13,16 @@ function addAnswer() {
   const [word, setWord] = useState<Word>();
   const [result, setResult] = useState<Answer[]>([]);
   const [click, setClick] = useState<boolean>();
+  const [isFinish, setFinish] = useState<string>();
+  const [isDisabledAudio, setDisableAudio] = useState<boolean>();
+  const [isDisabledNext, setDisableNext] = useState<boolean>();
   async function loadWords(group = 0, page = 0) {
     const newWords = await wordApi.getWords(group, page);
     setWords(newWords);
     setList(newWords.slice(0, 4));
     setClick(false);
+    setDisableAudio(false);
+    setDisableNext(true);
   }
 
   useEffect(() => {
@@ -41,18 +46,18 @@ function addAnswer() {
     }, 1000);
     result.push(obj);
     setResult(result);
-    if (result.length === 2) {
-      const finish = document.querySelector('.finish-game') as HTMLElement;
-      finish.style.display = 'flex';
+    if (result.length === 20) {
+      setFinish('finish');
     }
-    document.querySelector('.next-button')?.removeAttribute('disabled');
+    setDisableNext(false);
   }
 
   const updateList = () => {
     const options = words.sort(() => Math.random() - 0.5).slice(0, 4);
     setList(options);
-    document.querySelector('.audio-button')?.removeAttribute('disabled');
-    document.querySelector('.next-button')?.setAttribute('disabled', 'true');
+
+    setDisableAudio(false);
+    setDisableNext(true);
     return options;
   };
 
@@ -75,28 +80,19 @@ function addAnswer() {
     const num = Math.round(0 - 0.5 + Math.random() * (3 - 0 + 1));
     new Audio(HOST + pageList[num].audio).play();
     setWord(pageList[num]);
-    document.querySelector('.audio-button')?.setAttribute('disabled', 'true');
     setClick(true);
+    setDisableAudio(true);
   }
 
   function startAgain() {
-    const finish = document.querySelector('.finish-game') as HTMLElement;
-    finish.style.display = 'none';
+    setFinish('');
     setResult([]);
-    document.querySelector('.audio-button')?.removeAttribute('disabled');
-    document.querySelector('.next-button')?.setAttribute('disabled', 'true');
+    setDisableAudio(false);
+    setDisableNext(true);
   }
 
-  return (
-    <>
-      <button className="audio-button" type="button" onClick={() => playAudio()}>
-        Play
-      </button>
-
-      <ul className="answer-list">{pageList.map((el) => renderList(el))}</ul>
-      <button type="button" className="next-button" onClick={() => updateList()}>
-        Next
-      </button>
+  function showFinish() {
+    return (
       <div className="finish-game">
         <button className="close" type="button">
           Close
@@ -106,6 +102,30 @@ function addAnswer() {
         </button>
         <table className="score-table">{result.map((el) => FinishGame(el))}</table>
       </div>
+    );
+  }
+
+  return (
+    <>
+      <button
+        className="audio-button"
+        type="button"
+        disabled={isDisabledAudio}
+        onClick={() => playAudio()}
+      >
+        Play
+      </button>
+
+      <ul className="answer-list">{pageList.map((el) => renderList(el))}</ul>
+      <button
+        type="button"
+        className="next-button"
+        disabled={isDisabledNext}
+        onClick={() => updateList()}
+      >
+        Next
+      </button>
+      {isFinish === 'finish' ? showFinish() : ''}
     </>
   );
 }

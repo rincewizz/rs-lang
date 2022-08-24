@@ -25,16 +25,16 @@
     box-shadow: 1px 3px 4px rgb(0 0 0 / 10%);
     background: #f5f5f7;
     border-radius: 14px;
-    .game__header {
+    &__header {
       font-family: 'Baloo Bhai';
       font-weight: 700;
       font-size: 30px;
     }
-    .game__description,
-    .game__choose-level {
+    &__description,
+    &__choose-level {
       width: 80%;
     }
-    .game__level-list {
+    &__level-list {
       display: flex;
       justify-content: space-between;
       width: 80%;

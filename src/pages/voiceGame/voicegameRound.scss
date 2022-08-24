@@ -57,7 +57,7 @@
   }
 }
 .finish-game {
-  display: none;
+  display: flex;
   width: 80%;
   height: calc(100vh - 20%);
   position: absolute;
