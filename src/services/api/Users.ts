@@ -21,7 +21,7 @@ const userApi: IUserApi = {
       };
     } catch (error) {
       return {
-        dataUser: null,
+        dataUser: {},
         message: 'Не корректные данные пользователя',
       };
     }
@@ -35,7 +35,7 @@ const userApi: IUserApi = {
       };
     } catch (error) {
       return {
-        userAuth: null,
+        userAuth: {},
         message: 'Не корректные данные пользователя',
       };
     }

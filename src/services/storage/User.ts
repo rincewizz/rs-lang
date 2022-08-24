@@ -16,4 +16,4 @@ const useUserStore = create<IUserStore>()(
   )
 );
 
-export default { useUserStore };
+export default useUserStore;

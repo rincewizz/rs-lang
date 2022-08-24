@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import userApi from '../../services/api/Users';
 import { IHeaderProps } from '../../types';
+import useAuthStore from '../../services/storage/Auth';
 
 import './form.scss';
 import Input from './Input';
@@ -9,17 +10,20 @@ export default function LoginFormHook(props: IHeaderProps) {
   const { handleClick } = props;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const setAuth = useAuthStore((state) => state.setAuth);
+
+  const mesOnServer = document.querySelector('.message') as HTMLElement;
 
   const handleReg = (e: React.FormEvent) => {
     e.preventDefault();
     const name = email.substring(0, email.lastIndexOf('@'));
     (async () => {
       const { dataUser, message } = await userApi.createUser({ name, email, password });
-      if (dataUser) {
-        userApi.signIn({ email, password });
+      if (dataUser.id) {
+        const { userAuth } = await userApi.signIn({ email, password });
+        setAuth(userAuth);
         handleClick();
       }
-      const mesOnServer = document.querySelector('.message') as HTMLElement;
       mesOnServer.innerHTML = message;
     })();
   };
@@ -27,8 +31,8 @@ export default function LoginFormHook(props: IHeaderProps) {
     e.preventDefault();
     (async () => {
       const { userAuth, message } = await userApi.signIn({ email, password });
-      const mesOnServer = document.querySelector('.message') as HTMLElement;
-      if (userAuth) handleClick();
+      setAuth(userAuth);
+      if (userAuth.userId) handleClick();
       else mesOnServer.innerHTML = message;
     })();
   };
