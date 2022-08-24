@@ -11,8 +11,14 @@ import WordGroup from '../../components/feature/WordGroup';
 import WordCard from '../../components/feature/WordCard';
 import { usersAggregatedWordsApi } from '../../services/api/UsersAggregatedWords';
 import useAuthStore from '../../services/storage/Auth';
+import Form from '../../components/feature/Form';
 
 export default function Textbook() {
+  const [visible, setVis] = useState(false);
+  const handleClick = () => {
+    setVis((curVal) => !curVal);
+  };
+
   const [words, setWords] = useState<Word[]>([]);
   const [currentGroup, setCurrentGroup] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
@@ -80,7 +86,8 @@ export default function Textbook() {
   return (
     <>
       <Sidebar />
-      <Header />
+      <Header handleClick={handleClick} />
+      {visible && <Form handleClick={handleClick} />}
       <main className="textbook container">
         <h1>Учебник</h1>
         <WordGroup

@@ -95,6 +95,10 @@ export interface IWordCardProps {
   setPlayStatus: (status: boolean) => void;
 }
 
+export interface IHeaderProps {
+  handleClick: () => void;
+}
+
 export interface IUserStore {
   user: Partial<IUser>;
   setUser: (user: Partial<IUser>) => void;
@@ -106,9 +110,17 @@ export interface IAuthStore {
   setAuth: (user: Partial<IAuth>) => void;
   getAuth: () => Partial<IAuth>;
 }
+
 export interface IUserWord {
   id: string;
   difficulty: string;
   wordId: string;
   optional?: object;
 }
+export type Answer = {
+  name: Word;
+  answer: boolean;
+};
+export type Numbers = {
+  number: string;
+};
