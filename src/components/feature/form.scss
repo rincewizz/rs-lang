@@ -16,7 +16,8 @@
         align-self: flex-end;
         width: 20px;
         height: 20px;
-        cursor: pointer;
+        background: url('../../assets/img/modalBtnsvg.svg')0 0 / 100% auto no-repeat;
+        border: transparent;
         img {
           height: 100%;
         }
@@ -73,10 +74,5 @@
     background-color: $bg-modal;
     display: flex;
     align-items: center;
-    justify-content: center;
-    /* display: none;
-    
-      &.active {
-        display: block;
-      } */
+    justify-content: center;    
 }

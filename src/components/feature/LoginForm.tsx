@@ -6,13 +6,12 @@ import useAuthStore from '../../services/storage/Auth';
 import './form.scss';
 import Input from './Input';
 
-export default function LoginFormHook(props: IHeaderProps) {
+export default function LoginForm(props: IHeaderProps) {
   const { handleClick } = props;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const setAuth = useAuthStore((state) => state.setAuth);
-
-  const mesOnServer = document.querySelector('.message') as HTMLElement;
+  const [mes, setMes] = useState('');
 
   const handleReg = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,7 +23,7 @@ export default function LoginFormHook(props: IHeaderProps) {
         setAuth(userAuth);
         handleClick();
       }
-      mesOnServer.innerHTML = message;
+      setMes(message);
     })();
   };
   const handleSignIn = (e: React.FormEvent) => {
@@ -33,7 +32,7 @@ export default function LoginFormHook(props: IHeaderProps) {
       const { userAuth, message } = await userApi.signIn({ email, password });
       setAuth(userAuth);
       if (userAuth.userId) handleClick();
-      else mesOnServer.innerHTML = message;
+      else setMes(message);
     })();
   };
   return (
@@ -49,7 +48,7 @@ export default function LoginFormHook(props: IHeaderProps) {
           Зарегистрироваться
         </button>
       </div>
-      <div className="message"> </div>
+      <div className="message">{mes}</div>
     </div>
   );
 }

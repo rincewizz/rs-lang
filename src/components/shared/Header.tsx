@@ -1,8 +1,6 @@
 import React from 'react';
 import guy from '../../assets/img/guy.svg';
-import userImg from '../../assets/img/user.svg';
 import logo from '../../assets/img/logo.svg';
-import logout from '../../assets/img/logout.svg';
 import './header.scss';
 import { IHeaderProps } from '../../types';
 import useAuthStore from '../../services/storage/Auth';
@@ -27,13 +25,19 @@ function Header(props: IHeaderProps) {
         </div>
         <img src={guy} className="header__img" alt="" />
         {auth.message ? (
-          <div className="logo-user logout" role="button" tabIndex={0} onClick={handleClickOut}>
-            <img src={logout} alt="Выход" />
-          </div>
+          <button
+            className="logo-user logout"
+            type="button"
+            aria-label="Выход"
+            onClick={handleClickOut}
+          />
         ) : (
-          <div className="logo-user" role="button" tabIndex={0} onClick={handleClick}>
-            <img src={userImg} alt="Вход" />
-          </div>
+          <button
+            className="logo-user lognin"
+            type="button"
+            aria-label="Вход"
+            onClick={handleClick}
+          />
         )}
       </header>
     </div>
