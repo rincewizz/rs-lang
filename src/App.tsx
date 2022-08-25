@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ErrorText from './components/shared/ErrorText';
 import Sidebar from './components/shared/Sidebar';
 import Home from './pages/home/Home';
 import Textbook from './pages/textbook/Textbook';
@@ -15,7 +16,7 @@ export default function App() {
         <Route path="/book" element={<Textbook />} />
         <Route path="/voicegame" element={<VoiceGame />} />
         <Route path="/voicegameround" element={<VoiceGameRound />} />
-        <Route path="*" element={<h2 className="textError">Ресурс не найден</h2>} />
+        <Route path="*" element={<ErrorText />} />
       </Routes>
     </Router>
   );
