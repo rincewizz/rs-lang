@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './style.scss';
 import '../../assets/styles/fonts.scss';
 import Sidebar from '../../components/shared/Sidebar';
@@ -7,7 +7,6 @@ import Footer from '../../components/shared/Footer';
 import { Advantages } from '../../types';
 import martin from '../../assets/img/martin.png';
 import pinguin from '../../assets/img/pngwing.png';
-import Form from '../../components/feature/Form';
 
 const ADVANTAGES = [
   { number: '1', text: 'Learn to speak a new language naturally and conversationally.' },
@@ -27,10 +26,6 @@ function addAdvantages(props: Advantages) {
 }
 
 export default function Home() {
-  const [visible, setVis] = useState(false);
-  const handleClick = () => {
-    setVis((curVal) => !curVal);
-  };
   const greetingComponent = () => {
     return (
       <div className="main">
@@ -54,8 +49,7 @@ export default function Home() {
   return (
     <div className="wrapper">
       <Sidebar />
-      <Header handleClick={handleClick} />
-      {visible && <Form handleClick={handleClick} />}
+      <Header />
       {greetingComponent()}
       <Footer />
     </div>
