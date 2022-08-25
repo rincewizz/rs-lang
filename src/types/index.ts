@@ -3,6 +3,7 @@ export type SidebarItemProps = {
     img: string;
     alt: string;
     name: string;
+    link: string;
   };
 };
 
