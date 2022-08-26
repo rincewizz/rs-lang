@@ -44,7 +44,7 @@ function addAnswer() {
     }, 1000);
     result.push(obj);
     setResult(result);
-    if (result.length === 2) {
+    if (result.length === 20) {
       setFinish('finish');
     }
     setDisableNext(false);
