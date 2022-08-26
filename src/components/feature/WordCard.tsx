@@ -7,9 +7,15 @@ import soundIco from '../../assets/img/sound.svg';
 import useAuthStore from '../../services/storage/Auth';
 import { usersWordsApi } from '../../services/api/UsersWords';
 import HOST from '../../services/env';
+import useTextbookStore from '../../services/storage/Textbook';
 
 export default function WordGroup(props: IWordCardProps) {
   const { word, playStatus, setPlayStatus } = props;
+
+  const words = useTextbookStore((state) => state.words);
+  const setWords = useTextbookStore((state) => state.setWords);
+
+  const currentGroup = useTextbookStore((state) => state.getTextbookState().group);
 
   const [audio] = useState(new Audio());
   const audioArr = [word.audio, word.audioMeaning, word.audioExample];
@@ -64,6 +70,9 @@ export default function WordGroup(props: IWordCardProps) {
       if (!word.userWord) {
         difficultStatus = await usersWordsApi.createUserWord(req);
       }
+      if (currentGroup === 6 && difficultStatus?.difficulty !== 'difficult') {
+        setWords(words.filter((el) => el._id !== word._id));
+      }
       setDifficult(difficultStatus?.difficulty === 'difficult');
       if (isLearned && difficultStatus?.difficulty === 'difficult') {
         setLearned(!isLearned);
@@ -92,6 +101,9 @@ export default function WordGroup(props: IWordCardProps) {
 
       if (!word.userWord) {
         learnedStatus = await usersWordsApi.createUserWord(req);
+      }
+      if (currentGroup === 6 && learnedStatus?.optional?.learned === true) {
+        setWords(words.filter((el) => el._id !== word._id));
       }
       setLearned(learnedStatus?.optional?.learned === true);
       if (learnedStatus?.optional?.learned === true && isDifficult) {
