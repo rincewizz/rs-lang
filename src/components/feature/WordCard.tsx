@@ -6,9 +6,8 @@ import './wordcard.scss';
 import soundIco from '../../assets/img/sound.svg';
 import useAuthStore from '../../services/storage/Auth';
 import { usersWordsApi } from '../../services/api/UsersWords';
-import useUserStore from '../../services/storage/User';
+import HOST from '../../services/env';
 
-const HOST = 'http://localhost:8082/';
 export default function WordGroup(props: IWordCardProps) {
   const { word, playStatus, setPlayStatus } = props;
 
@@ -18,10 +17,9 @@ export default function WordGroup(props: IWordCardProps) {
 
   const auth = useAuthStore((state) => state.auth);
 
-  const user = useUserStore((state) => state.user);
-
   const isAuth = auth.message === 'Authenticated';
   const [isDifficult, setDifficult] = useState(word.userWord?.difficulty === 'difficult');
+  const [isLearned, setLearned] = useState(word.userWord?.optional?.learned === true);
 
   audio.addEventListener('ended', () => setAudioIndex(audioIndex + 1));
 
@@ -45,32 +43,60 @@ export default function WordGroup(props: IWordCardProps) {
   };
 
   const handleDifficultBtnClick = async () => {
-    if (auth.token && user.id && word._id) {
+    if (auth.token && auth.userId && word._id) {
       let difficultStatus;
-      if (word.userWord) {
-        difficultStatus = await usersWordsApi.updateUserWord({
-          token: auth.token,
-          userId: user.id,
-          wordId: word._id,
-          request: {
-            difficulty: isDifficult ? 'none' : 'difficult',
-            optional: {},
+      const req = {
+        token: auth.token,
+        userId: auth.userId,
+        wordId: word._id,
+        request: {
+          difficulty: isDifficult ? 'none' : 'difficult',
+          optional: {
+            learned: false,
           },
-        });
+        },
+      };
+
+      if (word.userWord) {
+        difficultStatus = await usersWordsApi.updateUserWord(req);
       }
 
       if (!word.userWord) {
-        difficultStatus = await usersWordsApi.createUserWord({
-          token: auth.token,
-          userId: user.id,
-          wordId: word._id,
-          request: {
-            difficulty: 'difficult',
-            optional: {},
-          },
-        });
+        difficultStatus = await usersWordsApi.createUserWord(req);
       }
       setDifficult(difficultStatus?.difficulty === 'difficult');
+      if (isLearned && difficultStatus?.difficulty === 'difficult') {
+        setLearned(!isLearned);
+      }
+    }
+  };
+
+  const handleLearnedBtnClick = async () => {
+    if (auth.token && auth.userId && word._id) {
+      let learnedStatus;
+      const req = {
+        token: auth.token,
+        userId: auth.userId,
+        wordId: word._id,
+        request: {
+          difficulty: 'none',
+          optional: {
+            learned: !isLearned,
+          },
+        },
+      };
+
+      if (word.userWord) {
+        learnedStatus = await usersWordsApi.updateUserWord(req);
+      }
+
+      if (!word.userWord) {
+        learnedStatus = await usersWordsApi.createUserWord(req);
+      }
+      setLearned(learnedStatus?.optional?.learned === true);
+      if (learnedStatus?.optional?.learned === true && isDifficult) {
+        setDifficult(!isDifficult);
+      }
     }
   };
 
@@ -96,9 +122,14 @@ export default function WordGroup(props: IWordCardProps) {
           <div>{word.textExampleTranslate}</div>
         </div>
         {isAuth && (
-          <button type="button" onClick={handleDifficultBtnClick}>
-            {isDifficult ? '-' : '+'} Сложное слово
-          </button>
+          <>
+            <button type="button" onClick={handleDifficultBtnClick}>
+              {isDifficult ? '-' : '+'} Сложное слово
+            </button>
+            <button type="button" onClick={handleLearnedBtnClick}>
+              {isLearned ? '-' : '+'} Изученное слово
+            </button>
+          </>
         )}
       </div>
     </div>

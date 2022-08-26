@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { IAuth, ICreateUser, ILoginUser, IUser, IParamAuth } from '../../types';
+import HOST from '../env';
 
-const urlServer = 'http://localhost:8082';
-const urlServerUsers = `${urlServer}/users`;
-const urlServerSign = `${urlServer}/signin`;
+const urlServerUsers = `${HOST}users`;
+const urlServerSign = `${HOST}signin`;
 
 interface IUserApi {
   createUser: (payload: ICreateUser) => Promise<{ dataUser: IUser; message: string }>;

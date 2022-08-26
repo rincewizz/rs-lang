@@ -1,24 +1,13 @@
 import axios from 'axios';
-import { IUserWord } from '../../types';
-
-const HOST = 'http://localhost:8082/';
+import { IUserWord, IUserWordParams } from '../../types';
+import HOST from '../env';
 
 export interface IUserWordApi {
-  getUserWords: (param: { token: string; userId: string }) => Promise<IUserWord[]>;
-  getUserWordById: (param: { token: string; userId: string; wordId: string }) => Promise<IUserWord>;
-  createUserWord: (param: {
-    token: string;
-    userId: string;
-    wordId: string;
-    request: object;
-  }) => Promise<IUserWord>;
-  updateUserWord: (param: {
-    token: string;
-    userId: string;
-    wordId: string;
-    request: object;
-  }) => Promise<IUserWord>;
-  deleteUserWord: (param: { token: string; userId: string; wordId: string }) => Promise<object>;
+  getUserWords: (param: Omit<IUserWordParams, 'request' | 'wodrdId'>) => Promise<IUserWord[]>;
+  getUserWordById: (param: Omit<IUserWordParams, 'request'>) => Promise<IUserWord>;
+  createUserWord: (param: IUserWordParams) => Promise<IUserWord>;
+  updateUserWord: (param: IUserWordParams) => Promise<IUserWord>;
+  deleteUserWord: (param: Omit<IUserWordParams, 'request'>) => Promise<object>;
 }
 
 export const usersWordsApi: IUserWordApi = {

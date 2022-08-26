@@ -11,6 +11,15 @@ export type Advantages = {
   text: string;
 };
 
+export interface WordOptional {
+  learned?: boolean;
+}
+
+export interface UserWordOptions {
+  difficulty: string;
+  optional?: WordOptional;
+}
+
 interface WordBase {
   id?: string;
   _id?: string;
@@ -27,10 +36,7 @@ interface WordBase {
   wordTranslate: string;
   textMeaningTranslate: string;
   textExampleTranslate: string;
-  userWord?: {
-    difficulty: string;
-    optional?: object;
-  };
+  userWord?: UserWordOptions;
 }
 
 interface IdWord extends WordBase {
@@ -115,7 +121,7 @@ export interface IUserWord {
   id: string;
   difficulty: string;
   wordId: string;
-  optional?: object;
+  optional?: WordOptional;
 }
 export type Answer = {
   name: Word;
@@ -124,3 +130,18 @@ export type Answer = {
 export type Numbers = {
   number: string;
 };
+
+export interface IAggregatedWordsParams {
+  token: string;
+  userId: string;
+  group?: number;
+  page?: number;
+  perPage?: number;
+  filter?: string;
+}
+
+export interface IAggregatedWordByIdParams {
+  token: string;
+  userId: string;
+  wordId: string;
+}
