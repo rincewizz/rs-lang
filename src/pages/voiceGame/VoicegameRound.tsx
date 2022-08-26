@@ -98,7 +98,9 @@ function addAnswer() {
         <button className="start-again" type="button" onClick={() => startAgain()}>
           Start again
         </button>
-        <table className="score-table">{result.map((el) => FinishGame(el))}</table>
+        <table className="score-table">
+          <tbody>{result.map((el) => FinishGame(el))}</tbody>
+        </table>
       </div>
     );
   }
