@@ -45,6 +45,20 @@ function addAnswer() {
     result.push(obj);
     setResult(result);
     if (result.length === 20) {
+      const arr: Answer[] = [];
+      result.forEach((el) => {
+        let prop = false;
+        arr.forEach((elm) => {
+          if (elm.name.word === el.name.word) {
+            prop = true;
+          }
+        });
+        if (!prop) {
+          arr.push(el);
+        }
+      });
+
+      setResult(arr);
       setFinish('finish');
     }
     setDisableNext(false);
@@ -53,7 +67,6 @@ function addAnswer() {
   const updateList = () => {
     const options = words.sort(() => Math.random() - 0.5).slice(0, 4);
     setList(options);
-
     setDisableAudio(false);
     setDisableNext(true);
     return options;

@@ -25,7 +25,7 @@ function addAnswer() {
 
   useEffect(() => {
     if (seconds > 0) {
-      setTimeout(setSeconds, 100, seconds - 1);
+      setTimeout(setSeconds, 1000, seconds - 1);
     } else {
       setFinish('finish');
     }

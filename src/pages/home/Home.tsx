@@ -1,7 +1,6 @@
 import React from 'react';
 import './style.scss';
 import '../../assets/styles/fonts.scss';
-import Sidebar from '../../components/shared/Sidebar';
 import Header from '../../components/shared/Header';
 import Footer from '../../components/shared/Footer';
 import { Advantages } from '../../types';
@@ -18,7 +17,7 @@ const ADVANTAGES = [
 function addAdvantages(props: Advantages) {
   const el = props;
   return (
-    <div className="advantages__item">
+    <div className="advantages__item" key={el.number}>
       <p className="advantages__number">{el.number}</p>
       <p className="advantages__text">{el.text}</p>
     </div>
@@ -48,7 +47,6 @@ export default function Home() {
   };
   return (
     <div className="wrapper">
-      <Sidebar />
       <Header />
       {greetingComponent()}
       <Footer />
