@@ -1,21 +1,26 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react';
 import { wordApi } from '../../services/api/Words';
-import { Word } from '../../types';
 import Pagination from '../../components/shared/Pagination';
 import './style.scss';
 import Footer from '../../components/shared/Footer';
 import Header from '../../components/shared/Header';
-import Sidebar from '../../components/shared/Sidebar';
 import WordGroup from '../../components/feature/WordGroup';
 import WordCard from '../../components/feature/WordCard';
 import { usersAggregatedWordsApi } from '../../services/api/UsersAggregatedWords';
 import useAuthStore from '../../services/storage/Auth';
+import useTextbookStore from '../../services/storage/Textbook';
 
 export default function Textbook() {
-  const [words, setWords] = useState<Word[]>([]);
-  const [currentGroup, setCurrentGroup] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0);
+  const words = useTextbookStore((state) => state.words);
+  const setWords = useTextbookStore((state) => state.setWords);
+
+  const currentGroup = useTextbookStore((state) => state.group);
+  const setCurrentGroup = useTextbookStore((state) => state.setGroup);
+
+  const currentPage = useTextbookStore((state) => state.page);
+  const setCurrentPage = useTextbookStore((state) => state.setPage);
+
   const [playStatus, setPlayStatus] = useState(false);
 
   const auth = useAuthStore((state) => state.auth);
@@ -79,7 +84,6 @@ export default function Textbook() {
 
   return (
     <>
-      <Sidebar />
       <Header />
       <main className="textbook container">
         <h1>Учебник</h1>

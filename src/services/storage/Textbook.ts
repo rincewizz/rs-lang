@@ -1,12 +1,13 @@
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
-import { IGamesStore } from '../../types';
+import { ITextbookStore } from '../../types';
 
-const useGamesStore = create<IGamesStore>()(
+const useTextbookStore = create<ITextbookStore>()(
   persist(
     (set, get) => ({
       group: 0,
       page: 0,
+      words: [],
       setTextbookState: (textbookState) =>
         set(() => ({ group: textbookState.group, page: textbookState.group })),
       getTextbookState: () => {
@@ -14,12 +15,13 @@ const useGamesStore = create<IGamesStore>()(
       },
       setPage: (page) => set(() => ({ page })),
       setGroup: (group) => set(() => ({ group })),
+      setWords: (words) => set(() => ({ words })),
     }),
     {
-      name: 'games-storage',
+      name: 'textbook-storage',
       getStorage: () => localStorage,
     }
   )
 );
 
-export default useGamesStore;
+export default useTextbookStore;
