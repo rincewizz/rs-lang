@@ -10,5 +10,6 @@ module.exports = {
     },
     compress: true,
     hot: true,
+    historyApiFallback: true,
   },
 };
