@@ -153,3 +153,24 @@ export interface IUserWordParams {
   wordId: string;
   request: UserWordOptions;
 }
+
+interface IStatisticGame {
+  date: string;
+  countNewWords: number;
+  totalWords: number;
+  countCorrect: number;
+  lengthCorrect: number;
+}
+export interface IUserStatistic {
+  userId: number;
+  learnedWords: number;
+  optional?: {
+    gameVoice?: IStatisticGame;
+    gameSprint?: IStatisticGame;
+  };
+}
+export interface IUserStatisticParams {
+  token: string;
+  userId: string;
+  request: Omit<IUserStatistic, 'userId'>;
+}
