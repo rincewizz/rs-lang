@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ErrorText from './components/shared/ErrorText';
 import Sidebar from './components/shared/Sidebar';
 import Home from './pages/home/Home';
+import Team from './pages/team/Team';
 import Textbook from './pages/textbook/Textbook';
 import VoiceGame from './pages/voiceGame/Voicegame';
 import VoiceGameRound from './pages/voiceGame/VoicegameRound';
@@ -14,6 +15,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/book" element={<Textbook />} />
+        <Route path="/team" element={<Team />} />
         <Route path="/voicegame" element={<VoiceGame />} />
         <Route path="/voicegameround" element={<VoiceGameRound />} />
         <Route path="*" element={<ErrorText />} />
