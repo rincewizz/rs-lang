@@ -7,7 +7,7 @@ import minus from '../../assets/img/minus.svg';
 export default function FinishGame(props: Answer) {
   const { name, answer } = props;
   return (
-    <tr>
+    <tr key={name.id}>
       <td>{name.word}</td>
       <td>{name.transcription}</td>
       <td>{name.wordTranslate}</td>
