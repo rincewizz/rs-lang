@@ -146,3 +146,10 @@ export interface IAggregatedWordByIdParams {
   userId: string;
   wordId: string;
 }
+
+export interface IUserWordParams {
+  token: string;
+  userId: string;
+  wordId: string;
+  request: UserWordOptions;
+}
