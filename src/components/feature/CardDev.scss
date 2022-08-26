@@ -9,12 +9,16 @@
   border-radius: 14px;
   box-shadow: $shadow-grey;
   height: 370px;
-  width: 270px;
+  width: 250px;
   padding: 10px;
 
   img {
     width: 150px;
     border-radius: 50%;
+    transition: all 0.5s ease;
+    &:hover {
+      transform: rotate(-20deg);
+    }
   }
 
   h2 {

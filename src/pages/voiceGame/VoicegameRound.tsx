@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './voicegameRound.scss';
-import Sidebar from '../../components/shared/Sidebar';
+import { Link } from 'react-router-dom';
 import { Answer, Word } from '../../types';
 import { wordApi } from '../../services/api/Words';
 import FinishGame from './VoicegameFinish';
@@ -92,9 +92,9 @@ function addAnswer() {
   function showFinish() {
     return (
       <div className="finish-game">
-        <button className="close" type="button">
+        <Link to="/" className="close">
           Close
-        </button>
+        </Link>
         <button className="start-again" type="button" onClick={() => startAgain()}>
           Start again
         </button>
@@ -132,11 +132,8 @@ function addAnswer() {
 
 export default function VoiceGameRound() {
   return (
-    <>
-      <Sidebar />
-      <div className="round-container">
-        <div className="game-container">{addAnswer()}</div>
-      </div>
-    </>
+    <div className="round-container">
+      <div className="game-container">{addAnswer()}</div>
+    </div>
   );
 }

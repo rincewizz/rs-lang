@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { Word } from '../../types';
-
-const HOST = 'http://localhost:8082/';
+import HOST from '../env';
 
 export interface IWordApi {
   getWords: (group: number, page: number) => Promise<Word[]>;

@@ -8,11 +8,11 @@ import statistic from '../../assets/img/statistic.png';
 import SidebarItem from './SidebarItem';
 
 const ITEMS = [
-  { img: home as string, name: 'Home', alt: 'home' },
-  { img: team, name: 'Team', alt: 'team' },
-  { img: book, name: 'Book', alt: 'book' },
-  { img: game, name: 'Game', alt: 'game' },
-  { img: statistic, name: 'Statistics', alt: 'statistics' },
+  { img: home as string, name: 'Home', alt: 'home', link: '/' },
+  { img: team, name: 'Team', alt: 'team', link: '/team' },
+  { img: book, name: 'Book', alt: 'book', link: '/book' },
+  { img: game, name: 'Game', alt: 'game', link: '/voicegame' },
+  { img: statistic, name: 'Statistics', alt: 'statistics', link: '/statistic' },
 ];
 
 class Sidebar extends React.PureComponent {
