@@ -154,6 +154,16 @@ export interface IUserWordParams {
   request: UserWordOptions;
 }
 
+interface IGamesState {
+  page: number | null;
+  group: number;
+}
+
+export interface IGamesStore {
+  gameState: IGamesState;
+  setGameStore: (gameState: IGamesState) => void;
+}
+
 interface IStatisticGame {
   date: string;
   countNewWords: number;
