@@ -1,22 +1,15 @@
 import axios from 'axios';
-import { IAggregatedWords, Word } from '../../types';
-
-const HOST = 'http://localhost:8082/';
+import {
+  IAggregatedWordByIdParams,
+  IAggregatedWords,
+  IAggregatedWordsParams,
+  Word,
+} from '../../types';
+import HOST from '../env';
 
 export interface IUserAggregatedWordApi {
-  getAggregatedWords: (params: {
-    token: string;
-    userId: string;
-    group?: number;
-    page?: number;
-    perPage?: number;
-    filter?: string;
-  }) => Promise<IAggregatedWords>;
-  getAggregatedWordById: (params: {
-    token: string;
-    userId: string;
-    wordId: string;
-  }) => Promise<Word>;
+  getAggregatedWords: (params: IAggregatedWordsParams) => Promise<IAggregatedWords>;
+  getAggregatedWordById: (params: IAggregatedWordByIdParams) => Promise<Word>;
 }
 
 export const usersAggregatedWordsApi: IUserAggregatedWordApi = {
