@@ -16,6 +16,7 @@ const baseConfig = module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'main.bundle.js',
     clean: true,
+    publicPath: '/'
   },
   resolve: {
     extensions: ['.tsx','.ts', '.jsx', '.js'],
