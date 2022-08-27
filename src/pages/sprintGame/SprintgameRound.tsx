@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './sprintgameRound.scss';
 import { Answer, Word } from '../../types';
 import { wordApi } from '../../services/api/Words';
 import FinishGame from '../voiceGame/VoicegameFinish';
+import { usersAggregatedWordsApi } from '../../services/api/UsersAggregatedWords';
+import useAuthStore from '../../services/storage/Auth';
+import useGamesStore from '../../services/storage/Games';
 
 function addAnswer() {
   const [words, setWords] = useState<Word[]>([]);
@@ -12,15 +16,32 @@ function addAnswer() {
   const [isFinish, setFinish] = useState<string>();
   const [seconds, setSeconds] = useState(60);
   const [itemColorClass, setItemColorClass] = useState<string>();
+  const auth = useAuthStore((state) => state.auth);
+
+  const isAuth = auth.message === 'Authenticated';
+  const currentGroup = useGamesStore((state) => state.group);
+
   async function loadWords(group = 0, page = 0) {
-    const newWords = await wordApi.getWords(group, page);
+    let newWords;
+    if (isAuth && auth.token && auth.userId) {
+      const agrwords = await usersAggregatedWordsApi.getAggregatedWords({
+        token: auth.token,
+        userId: auth.userId,
+        group,
+        page,
+        perPage: 20,
+      });
+      newWords = agrwords.paginatedResults;
+    } else {
+      newWords = await wordApi.getWords(group, page);
+    }
     setWords(newWords);
     setItemEn(newWords[0]);
     setItemRus(newWords[0]);
   }
 
   useEffect(() => {
-    loadWords();
+    loadWords(currentGroup);
   }, []);
 
   useEffect(() => {
@@ -70,9 +91,9 @@ function addAnswer() {
   function showFinish() {
     return (
       <div className="finish-game">
-        <button className="close" type="button">
+        <Link to="/" className="close">
           Close
-        </button>
+        </Link>
         <button className="start-again" type="button" onClick={() => startAgain()}>
           Start again
         </button>

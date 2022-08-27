@@ -7,6 +7,8 @@ import Team from './pages/team/Team';
 import Textbook from './pages/textbook/Textbook';
 import VoiceGame from './pages/voiceGame/Voicegame';
 import VoiceGameRound from './pages/voiceGame/VoicegameRound';
+import SprintGame from './pages/sprintGame/Sprintgame';
+import SprintGameRound from './pages/sprintGame/SprintgameRound';
 
 export default function App() {
   return (
@@ -18,6 +20,8 @@ export default function App() {
         <Route path="/team" element={<Team />} />
         <Route path="/voicegame" element={<VoiceGame />} />
         <Route path="/voicegameround" element={<VoiceGameRound />} />
+        <Route path="/sprintgame" element={<SprintGame />} />
+        <Route path="/sprintgameround" element={<SprintGameRound />} />
         <Route path="*" element={<ErrorText />} />
       </Routes>
     </Router>
