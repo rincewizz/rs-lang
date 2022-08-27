@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ErrorText from './components/shared/ErrorText';
 import Sidebar from './components/shared/Sidebar';
 import Home from './pages/home/Home';
-import SprintGame from './pages/sprintGame/Sprintgame';
-import SprintGameRound from './pages/sprintGame/SprintgameRound';
 import Team from './pages/team/Team';
 import Textbook from './pages/textbook/Textbook';
 import VoiceGame from './pages/voiceGame/Voicegame';
 import VoiceGameRound from './pages/voiceGame/VoicegameRound';
+import SprintGame from './pages/sprintGame/Sprintgame';
+import SprintGameRound from './pages/sprintGame/SprintgameRound';
 
 export default function App() {
   return (

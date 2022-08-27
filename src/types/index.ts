@@ -131,7 +131,7 @@ export type Answer = {
   answer: boolean;
 };
 export type Numbers = {
-  number: string;
+  number: number;
 };
 
 export interface IAggregatedWordsParams {

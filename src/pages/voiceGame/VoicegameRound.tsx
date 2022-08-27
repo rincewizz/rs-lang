@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import { Answer, Word } from '../../types';
 import { wordApi } from '../../services/api/Words';
 import FinishGame from './VoicegameFinish';
+import { usersAggregatedWordsApi } from '../../services/api/UsersAggregatedWords';
+import useAuthStore from '../../services/storage/Auth';
+import useGamesStore from '../../services/storage/Games';
 
 import HOST from '../../services/env';
 
@@ -17,8 +20,27 @@ function addAnswer() {
   const [isDisabledAudio, setDisableAudio] = useState<boolean>();
   const [isDisabledNext, setDisableNext] = useState<boolean>();
   const [itemColorClass, setItemColorClass] = useState<string>();
+
+  const auth = useAuthStore((state) => state.auth);
+
+  const isAuth = auth.message === 'Authenticated';
+  const currentGroup = useGamesStore((state) => state.group);
+
   async function loadWords(group = 0, page = 0) {
-    const newWords = await wordApi.getWords(group, page);
+    let newWords;
+    if (isAuth && auth.token && auth.userId) {
+      const agrwords = await usersAggregatedWordsApi.getAggregatedWords({
+        token: auth.token,
+        userId: auth.userId,
+        group,
+        page,
+        perPage: 20,
+      });
+      newWords = agrwords.paginatedResults;
+    } else {
+      newWords = await wordApi.getWords(group, page);
+    }
+
     setWords(newWords);
     setList(newWords.slice(0, 4));
     setClick(false);
@@ -27,7 +49,7 @@ function addAnswer() {
   }
 
   useEffect(() => {
-    loadWords();
+    loadWords(currentGroup);
   }, []);
 
   function isRightAnswer(ans: Word) {
@@ -45,6 +67,20 @@ function addAnswer() {
     result.push(obj);
     setResult(result);
     if (result.length === 20) {
+      const arr: Answer[] = [];
+      result.forEach((el) => {
+        let prop = false;
+        arr.forEach((elm) => {
+          if (elm.name.word === el.name.word) {
+            prop = true;
+          }
+        });
+        if (!prop) {
+          arr.push(el);
+        }
+      });
+
+      setResult(arr);
       setFinish('finish');
     }
     setDisableNext(false);
@@ -53,7 +89,6 @@ function addAnswer() {
   const updateList = () => {
     const options = words.sort(() => Math.random() - 0.5).slice(0, 4);
     setList(options);
-
     setDisableAudio(false);
     setDisableNext(true);
     return options;
