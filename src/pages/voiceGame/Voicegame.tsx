@@ -34,7 +34,7 @@ export default function VoiceGame() {
     );
   }
   return (
-    <div className="game-container">
+    <div className="start-game">
       <div className="game">
         <h3 className="game__header">Аудиовызов</h3>
         <p className="game__description">Игра для тренировки восприятия английской речи на слух.</p>
