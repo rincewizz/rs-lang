@@ -5,6 +5,7 @@ import Pagination from '../../components/shared/Pagination';
 import './style.scss';
 import Footer from '../../components/shared/Footer';
 import Header from '../../components/shared/Header';
+import Sidebar from '../../components/shared/Sidebar';
 import WordGroup from '../../components/feature/WordGroup';
 import WordCard from '../../components/feature/WordCard';
 import { usersAggregatedWordsApi } from '../../services/api/UsersAggregatedWords';
@@ -20,6 +21,9 @@ export default function Textbook() {
 
   const currentPage = useTextbookStore((state) => state.page);
   const setCurrentPage = useTextbookStore((state) => state.setPage);
+
+  const [learnedCount, setLearnedCount] = useState(0);
+  const [isLearnedPage, setIsLearnedPage] = useState(false);
 
   const [playStatus, setPlayStatus] = useState(false);
 
@@ -39,6 +43,12 @@ export default function Textbook() {
       });
 
       newWords = agrwords.paginatedResults;
+
+      setLearnedCount(
+        newWords.filter(
+          (el) => el.userWord?.optional?.learned || el.userWord?.difficulty === 'difficult'
+        ).length
+      );
     } else {
       newWords = await wordApi.getWords(group, page);
     }
@@ -54,6 +64,7 @@ export default function Textbook() {
       const agrwords = await usersAggregatedWordsApi.getAggregatedWords({
         token: auth.token,
         userId: auth.userId,
+        perPage: 99999,
         filter: '{"userWord.difficulty":"difficult"}',
       });
 
@@ -61,12 +72,25 @@ export default function Textbook() {
       setWords(newWords);
 
       setCurrentGroup(6);
+      setLearnedCount(0);
     }
   }
 
   useEffect(() => {
-    loadWords();
+    if (currentGroup !== 6) {
+      loadWords(currentGroup, currentPage);
+    } else {
+      loadDifficultWords();
+    }
   }, []);
+
+  useEffect(() => {
+    if (learnedCount === 20) {
+      setIsLearnedPage(true);
+    } else {
+      setIsLearnedPage(false);
+    }
+  }, [learnedCount]);
 
   const handleWordGroupClick = async (id: number) => {
     loadWords(id - 1, 0);
@@ -82,8 +106,22 @@ export default function Textbook() {
     loadWords(currentGroup, page);
   };
 
+  function renderWords() {
+    return words.map((el) => (
+      <WordCard
+        key={el.id || el._id}
+        word={el}
+        playStatus={playStatus}
+        setPlayStatus={setPlayStatus}
+        learnedCount={learnedCount}
+        setLearnedCount={setLearnedCount}
+      />
+    ));
+  }
+
   return (
-    <>
+    <div className={isLearnedPage ? 'learned-page' : ''}>
+      <Sidebar />
       <Header />
       <main className="textbook container">
         <h1>Учебник</h1>
@@ -92,21 +130,17 @@ export default function Textbook() {
           onClickWordGroup={handleWordGroupClick}
           onClickDifficultWordGroup={handleDifficultWordGroupClick}
         />
-
         <h2>Слова</h2>
         <div className="textbook__words">
-          {words.map((el) => (
-            <WordCard
-              key={el.id || el._id}
-              word={el}
-              playStatus={playStatus}
-              setPlayStatus={setPlayStatus}
-            />
-          ))}
+          {' '}
+          {words.length ? renderWords() : 'В этом разделе еще нет слов'}
         </div>
-        <Pagination currentPage={currentPage} onClickPagination={handleWordPageClick} />
+        {currentGroup !== 6 && (
+          <Pagination currentPage={currentPage} onClickPagination={handleWordPageClick} />
+        )}
+        <div>{learnedCount}</div>
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

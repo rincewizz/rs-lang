@@ -100,6 +100,8 @@ export interface IWordCardProps {
   word: Word;
   playStatus: boolean;
   setPlayStatus: (status: boolean) => void;
+  learnedCount: number;
+  setLearnedCount: (count: number) => void;
 }
 
 export interface IHeaderProps {

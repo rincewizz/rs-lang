@@ -2,6 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 20px;    
 
     &__control {
         display: flex;
@@ -22,10 +23,18 @@
         }
     }
 
-    &__page {
+    &__page {        
         font-family: 'Roboto';
         font-size: 30px;
         text-align: center;
         width: 50px;
+        background: #F5F5F7;
+        border: 1px solid #c3c3c3;
+        border-radius: 7px;
+        margin: 0 10px;
+
+        .learned-page & {
+            background: #53d254;
+        }
     }
 }

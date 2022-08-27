@@ -10,7 +10,7 @@ import HOST from '../../services/env';
 import useTextbookStore from '../../services/storage/Textbook';
 
 export default function WordGroup(props: IWordCardProps) {
-  const { word, playStatus, setPlayStatus } = props;
+  const { word, playStatus, setPlayStatus, learnedCount, setLearnedCount } = props;
 
   const words = useTextbookStore((state) => state.words);
   const setWords = useTextbookStore((state) => state.setWords);
@@ -50,7 +50,7 @@ export default function WordGroup(props: IWordCardProps) {
 
   const handleDifficultBtnClick = async () => {
     if (auth.token && auth.userId && word._id) {
-      let difficultStatus;
+      let response;
       const req = {
         token: auth.token,
         userId: auth.userId,
@@ -64,25 +64,35 @@ export default function WordGroup(props: IWordCardProps) {
       };
 
       if (word.userWord) {
-        difficultStatus = await usersWordsApi.updateUserWord(req);
+        response = await usersWordsApi.updateUserWord(req);
       }
 
       if (!word.userWord) {
-        difficultStatus = await usersWordsApi.createUserWord(req);
+        response = await usersWordsApi.createUserWord(req);
+        word.userWord = {
+          difficulty: response.difficulty,
+          optional: response.optional,
+        };
       }
-      if (currentGroup === 6 && difficultStatus?.difficulty !== 'difficult') {
+      const difficultStatus = response?.difficulty === 'difficult';
+      if (currentGroup === 6 && !difficultStatus) {
         setWords(words.filter((el) => el._id !== word._id));
       }
-      setDifficult(difficultStatus?.difficulty === 'difficult');
-      if (isLearned && difficultStatus?.difficulty === 'difficult') {
+      setDifficult(difficultStatus);
+
+      if (isLearned && difficultStatus) {
         setLearned(!isLearned);
+      } else if (difficultStatus) {
+        setLearnedCount(learnedCount + 1);
+      } else {
+        setLearnedCount(learnedCount - 1);
       }
     }
   };
 
   const handleLearnedBtnClick = async () => {
     if (auth.token && auth.userId && word._id) {
-      let learnedStatus;
+      let response;
       const req = {
         token: auth.token,
         userId: auth.userId,
@@ -96,24 +106,38 @@ export default function WordGroup(props: IWordCardProps) {
       };
 
       if (word.userWord) {
-        learnedStatus = await usersWordsApi.updateUserWord(req);
+        response = await usersWordsApi.updateUserWord(req);
       }
 
       if (!word.userWord) {
-        learnedStatus = await usersWordsApi.createUserWord(req);
+        response = await usersWordsApi.createUserWord(req);
+        word.userWord = {
+          difficulty: response.difficulty,
+          optional: response.optional,
+        };
       }
-      if (currentGroup === 6 && learnedStatus?.optional?.learned === true) {
+
+      const learnedStatus = response?.optional?.learned === true;
+      if (currentGroup === 6 && learnedStatus) {
         setWords(words.filter((el) => el._id !== word._id));
       }
-      setLearned(learnedStatus?.optional?.learned === true);
-      if (learnedStatus?.optional?.learned === true && isDifficult) {
+      setLearned(learnedStatus);
+      if (learnedStatus && isDifficult) {
         setDifficult(!isDifficult);
+      } else if (learnedStatus) {
+        setLearnedCount(learnedCount + 1);
+      } else {
+        setLearnedCount(learnedCount - 1);
       }
     }
   };
 
   return (
-    <div className="word-card">
+    <div
+      className={`word-card word-card--${currentGroup} ${
+        isDifficult ? 'word-card--difficult' : ''
+      } ${isLearned ? 'word-card--learned' : ''}`}
+    >
       <div className="word-card__img" style={{ backgroundImage: `url(${HOST + word.image})` }} />
 
       <div className="word-card__text">
@@ -135,10 +159,18 @@ export default function WordGroup(props: IWordCardProps) {
         </div>
         {isAuth && (
           <>
-            <button type="button" onClick={handleDifficultBtnClick}>
+            <button
+              type="button"
+              className={`word-card__btn ${isDifficult ? 'word-card__btn--active' : ''}`}
+              onClick={handleDifficultBtnClick}
+            >
               {isDifficult ? '-' : '+'} Сложное слово
             </button>
-            <button type="button" onClick={handleLearnedBtnClick}>
+            <button
+              type="button"
+              className={`word-card__btn ${isLearned ? 'word-card__btn--active' : ''}`}
+              onClick={handleLearnedBtnClick}
+            >
               {isLearned ? '-' : '+'} Изученное слово
             </button>
           </>
