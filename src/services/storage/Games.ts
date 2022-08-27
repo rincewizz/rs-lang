@@ -7,9 +7,8 @@ const useGamesStore = create<IGamesStore>()(
     (set, get) => ({
       group: 0,
       page: 0,
-      setTextbookState: (textbookState) =>
-        set(() => ({ group: textbookState.group, page: textbookState.group })),
-      getTextbookState: () => {
+      setGameState: (gameState) => set(() => ({ group: gameState.group, page: gameState.group })),
+      getGameState: () => {
         return { page: get().page, group: get().group };
       },
       setPage: (page) => set(() => ({ page })),

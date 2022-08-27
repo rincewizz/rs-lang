@@ -1,0 +1,29 @@
+.textbook-games {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+
+    &__link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+        font-family: 'Roboto';
+        width: 300px;
+        background: #F5F5F7;
+        height: 130px;
+        border-radius: 7px;
+        padding: 10px;
+
+        &--voice {
+            background: #c2c2ff;
+        }
+        &--sprint {
+            background: #9ff29c;
+        }
+        &--disabled {
+            pointer-events: none;
+            background: #d6d6d6;
+        }
+    }
+}

@@ -11,16 +11,22 @@ import WordCard from '../../components/feature/WordCard';
 import { usersAggregatedWordsApi } from '../../services/api/UsersAggregatedWords';
 import useAuthStore from '../../services/storage/Auth';
 import useTextbookStore from '../../services/storage/Textbook';
+import useWordsStore from '../../services/storage/Words';
+import TextBookGames from '../../components/feature/TextBookGames';
+import useGamesStore from '../../services/storage/Games';
 
 export default function Textbook() {
-  const words = useTextbookStore((state) => state.words);
-  const setWords = useTextbookStore((state) => state.setWords);
+  const words = useWordsStore((state) => state.words);
+  const setWords = useWordsStore((state) => state.setWords);
 
   const currentGroup = useTextbookStore((state) => state.group);
   const setCurrentGroup = useTextbookStore((state) => state.setGroup);
 
   const currentPage = useTextbookStore((state) => state.page);
   const setCurrentPage = useTextbookStore((state) => state.setPage);
+
+  const setGameState = useGamesStore((state) => state.setGameState);
+  setGameState({ page: currentPage, group: currentGroup });
 
   const [learnedCount, setLearnedCount] = useState(0);
   const [isLearnedPage, setIsLearnedPage] = useState(false);
@@ -56,6 +62,7 @@ export default function Textbook() {
     setWords(newWords);
     setCurrentPage(page);
     setCurrentGroup(group);
+    setGameState({ page: currentPage, group: currentGroup });
   }
 
   async function loadDifficultWords() {
@@ -73,6 +80,7 @@ export default function Textbook() {
 
       setCurrentGroup(6);
       setLearnedCount(0);
+      setGameState({ page: currentPage, group: currentGroup });
     }
   }
 
@@ -138,7 +146,7 @@ export default function Textbook() {
         {currentGroup !== 6 && (
           <Pagination currentPage={currentPage} onClickPagination={handleWordPageClick} />
         )}
-        <div>{learnedCount}</div>
+        <TextBookGames isLearnedPage={isLearnedPage} />
       </main>
       <Footer />
     </div>

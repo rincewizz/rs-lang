@@ -5,7 +5,7 @@ import { Answer, Word } from '../../types';
 import { wordApi } from '../../services/api/Words';
 import FinishGame from './VoicegameFinish';
 
-const HOST = 'http://localhost:8082/';
+import HOST from '../../services/env';
 
 function addAnswer() {
   const [words, setWords] = useState<Word[]>([]);

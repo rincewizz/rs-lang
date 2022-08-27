@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ErrorText from './components/shared/ErrorText';
 import Sidebar from './components/shared/Sidebar';
 import Home from './pages/home/Home';
+import SprintGame from './pages/sprintGame/Sprintgame';
+import SprintGameRound from './pages/sprintGame/SprintgameRound';
 import Team from './pages/team/Team';
 import Textbook from './pages/textbook/Textbook';
 import VoiceGame from './pages/voiceGame/Voicegame';
@@ -18,6 +20,8 @@ export default function App() {
         <Route path="/team" element={<Team />} />
         <Route path="/voicegame" element={<VoiceGame />} />
         <Route path="/voicegameround" element={<VoiceGameRound />} />
+        <Route path="/sprintgame" element={<SprintGame />} />
+        <Route path="/sprintgameround" element={<SprintGameRound />} />
         <Route path="*" element={<ErrorText />} />
       </Routes>
     </Router>

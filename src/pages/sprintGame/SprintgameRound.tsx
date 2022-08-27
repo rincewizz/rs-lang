@@ -3,6 +3,7 @@ import './sprintgameRound.scss';
 import { Answer, Word } from '../../types';
 import { wordApi } from '../../services/api/Words';
 import FinishGame from '../voiceGame/VoicegameFinish';
+import useGamesStore from '../../services/storage/Games';
 
 function addAnswer() {
   const [words, setWords] = useState<Word[]>([]);
@@ -12,15 +13,27 @@ function addAnswer() {
   const [isFinish, setFinish] = useState<string>();
   const [seconds, setSeconds] = useState(60);
   const [itemColorClass, setItemColorClass] = useState<string>();
-  async function loadWords(group = 0, page = 0) {
-    const newWords = await wordApi.getWords(group, page);
+
+  const getGameState = useGamesStore((state) => state.getGameState);
+
+  async function loadWords(group = 0, page?: number | null) {
+    let currentPage;
+    if (page === null || page === undefined) {
+      const min = Math.ceil(0);
+      const max = Math.floor(30);
+      currentPage = Math.floor(Math.random() * (max - min + 1)) + min;
+    } else {
+      currentPage = page;
+    }
+    const newWords = await wordApi.getWords(group, currentPage);
     setWords(newWords);
     setItemEn(newWords[0]);
     setItemRus(newWords[0]);
   }
 
   useEffect(() => {
-    loadWords();
+    const { group, page } = getGameState();
+    loadWords(group, page);
   }, []);
 
   useEffect(() => {

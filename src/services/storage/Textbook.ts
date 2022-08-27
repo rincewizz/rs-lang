@@ -7,7 +7,6 @@ const useTextbookStore = create<ITextbookStore>()(
     (set, get) => ({
       group: 0,
       page: 0,
-      words: [],
       setTextbookState: (textbookState) =>
         set(() => ({ group: textbookState.group, page: textbookState.group })),
       getTextbookState: () => {
@@ -15,7 +14,6 @@ const useTextbookStore = create<ITextbookStore>()(
       },
       setPage: (page) => set(() => ({ page })),
       setGroup: (group) => set(() => ({ group })),
-      setWords: (words) => set(() => ({ words })),
     }),
     {
       name: 'textbook-storage',
