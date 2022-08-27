@@ -25,8 +25,8 @@ export default function Textbook() {
   const currentPage = useTextbookStore((state) => state.page);
   const setCurrentPage = useTextbookStore((state) => state.setPage);
 
-  const setGameState = useGamesStore((state) => state.setGameState);
-  setGameState({ page: currentPage, group: currentGroup });
+  const setGamePage = useGamesStore((state) => state.setPage);
+  const setGameGroup = useGamesStore((state) => state.setGroup);
 
   const [learnedCount, setLearnedCount] = useState(0);
   const [isLearnedPage, setIsLearnedPage] = useState(false);
@@ -62,7 +62,6 @@ export default function Textbook() {
     setWords(newWords);
     setCurrentPage(page);
     setCurrentGroup(group);
-    setGameState({ page: currentPage, group: currentGroup });
   }
 
   async function loadDifficultWords() {
@@ -80,7 +79,6 @@ export default function Textbook() {
 
       setCurrentGroup(6);
       setLearnedCount(0);
-      setGameState({ page: currentPage, group: currentGroup });
     }
   }
 
@@ -99,6 +97,11 @@ export default function Textbook() {
       setIsLearnedPage(false);
     }
   }, [learnedCount]);
+
+  useEffect(() => {
+    setGamePage(currentPage);
+    setGameGroup(currentGroup);
+  }, [currentPage, currentGroup]);
 
   const handleWordGroupClick = async (id: number) => {
     loadWords(id - 1, 0);

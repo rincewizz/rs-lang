@@ -167,7 +167,7 @@ export interface IGamesStore {
   setGameState: (gameState: IGamesState) => void;
   getGameState: () => IGamesState;
   setGroup: (group: number) => void;
-  setPage: (page: number) => void;
+  setPage: (page: number | null) => void;
 }
 
 interface IStatisticGame {

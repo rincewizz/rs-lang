@@ -16,6 +16,9 @@ const NUMBERS = [
 export default function SprintGame() {
   const history = useNavigate();
   const setCurrentGroup = useGamesStore((state) => state.setGroup);
+  const setCurrentPage = useGamesStore((state) => state.setPage);
+  setCurrentPage(null);
+
   function setState(group: number) {
     setCurrentGroup(group - 1);
     history('/sprintgameround');

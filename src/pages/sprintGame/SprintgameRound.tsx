@@ -19,21 +19,30 @@ function addAnswer() {
   const auth = useAuthStore((state) => state.auth);
 
   const isAuth = auth.message === 'Authenticated';
+  const currentPage = useGamesStore((state) => state.page);
   const currentGroup = useGamesStore((state) => state.group);
 
-  async function loadWords(group = 0, page = 0) {
+  async function loadWords() {
     let newWords;
+    let page;
+    if (currentPage === null) {
+      const min = Math.ceil(0);
+      const max = Math.floor(29);
+      page = Math.floor(Math.random() * (max - min + 1)) + min;
+    } else {
+      page = currentPage;
+    }
     if (isAuth && auth.token && auth.userId) {
       const agrwords = await usersAggregatedWordsApi.getAggregatedWords({
         token: auth.token,
         userId: auth.userId,
-        group,
+        group: currentGroup,
         page,
         perPage: 20,
       });
       newWords = agrwords.paginatedResults;
     } else {
-      newWords = await wordApi.getWords(group, page);
+      newWords = await wordApi.getWords(currentGroup, page);
     }
     setWords(newWords);
     setItemEn(newWords[0]);
@@ -41,7 +50,7 @@ function addAnswer() {
   }
 
   useEffect(() => {
-    loadWords(currentGroup);
+    loadWords();
   }, []);
 
   useEffect(() => {
