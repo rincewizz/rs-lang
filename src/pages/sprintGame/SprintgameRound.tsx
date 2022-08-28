@@ -1,19 +1,19 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import './sprintgameRound.scss';
-import { Answer, Word } from '../../types';
+import { Word } from '../../types';
 import { wordApi } from '../../services/api/Words';
-import FinishGame from '../voiceGame/VoicegameFinish';
 import { usersAggregatedWordsApi } from '../../services/api/UsersAggregatedWords';
 import useAuthStore from '../../services/storage/Auth';
 import useGamesStore from '../../services/storage/Games';
+import GameResults from '../../components/shared/GameResults';
 
-function addAnswer() {
+export default function SprintGameRound() {
   const [words, setWords] = useState<Word[]>([]);
   const [itemEn, setItemEn] = useState<Word>();
   const [itemRus, setItemRus] = useState<Word>();
-  const [result, setResult] = useState<Answer[]>([]);
-  const [isFinish, setFinish] = useState<string>();
+  const [results, setResults] = useState<Map<Word, boolean>>(new Map());
+  const [isFinish, setFinish] = useState<boolean>(false);
   const [seconds, setSeconds] = useState(60);
   const [itemColorClass, setItemColorClass] = useState<string>();
   const auth = useAuthStore((state) => state.auth);
@@ -22,9 +22,20 @@ function addAnswer() {
   const currentPage = useGamesStore((state) => state.page);
   const currentGroup = useGamesStore((state) => state.group);
 
+  function renderWord() {
+    const num = Math.floor(Math.random() * 2);
+    for (let i = words.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [words[i], words[j]] = [words[j], words[i]];
+    }
+    const options = words.slice(0, 2);
+    setItemEn(options[0]);
+    setItemRus(options[num]);
+  }
+
   async function loadWords() {
     let newWords;
-    let page;
+    let page = currentPage;
     if (currentPage === null) {
       const min = Math.ceil(0);
       const max = Math.floor(29);
@@ -45,8 +56,6 @@ function addAnswer() {
       newWords = await wordApi.getWords(currentGroup, page);
     }
     setWords(newWords);
-    setItemEn(newWords[0]);
-    setItemRus(newWords[0]);
   }
 
   useEffect(() => {
@@ -54,24 +63,21 @@ function addAnswer() {
   }, []);
 
   useEffect(() => {
+    renderWord();
+  }, [words]);
+
+  useEffect(() => {
     if (seconds > 0) {
       setTimeout(setSeconds, 1000, seconds - 1);
     } else {
-      setFinish('finish');
+      setFinish(true);
     }
   }, [seconds]);
 
-  function renderWord() {
-    const num = Math.round(0 - 0.5 + Math.random() * (1 - 0 + 1));
-    const options = words.sort(() => Math.random() - 0.5).slice(0, 2);
-    setItemEn(options[0]);
-    setItemRus(options[num]);
-  }
-
   function isItTrue(ans: boolean) {
-    const obj: Answer = { name: itemEn as Word, answer: false };
-    if ((itemEn?.id === itemRus?.id && ans) || (itemEn?.id !== itemRus?.id && !ans)) {
-      obj.answer = true;
+    let answer = false;
+    if ((itemEn === itemRus && ans) || (itemEn !== itemRus && !ans)) {
+      answer = true;
       setItemColorClass('right-sprint');
     } else {
       setItemColorClass('false-sprint');
@@ -79,67 +85,42 @@ function addAnswer() {
     setTimeout(() => {
       setItemColorClass('');
     }, 1000);
-    let answer = true;
-    result.forEach((el) => {
-      if (el.name === obj.name) {
-        answer = false;
-      }
-    });
-    if (answer === true) {
-      result.push(obj);
+
+    if (results.get(itemEn as Word) !== false) {
+      results.set(itemEn as Word, answer);
     }
     renderWord();
   }
 
-  function startAgain() {
-    setFinish('');
-    setResult([]);
+  const startAgain = () => {
+    setFinish(false);
+    setResults(new Map());
     setSeconds(60);
-  }
+  };
 
-  function showFinish() {
-    return (
-      <div className="finish-game">
-        <Link to="/" className="close">
-          Close
-        </Link>
-        <button className="start-again" type="button" onClick={() => startAgain()}>
-          Start again
-        </button>
-        <table className="score-table">{result.map((el) => FinishGame(el))}</table>
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <div className="count-container">
-        {' '}
-        <div>{seconds}</div>
-        <div className={`${itemColorClass}`} />
-      </div>
-
-      <div className="game-words">
-        <div>{itemEn?.word}</div>
-        <div>{itemRus?.wordTranslate}</div>
-      </div>
-      <div className="buttons">
-        <button type="button" className="next-button" onClick={() => isItTrue(false)}>
-          Неверно
-        </button>
-        <button className="audio-button" type="button" onClick={() => isItTrue(true)}>
-          Верно
-        </button>
-      </div>
-      {isFinish === 'finish' ? showFinish() : ''}
-    </>
-  );
-}
-
-export default function SprintGameRound() {
   return (
     <div className="round-container">
-      <div className="game-container">{addAnswer()}</div>
+      <div className="game-container">
+        <div className="count-container">
+          {' '}
+          <div>{seconds}</div>
+          <div className={`${itemColorClass}`} />
+        </div>
+
+        <div className="game-words">
+          <div>{itemEn?.word}</div>
+          <div>{itemRus?.wordTranslate}</div>
+        </div>
+        <div className="buttons">
+          <button type="button" className="next-button" onClick={() => isItTrue(false)}>
+            Неверно
+          </button>
+          <button className="audio-button" type="button" onClick={() => isItTrue(true)}>
+            Верно
+          </button>
+        </div>
+        {isFinish && <GameResults results={results} startAgainClick={startAgain} />}
+      </div>
     </div>
   );
 }
