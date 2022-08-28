@@ -36,6 +36,7 @@ export default function SprintGameRound() {
   async function loadWords() {
     let newWords;
     let page = currentPage;
+
     if (currentPage === null) {
       const min = Math.ceil(0);
       const max = Math.floor(29);
