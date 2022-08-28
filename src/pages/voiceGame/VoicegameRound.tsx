@@ -8,7 +8,7 @@ import { usersAggregatedWordsApi } from '../../services/api/UsersAggregatedWords
 import useAuthStore from '../../services/storage/Auth';
 import useGamesStore from '../../services/storage/Games';
 
-const HOST = 'http://localhost:8082/';
+import HOST from '../../services/env';
 
 function addAnswer() {
   const [words, setWords] = useState<Word[]>([]);

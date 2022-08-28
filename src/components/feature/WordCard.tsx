@@ -8,12 +8,13 @@ import useAuthStore from '../../services/storage/Auth';
 import { usersWordsApi } from '../../services/api/UsersWords';
 import HOST from '../../services/env';
 import useTextbookStore from '../../services/storage/Textbook';
+import useWordsStore from '../../services/storage/Words';
 
 export default function WordGroup(props: IWordCardProps) {
   const { word, playStatus, setPlayStatus, learnedCount, setLearnedCount } = props;
 
-  const words = useTextbookStore((state) => state.words);
-  const setWords = useTextbookStore((state) => state.setWords);
+  const words = useWordsStore((state) => state.words);
+  const setWords = useWordsStore((state) => state.setWords);
 
   const currentGroup = useTextbookStore((state) => state.getTextbookState().group);
 

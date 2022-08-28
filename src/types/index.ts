@@ -164,10 +164,10 @@ interface IGamesState {
 export interface IGamesStore {
   page: number | null;
   group: number;
-  setTextbookState: (gameState: IGamesState) => void;
-  getTextbookState: () => IGamesState;
+  setGameState: (gameState: IGamesState) => void;
+  getGameState: () => IGamesState;
   setGroup: (group: number) => void;
-  setPage: (page: number) => void;
+  setPage: (page: number | null) => void;
 }
 
 interface IStatisticGame {
@@ -199,10 +199,13 @@ interface ITextbookState {
 export interface ITextbookStore {
   page: number;
   group: number;
-  words: Word[];
   setTextbookState: (textbookState: ITextbookState) => void;
   getTextbookState: () => ITextbookState;
   setGroup: (group: number) => void;
   setPage: (page: number) => void;
+}
+
+export interface IWordsStore {
+  words: Word[];
   setWords: (words: Word[]) => void;
 }
