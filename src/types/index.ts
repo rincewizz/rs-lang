@@ -170,7 +170,7 @@ export interface IGamesStore {
   setPage: (page: number | null) => void;
 }
 
-interface IStatisticGame {
+export interface IStatisticGame {
   date: string;
   countNewWords: number;
   totalWords: number;

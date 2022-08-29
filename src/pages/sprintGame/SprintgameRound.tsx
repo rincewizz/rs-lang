@@ -7,12 +7,14 @@ import { usersAggregatedWordsApi } from '../../services/api/UsersAggregatedWords
 import useAuthStore from '../../services/storage/Auth';
 import useGamesStore from '../../services/storage/Games';
 import GameResults from '../../components/shared/GameResults';
+import { calcStatistic, updateStaticGame } from '../../utils';
 
 export default function SprintGameRound() {
   const [words, setWords] = useState<Word[]>([]);
   const [itemEn, setItemEn] = useState<Word>();
   const [itemRus, setItemRus] = useState<Word>();
   const [results, setResults] = useState<Map<Word, boolean>>(new Map());
+  const [allResults, setAllResults] = useState<boolean[]>([]);
   const [isFinish, setFinish] = useState<boolean>(false);
   const [seconds, setSeconds] = useState(60);
   const [itemColorClass, setItemColorClass] = useState<string>();
@@ -21,6 +23,13 @@ export default function SprintGameRound() {
   const isAuth = auth.message === 'Authenticated';
   const currentPage = useGamesStore((state) => state.page);
   const currentGroup = useGamesStore((state) => state.group);
+
+  async function setStaticGame() {
+    if (isAuth && auth.token && auth.userId) {
+      const calcInfo = calcStatistic(results, allResults);
+      updateStaticGame(auth.token, auth.userId, calcInfo);
+    }
+  }
 
   function renderWord() {
     const num = Math.floor(Math.random() * 2);
@@ -72,6 +81,7 @@ export default function SprintGameRound() {
       setTimeout(setSeconds, 1000, seconds - 1);
     } else {
       setFinish(true);
+      setStaticGame();
     }
   }, [seconds]);
 
@@ -90,11 +100,13 @@ export default function SprintGameRound() {
     if (results.get(itemEn as Word) !== false) {
       results.set(itemEn as Word, answer);
     }
+    allResults.push(answer);
     renderWord();
   }
 
   const startAgain = () => {
     setFinish(false);
+    setAllResults([]);
     setResults(new Map());
     setSeconds(60);
   };
