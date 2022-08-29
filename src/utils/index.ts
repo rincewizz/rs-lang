@@ -49,37 +49,21 @@ export async function updateStaticGame(
 
   const { optional, learnedWords } = oldStat;
   const game = nameGame === 'Sprint' ? optional?.gameSprint : optional?.gameVoice;
-  let newOptional;
-  if (nameGame === 'Sprint') {
-    newOptional = {
-      ...optional,
-      gameSprint: calcInfo,
-    };
-  }
-  if (nameGame === 'Voice') {
-    newOptional = {
-      ...optional,
-      gameVoice: calcInfo,
-    };
-  }
+  let newOptional = {
+    ...optional,
+    [`game${nameGame}`]: calcInfo,
+  };
 
   if (game?.date === date) {
     countNewWords = game.countNewWords + countNewWords;
     lengthCorrect = lengthCorrect > game.lengthCorrect ? lengthCorrect : game.lengthCorrect;
     countCorrect = game.countCorrect + countCorrect;
     totalWords = game.totalWords + totalWords;
-    if (nameGame === 'Sprint') {
-      newOptional = {
-        ...optional,
-        gameSprint: { date, countNewWords, lengthCorrect, countCorrect, totalWords },
-      };
-    }
-    if (nameGame === 'Voice') {
-      newOptional = {
-        ...optional,
-        gameVoice: { date, countNewWords, lengthCorrect, countCorrect, totalWords },
-      };
-    }
+
+    newOptional = {
+      ...optional,
+      [`game${nameGame}`]: { date, countNewWords, lengthCorrect, countCorrect, totalWords },
+    };
   }
   const request = { learnedWords, optional: newOptional };
   await userStatisticApi.updateUserStatistic({
