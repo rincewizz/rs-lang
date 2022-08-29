@@ -175,6 +175,42 @@ export default function WordGroup(props: IWordCardProps) {
             >
               {isLearned ? '-' : '+'} Изученное слово
             </button>
+            <div className="word-card__stats word-stats">
+              <div className="word-stats__item word-stats__item--sprint">
+                <div className="word-stats__title">Sprint</div>
+                <div className="word-stats__answers">
+                  <span
+                    className="word-stats__answer word-stats__answer--correct"
+                    title="количество правильных ответов"
+                  >
+                    {word.userWord?.optional?.gamesStatistic?.sprint.correct ?? 0}
+                  </span>
+                  <span
+                    className="word-stats__answer word-stats__answer--incorrect"
+                    title="количество неправильных ответов"
+                  >
+                    {word.userWord?.optional?.gamesStatistic?.sprint.incorrect ?? 0}
+                  </span>
+                </div>
+              </div>
+              <div className="word-stats__item word-stats__item--voice">
+                <div className="word-stats__title">Voice</div>
+                <div className="word-stats__answers">
+                  <span
+                    className="word-stats__answer word-stats__answer--correct"
+                    title="количество правильных ответов"
+                  >
+                    {word.userWord?.optional?.gamesStatistic?.voice.correct ?? 0}
+                  </span>
+                  <span
+                    className="word-stats__answer word-stats__answer--incorrect"
+                    title="количество неправильных ответов"
+                  >
+                    {word.userWord?.optional?.gamesStatistic?.voice.incorrect ?? 0}
+                  </span>
+                </div>
+              </div>
+            </div>
           </>
         )}
       </div>

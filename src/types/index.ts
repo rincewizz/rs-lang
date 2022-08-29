@@ -12,8 +12,17 @@ export type Advantages = {
   text: string;
 };
 
+export interface IUserWordStaticstic {
+  correct: number;
+  incorrect: number;
+}
 export interface WordOptional {
   learned?: boolean;
+  gamesStatistic?: {
+    sprint: IUserWordStaticstic;
+    voice: IUserWordStaticstic;
+  };
+  new?: boolean;
 }
 
 export interface UserWordOptions {
@@ -209,3 +218,5 @@ export interface IWordsStore {
   words: Word[];
   setWords: (words: Word[]) => void;
 }
+
+export type IGameResults = Map<Word, { correct: number; incorrect: number }>;

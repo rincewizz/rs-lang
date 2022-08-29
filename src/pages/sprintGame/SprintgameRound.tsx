@@ -1,19 +1,19 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react';
 import './sprintgameRound.scss';
-import { Word } from '../../types';
+import { IGameResults, Word } from '../../types';
 import { wordApi } from '../../services/api/Words';
 import { usersAggregatedWordsApi } from '../../services/api/UsersAggregatedWords';
 import useAuthStore from '../../services/storage/Auth';
 import useGamesStore from '../../services/storage/Games';
 import GameResults from '../../components/shared/GameResults';
-import { calcStatistic, updateStaticGame } from '../../utils';
+import { calcStatistic, recordWordsStatics, updateStaticGame } from '../../utils';
 
 export default function SprintGameRound() {
   const [words, setWords] = useState<Word[]>([]);
   const [itemEn, setItemEn] = useState<Word>();
   const [itemRus, setItemRus] = useState<Word>();
-  const [results, setResults] = useState<Map<Word, boolean>>(new Map());
+  const [results, setResults] = useState<IGameResults>(new Map());
   const [allResults, setAllResults] = useState<boolean[]>([]);
   const [isFinish, setFinish] = useState<boolean>(false);
   const [seconds, setSeconds] = useState(60);
@@ -82,6 +82,7 @@ export default function SprintGameRound() {
     } else {
       setFinish(true);
       setStaticGame();
+      recordWordsStatics(auth, 'sprint', results);
     }
   }, [seconds]);
 
@@ -97,8 +98,12 @@ export default function SprintGameRound() {
       setItemColorClass('');
     }, 1000);
 
-    if (results.get(itemEn as Word) !== false) {
-      results.set(itemEn as Word, answer);
+    const result = results.get(itemEn as Word);
+    if (result) {
+      if (answer) result.correct += 1;
+      else result.incorrect += 1;
+    } else {
+      results.set(itemEn as Word, { correct: +answer, incorrect: +!answer });
     }
     allResults.push(answer);
     renderWord();
