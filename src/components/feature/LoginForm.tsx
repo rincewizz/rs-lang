@@ -5,6 +5,7 @@ import useAuthStore from '../../services/storage/Auth';
 
 import './form.scss';
 import Input from './Input';
+import { userStatisticApi } from '../../services/api/Statistic';
 
 export default function LoginForm(props: IHeaderProps) {
   const { handleClick } = props;
@@ -21,6 +22,30 @@ export default function LoginForm(props: IHeaderProps) {
       if (dataUser.id) {
         const { userAuth } = await userApi.signIn({ email, password });
         setAuth(userAuth);
+        const userStatistic = {
+          learnedWords: 0,
+          optional: {
+            gameSprint: {
+              date: '',
+              countNewWords: 0,
+              countCorrect: 0,
+              totalWords: 0,
+              lengthCorrect: 0,
+            },
+            gameVoice: {
+              date: '',
+              countNewWords: 0,
+              countCorrect: 0,
+              totalWords: 0,
+              lengthCorrect: 0,
+            },
+          },
+        };
+        await userStatisticApi.updateUserStatistic({
+          token: userAuth.token,
+          userId: userAuth.userId,
+          request: userStatistic,
+        });
         handleClick();
       }
       setMes(message);
