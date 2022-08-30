@@ -83,7 +83,7 @@ export async function updateStaticGame(
   });
 }
 
-class UserWordRequest {
+export class UserWordRequest {
   request: UserWordOptions;
 
   constructor(word: Word) {
@@ -124,7 +124,7 @@ class UserWordRequest {
     if (this.request.optional) this.request.optional.learned = val;
   }
 
-  set new(val: boolean) {
+  set new(val: 'new' | 'old') {
     if (this.request.optional) this.request.optional.new = val;
   }
 
@@ -153,6 +153,7 @@ export async function recordWordsStatics(
     if (!word._id) return;
     const userWordRequest = new UserWordRequest(word);
     userWordRequest[`${game}GameStatistic`] = answer;
+    userWordRequest.new = word?.userWord?.optional?.new === undefined ? 'new' : 'old';
     const apiParam = {
       token: auth.token,
       userId: auth.userId,
