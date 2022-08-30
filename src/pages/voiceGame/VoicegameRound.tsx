@@ -8,7 +8,7 @@ import { usersAggregatedWordsApi } from '../../services/api/UsersAggregatedWords
 import useAuthStore from '../../services/storage/Auth';
 import useGamesStore from '../../services/storage/Games';
 
-import HOST from '../../services/env';
+import { AUDIO_HOST } from '../../services/env';
 import { calcStatistic, updateStaticGame } from '../../utils';
 
 function addAnswer() {
@@ -122,7 +122,7 @@ function addAnswer() {
 
   function playAudio() {
     const num = Math.round(0 - 0.5 + Math.random() * (3 - 0 + 1));
-    new Audio(HOST + pageList[num].audio).play();
+    new Audio(AUDIO_HOST + pageList[num].audio).play();
     setWord(pageList[num]);
     setClick(true);
     setDisableAudio(true);
