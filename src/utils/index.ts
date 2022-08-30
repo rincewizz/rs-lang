@@ -26,9 +26,9 @@ export function getLengthCorrect(answers: boolean[]) {
   return Math.max(...chain);
 }
 
-export function calcStatistic(res: IGameResults, allRes: boolean[]) {
+export function calcStatistic(res: number, allRes: boolean[]) {
   const countCorrect = allRes.filter((el) => el === true).length;
-  const countNewWords = res.size;
+  const countNewWords = res;
   const totalWords = allRes.length;
   const lengthCorrect = getLengthCorrect(allRes);
   const today = new Date();
@@ -43,7 +43,12 @@ export function calcStatistic(res: IGameResults, allRes: boolean[]) {
   return gameSprintStat;
 }
 
-export async function updateStaticGame(token: string, userId: string, calcInfo: IStatisticGame) {
+export async function updateStaticGame(
+  token: string,
+  userId: string,
+  calcInfo: IStatisticGame,
+  nameGame: 'Sprint' | 'Voice'
+) {
   let { countNewWords, lengthCorrect, countCorrect, totalWords } = calcInfo;
   const { date } = calcInfo;
 
@@ -53,21 +58,21 @@ export async function updateStaticGame(token: string, userId: string, calcInfo: 
   });
 
   const { optional, learnedWords } = oldStat;
-  const gameSprint = optional?.gameSprint;
+  const game = nameGame === 'Sprint' ? optional?.gameSprint : optional?.gameVoice;
   let newOptional = {
     ...optional,
-    gameSprint: calcInfo,
+    [`game${nameGame}`]: calcInfo,
   };
 
-  if (gameSprint?.date === date) {
-    countNewWords = gameSprint.countNewWords + countNewWords;
-    lengthCorrect =
-      lengthCorrect > gameSprint.lengthCorrect ? lengthCorrect : gameSprint.lengthCorrect;
-    countCorrect = gameSprint.countCorrect + countCorrect;
-    totalWords = gameSprint.totalWords + totalWords;
+  if (game?.date === date) {
+    countNewWords = game.countNewWords + countNewWords;
+    lengthCorrect = lengthCorrect > game.lengthCorrect ? lengthCorrect : game.lengthCorrect;
+    countCorrect = game.countCorrect + countCorrect;
+    totalWords = game.totalWords + totalWords;
+
     newOptional = {
       ...optional,
-      gameSprint: { date, countNewWords, lengthCorrect, countCorrect, totalWords },
+      [`game${nameGame}`]: { date, countNewWords, lengthCorrect, countCorrect, totalWords },
     };
   }
   const request = { learnedWords, optional: newOptional };

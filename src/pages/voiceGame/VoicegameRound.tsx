@@ -9,12 +9,14 @@ import useAuthStore from '../../services/storage/Auth';
 import useGamesStore from '../../services/storage/Games';
 
 import HOST from '../../services/env';
+import { calcStatistic, updateStaticGame } from '../../utils';
 
 function addAnswer() {
   const [words, setWords] = useState<Word[]>([]);
   const [pageList, setList] = useState<Word[]>([]);
   const [word, setWord] = useState<Word>();
   const [result, setResult] = useState<Answer[]>([]);
+  const [allResults, setAllResults] = useState<boolean[]>([]);
   const [click, setClick] = useState<boolean>();
   const [isFinish, setFinish] = useState<string>();
   const [isDisabledAudio, setDisableAudio] = useState<boolean>();
@@ -25,6 +27,13 @@ function addAnswer() {
 
   const isAuth = auth.message === 'Authenticated';
   const currentGroup = useGamesStore((state) => state.group);
+
+  async function setStaticGame() {
+    if (isAuth && auth.token && auth.userId) {
+      const calcInfo = calcStatistic(result.length, allResults);
+      updateStaticGame(auth.token, auth.userId, calcInfo, 'Voice');
+    }
+  }
 
   async function loadWords(group = 0, page = 0) {
     let newWords;
@@ -66,6 +75,7 @@ function addAnswer() {
     }, 1000);
     result.push(obj);
     setResult(result);
+    allResults.push(obj.answer);
     if (result.length === 20) {
       const arr: Answer[] = [];
       result.forEach((el) => {
@@ -82,6 +92,7 @@ function addAnswer() {
 
       setResult(arr);
       setFinish('finish');
+      setStaticGame();
     }
     setDisableNext(false);
   }
@@ -120,6 +131,7 @@ function addAnswer() {
   function startAgain() {
     setFinish('');
     setResult([]);
+    setAllResults([]);
     setDisableAudio(false);
     setDisableNext(true);
   }
