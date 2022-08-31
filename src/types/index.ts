@@ -22,7 +22,7 @@ export interface WordOptional {
     sprint: IUserWordStaticstic;
     voice: IUserWordStaticstic;
   };
-  new?: boolean;
+  new?: 'new' | 'old';
 }
 
 export interface UserWordOptions {

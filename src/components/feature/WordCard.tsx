@@ -6,9 +6,10 @@ import './wordcard.scss';
 import soundIco from '../../assets/img/sound.svg';
 import useAuthStore from '../../services/storage/Auth';
 import { usersWordsApi } from '../../services/api/UsersWords';
-import HOST from '../../services/env';
+import { AUDIO_HOST, IMAGE_HOST } from '../../services/env';
 import useTextbookStore from '../../services/storage/Textbook';
 import useWordsStore from '../../services/storage/Words';
+import { UserWordRequest } from '../../utils';
 
 export default function WordGroup(props: IWordCardProps) {
   const { word, playStatus, setPlayStatus, learnedCount, setLearnedCount } = props;
@@ -37,7 +38,7 @@ export default function WordGroup(props: IWordCardProps) {
 
     if (audioIndex >= 0 && audioIndex < audioArr.length) {
       setPlayStatus(true);
-      audio.src = HOST + audioArr[audioIndex];
+      audio.src = AUDIO_HOST + audioArr[audioIndex];
 
       audio.addEventListener('canplay', play);
     } else {
@@ -86,28 +87,20 @@ export default function WordGroup(props: IWordCardProps) {
   const handleDifficultLearnedBtnClick = async (button: 'difficult' | 'learned') => {
     if (auth.token && auth.userId && word._id) {
       let response;
-      let options;
 
+      const userWordRequest = new UserWordRequest(word);
       if (button === 'difficult') {
-        options = {
-          difficulty: isDifficult ? 'none' : 'difficult',
-          optional: {
-            learned: false,
-          },
-        };
+        userWordRequest.difficulty = isDifficult ? 'none' : 'difficult';
+        userWordRequest.learned = false;
       } else {
-        options = {
-          difficulty: 'none',
-          optional: {
-            learned: !isLearned,
-          },
-        };
+        userWordRequest.difficulty = 'none';
+        userWordRequest.learned = !isLearned;
       }
       const req = {
         token: auth.token,
         userId: auth.userId,
         wordId: word._id,
-        request: options,
+        request: userWordRequest.request,
       };
 
       if (word.userWord) {
@@ -140,7 +133,10 @@ export default function WordGroup(props: IWordCardProps) {
         isDifficult ? 'word-card--difficult' : ''
       } ${isLearned ? 'word-card--learned' : ''}`}
     >
-      <div className="word-card__img" style={{ backgroundImage: `url(${HOST + word.image})` }} />
+      <div
+        className="word-card__img"
+        style={{ backgroundImage: `url(${IMAGE_HOST + word.image})` }}
+      />
 
       <div className="word-card__text">
         <div className="word-card__word">
@@ -161,20 +157,25 @@ export default function WordGroup(props: IWordCardProps) {
         </div>
         {isAuth && (
           <>
-            <button
-              type="button"
-              className={`word-card__btn ${isDifficult ? 'word-card__btn--active' : ''}`}
-              onClick={() => handleDifficultLearnedBtnClick('difficult')}
-            >
-              {isDifficult ? '-' : '+'} Сложное слово
-            </button>
-            <button
-              type="button"
-              className={`word-card__btn ${isLearned ? 'word-card__btn--active' : ''}`}
-              onClick={() => handleDifficultLearnedBtnClick('learned')}
-            >
-              {isLearned ? '-' : '+'} Изученное слово
-            </button>
+            <div className="word-card__word-status">
+              <button
+                type="button"
+                className={`word-card__btn ${isDifficult ? 'word-card__btn--active' : ''}`}
+                onClick={() => handleDifficultLearnedBtnClick('difficult')}
+              >
+                {isDifficult ? '-' : '+'} Сложное слово
+              </button>
+              <button
+                type="button"
+                className={`word-card__btn ${isLearned ? 'word-card__btn--active' : ''}`}
+                onClick={() => handleDifficultLearnedBtnClick('learned')}
+              >
+                {isLearned ? '-' : '+'} Изученное слово
+              </button>
+              {word.userWord?.optional?.new === 'new' && (
+                <div className="word-card__btn word-card__new-word">Новое слово</div>
+              )}
+            </div>
             <div className="word-card__stats word-stats">
               <div className="word-stats__item word-stats__item--sprint">
                 <div className="word-stats__title">Sprint</div>
