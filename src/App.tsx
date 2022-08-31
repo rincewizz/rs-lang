@@ -9,6 +9,7 @@ import VoiceGame from './pages/voiceGame/Voicegame';
 import VoiceGameRound from './pages/voiceGame/VoicegameRound';
 import SprintGame from './pages/sprintGame/Sprintgame';
 import SprintGameRound from './pages/sprintGame/SprintgameRound';
+import Statistics from './pages/statistics/Statistics';
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/voicegameround" element={<VoiceGameRound />} />
         <Route path="/sprintgame" element={<SprintGame />} />
         <Route path="/sprintgameround" element={<SprintGameRound />} />
+        <Route path="/statistics" element={<Statistics />} />
         <Route path="*" element={<ErrorText />} />
       </Routes>
     </Router>

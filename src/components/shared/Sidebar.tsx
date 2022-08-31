@@ -14,7 +14,7 @@ const ITEMS = [
   { img: book, name: 'Book', alt: 'book', link: '/book' },
   { img: voicegame, name: 'Voicegame', alt: 'voicegame', link: '/voicegame' },
   { img: sprintgame, name: 'Sprintgame', alt: 'sprintgame', link: '/sprintgame' },
-  { img: statistic, name: 'Statistics', alt: 'statistics', link: '/statistic' },
+  { img: statistic, name: 'Statistics', alt: 'statistics', link: '/statistics' },
 ];
 
 class Sidebar extends React.PureComponent {
