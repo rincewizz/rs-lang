@@ -220,3 +220,16 @@ export interface IWordsStore {
 }
 
 export type IGameResults = Map<Word, { correct: number; incorrect: number }>;
+
+export interface IStatGameForTable {
+  countNewWords: number;
+  percent: number;
+  lengthCorrect: number;
+}
+export interface IStatGameParam {
+  game: {
+    countNewWords: number;
+    percent: number;
+    lengthCorrect: number;
+  };
+}
