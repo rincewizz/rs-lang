@@ -35,7 +35,7 @@ export default function Textbook() {
 
   const auth = useAuthStore((state) => state.auth);
 
-  const isAuth = auth.message === 'Authenticated';
+  const [isAuth, setIsAuth] = useState(auth.message === 'Authenticated');
 
   async function loadWords(group = 0, page = 0) {
     let newWords;
@@ -57,6 +57,7 @@ export default function Textbook() {
       );
     } else {
       newWords = await wordApi.getWords(group, page);
+      setLearnedCount(0);
     }
 
     setWords(newWords);
@@ -78,9 +79,16 @@ export default function Textbook() {
       setWords(newWords);
 
       setCurrentGroup(6);
-      setLearnedCount(0);
+    } else {
+      setWords([]);
+      loadWords(0, 0);
     }
+    setLearnedCount(0);
   }
+
+  useEffect(() => {
+    setIsAuth(auth.message === 'Authenticated');
+  }, [auth]);
 
   useEffect(() => {
     if (currentGroup !== 6) {
@@ -88,7 +96,7 @@ export default function Textbook() {
     } else {
       loadDifficultWords();
     }
-  }, []);
+  }, [isAuth]);
 
   useEffect(() => {
     if (learnedCount === 20) {

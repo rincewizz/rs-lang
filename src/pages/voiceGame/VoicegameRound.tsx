@@ -54,7 +54,7 @@ export default function VoiceGameRound() {
         page,
         perPage: 20,
       });
-      
+
       newWords = agrwords.paginatedResults;
     } else {
       newWords = await wordApi.getWords(currentGroup, page);
