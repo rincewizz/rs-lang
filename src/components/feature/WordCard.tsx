@@ -24,8 +24,8 @@ export default function WordGroup(props: IWordCardProps) {
   const [audioIndex, setAudioIndex] = useState(-1);
 
   const auth = useAuthStore((state) => state.auth);
+  const [isAuth, setIsAuth] = useState(auth.message === 'Authenticated');
 
-  const isAuth = auth.message === 'Authenticated';
   const [isDifficult, setDifficult] = useState(word.userWord?.difficulty === 'difficult');
   const [isLearned, setLearned] = useState(word.userWord?.optional?.learned === true);
   const [isMarkLearned, setMarkLearned] = useState(isLearned || isDifficult);
@@ -53,27 +53,7 @@ export default function WordGroup(props: IWordCardProps) {
   };
 
   useEffect(() => {
-    if (isDifficult) {
-      setLearned(false);
-    }
-  }, [isDifficult]);
-
-  useEffect(() => {
-    if (isLearned) {
-      setDifficult(false);
-    }
-  }, [isLearned]);
-
-  useEffect(() => {
-    setMarkLearned(isDifficult || isLearned);
-
-    if (currentGroup === 6 && (!isDifficult || isLearned)) {
-      setWords(words.filter((el) => el._id !== word._id));
-    }
-  }, [isLearned, isDifficult]);
-
-  useEffect(() => {
-    if (isLoaded) {
+    if (isAuth && isLoaded) {
       if (isMarkLearned) {
         setLearnedCount(learnedCount + 1);
       } else {
@@ -83,6 +63,33 @@ export default function WordGroup(props: IWordCardProps) {
       setIsLoaded(true);
     }
   }, [isMarkLearned]);
+
+  useEffect(() => {
+    setIsAuth(auth.message === 'Authenticated');
+  }, [auth]);
+
+  useEffect(() => {
+    setDifficult(word.userWord?.difficulty === 'difficult');
+    setLearned(word.userWord?.optional?.learned === true);
+  }, [word]);
+
+  useEffect(() => {
+    if (isDifficult && isAuth) {
+      setLearned(false);
+    }
+  }, [isDifficult]);
+
+  useEffect(() => {
+    if (isLearned && isAuth) {
+      setDifficult(false);
+    }
+  }, [isLearned]);
+
+  useEffect(() => {
+    if (currentGroup === 6 && (!isDifficult || isLearned)) {
+      setWords(words.filter((el) => el._id !== word._id));
+    }
+  }, [isLearned, isDifficult]);
 
   const handleDifficultLearnedBtnClick = async (button: 'difficult' | 'learned') => {
     if (auth.token && auth.userId && word._id) {
@@ -105,15 +112,10 @@ export default function WordGroup(props: IWordCardProps) {
 
       if (word.userWord) {
         response = await usersWordsApi.updateUserWord(req);
-      }
-
-      if (!word.userWord) {
+      } else {
         response = await usersWordsApi.createUserWord(req);
-        word.userWord = {
-          difficulty: response.difficulty,
-          optional: response.optional,
-        };
       }
+      word.userWord = userWordRequest.request;
 
       if (button === 'difficult') {
         const difficultStatus = response?.difficulty === 'difficult';
@@ -124,14 +126,16 @@ export default function WordGroup(props: IWordCardProps) {
         const learnedStatus = response?.optional?.learned === true;
         setLearned(learnedStatus);
       }
+
+      setMarkLearned(response?.difficulty === 'difficult' || response?.optional?.learned === true);
     }
   };
 
   return (
     <div
       className={`word-card word-card--${currentGroup} ${
-        isDifficult ? 'word-card--difficult' : ''
-      } ${isLearned ? 'word-card--learned' : ''}`}
+        isDifficult && isAuth ? 'word-card--difficult' : ''
+      } ${isLearned && isAuth ? 'word-card--learned' : ''}`}
     >
       <div
         className="word-card__img"
@@ -163,14 +167,14 @@ export default function WordGroup(props: IWordCardProps) {
                 className={`word-card__btn ${isDifficult ? 'word-card__btn--active' : ''}`}
                 onClick={() => handleDifficultLearnedBtnClick('difficult')}
               >
-                {isDifficult ? '-' : '+'} Сложное слово
+                {isDifficult && isAuth ? '-' : '+'} Сложное слово
               </button>
               <button
                 type="button"
                 className={`word-card__btn ${isLearned ? 'word-card__btn--active' : ''}`}
                 onClick={() => handleDifficultLearnedBtnClick('learned')}
               >
-                {isLearned ? '-' : '+'} Изученное слово
+                {isLearned && isAuth ? '-' : '+'} Изученное слово
               </button>
               {word.userWord?.optional?.new === 'new' && (
                 <div className="word-card__btn word-card__new-word">Новое слово</div>
