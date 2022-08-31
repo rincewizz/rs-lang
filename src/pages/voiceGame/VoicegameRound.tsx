@@ -6,7 +6,7 @@ import { usersAggregatedWordsApi } from '../../services/api/UsersAggregatedWords
 import useAuthStore from '../../services/storage/Auth';
 import useGamesStore from '../../services/storage/Games';
 
-import HOST from '../../services/env';
+import { AUDIO_HOST } from '../../services/env';
 import { calcStatistic, recordWordsStatics, updateStaticGame } from '../../utils';
 import GameResults from '../../components/shared/GameResults';
 
@@ -54,6 +54,7 @@ export default function VoiceGameRound() {
         page,
         perPage: 20,
       });
+      
       newWords = agrwords.paginatedResults;
     } else {
       newWords = await wordApi.getWords(currentGroup, page);
@@ -141,7 +142,7 @@ export default function VoiceGameRound() {
 
   function playAudio() {
     const num = Math.round(0 - 0.5 + Math.random() * (3 - 0 + 1));
-    new Audio(HOST + pageList[num].audio).play();
+    new Audio(AUDIO_HOST + pageList[num].audio).play();
     setWord(pageList[num]);
     setClick(true);
     setDisableAudio(true);

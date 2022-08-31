@@ -6,7 +6,7 @@ import './wordcard.scss';
 import soundIco from '../../assets/img/sound.svg';
 import useAuthStore from '../../services/storage/Auth';
 import { usersWordsApi } from '../../services/api/UsersWords';
-import HOST from '../../services/env';
+import { AUDIO_HOST, IMAGE_HOST } from '../../services/env';
 import useTextbookStore from '../../services/storage/Textbook';
 import useWordsStore from '../../services/storage/Words';
 import { UserWordRequest } from '../../utils';
@@ -38,7 +38,7 @@ export default function WordGroup(props: IWordCardProps) {
 
     if (audioIndex >= 0 && audioIndex < audioArr.length) {
       setPlayStatus(true);
-      audio.src = HOST + audioArr[audioIndex];
+      audio.src = AUDIO_HOST + audioArr[audioIndex];
 
       audio.addEventListener('canplay', play);
     } else {
@@ -133,7 +133,10 @@ export default function WordGroup(props: IWordCardProps) {
         isDifficult ? 'word-card--difficult' : ''
       } ${isLearned ? 'word-card--learned' : ''}`}
     >
-      <div className="word-card__img" style={{ backgroundImage: `url(${HOST + word.image})` }} />
+      <div
+        className="word-card__img"
+        style={{ backgroundImage: `url(${IMAGE_HOST + word.image})` }}
+      />
 
       <div className="word-card__text">
         <div className="word-card__word">
