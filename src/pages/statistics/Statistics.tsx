@@ -60,7 +60,6 @@ export default function Statistics() {
       optional?.gameSprint as IStatisticGame
     );
     setTotalStat(statGamesTotal);
-    console.log(optional?.gameVoice, optional?.gameSprint);
   }
 
   useEffect(() => {
