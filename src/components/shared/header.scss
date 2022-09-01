@@ -7,7 +7,7 @@ $shadow: 1px 3px 4px rgb(0 0 0 / 20%);
   background: #F5F5F7;
   border-radius: 14px;
   padding: 0 10px;
-  max-height: 145px;
+  max-height: 130px;
   margin-top: 50px;
   box-shadow: $shadow-grey;
   .header__img {
@@ -19,7 +19,7 @@ $shadow: 1px 3px 4px rgb(0 0 0 / 20%);
     font-weight: 700;
     font-size: 30px;
     line-height: 57px;
-    margin-bottom: 0;
+    margin: 0;
   }
   p {
     font-family: 'Roboto';
@@ -27,6 +27,10 @@ $shadow: 1px 3px 4px rgb(0 0 0 / 20%);
     font-size: 16px;
     margin: 0;
     text-align: center;
+    @media screen and (max-width: 520px) {
+      font-size: 0;
+      transition: all 0.5s ease;
+    }
   }
 }
 .header__welcome{
@@ -43,7 +47,6 @@ $shadow: 1px 3px 4px rgb(0 0 0 / 20%);
   .header__img {
     width: 0%;
     transition: all 0.5s ease;
-    ;
   }
 }
 .logo {
@@ -56,25 +59,17 @@ $shadow: 1px 3px 4px rgb(0 0 0 / 20%);
     box-shadow: $shadow;
   }
 }
-@media screen and (max-width: 520px) {
-  .logo {
-    width: 20vw;
-    height: 20vw;
-    transition: all 0.5s ease;
-    ;
-  }
-}
 
 .logo-home {
-  background: url('../../assets/img/logo.svg')0 0 / 100% auto no-repeat;
+  background: url('../../assets/img/logo.svg')0 0 /cover no-repeat;
 }
 
 .logout {
-  background: url('../../assets/img/logout.svg')0 0 / 100% auto no-repeat;
+  background: url('../../assets/img/logout.svg')0 0 /cover no-repeat;
 }
 
 .lognin {
-  background: url('../../assets/img/user.svg')0 0 / 100% auto no-repeat;
+  background: url('../../assets/img/user.svg')0 0 /cover no-repeat;
 }
 
 

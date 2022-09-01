@@ -22,7 +22,7 @@ function Header() {
 
   return (
     <>
-      <div className="wrap wrap-header">
+      <div className="container container-header">
         <header className="header">
           <Link className="logo logo-home" to="/" />
           <div className="header__welcome">
