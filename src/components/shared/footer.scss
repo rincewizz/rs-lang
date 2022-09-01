@@ -9,8 +9,7 @@ $shadow-grey: 1px 3px 4px rgb(0 0 0 / 10%);
   border-radius: 14px 14px 0 0;
   padding: 0 10px;
   flex: 0 0 auto;
-  margin-top: 20px;
-
+  
   .footer__logo {
     width: 30px;
     height: 30px;
@@ -19,21 +18,30 @@ $shadow-grey: 1px 3px 4px rgb(0 0 0 / 10%);
     height: 35px;
   }
   .footer__title {
-    font-family: 'Baloo Bhai';
+    font-family: 'Balsamiq';
     font-weight: 700;
-    font-size: 24px;
-    line-height: 38px;
+    font-size: 18px;
+    text-align: center;
   }
-  .footer__info a{
+  .footer__info a {
     display: flex;
     align-items: center;
+    font-size: 16px;
   }
   
   @media screen and (max-width: 710px) {
       .footer__title span:nth-last-child(1) {
         font-size: 0px;
         transition: all 0.5s ease;
-        ;
+      }
+      .footer__info a{
+        font-size: 10px;
+      }
+      .footer__title {
+        font-size: 12px;
+      }
+      .footer__logo-rss {
+        height: 20px;
       }
     }
 }
