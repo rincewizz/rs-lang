@@ -4,7 +4,6 @@
   box-shadow: $shadow-grey inset;
   border-radius: 14px;
   background: $bg-grey;
-  max-width: 400px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -12,6 +11,7 @@
   padding: 20px;
   margin: 0 auto;
   font-size: 20px;
+  text-align: center;
     .modal__btn {
         align-self: flex-end;
         width: 20px;
@@ -27,18 +27,18 @@
     flex-direction: column;
     gap: 20px;
     align-items: center;
-    
-    & h2 {
-      font-family: 'Roboto';
-      font-weight: 700;
-      font-size: 22px;
-      line-height: 24px;
-    }
   }
 
   & .modal-btns {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 20px;
+    @media screen and (max-width: 520px) {
+      .btn {
+        width: 264px;
+      }
+    }
   }
   & .login-form__input {
     width: 250px;

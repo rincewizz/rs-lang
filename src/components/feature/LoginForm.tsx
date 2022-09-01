@@ -62,7 +62,7 @@ export default function LoginForm(props: IHeaderProps) {
   };
   return (
     <div className="login-form">
-      <h2> Войти или зарегистрироваться</h2>
+      <h2 className="title-page"> Войти или зарегистрироваться</h2>
       <Input value={email} placeholder="email" type="email" setValue={setEmail} />
       <Input value={password} placeholder="Пароль" type="password" setValue={setPassword} />
       <div className="modal-btns">
