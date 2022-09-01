@@ -8,10 +8,10 @@ import martin from '../../assets/img/martin.png';
 import pinguin from '../../assets/img/pngwing.png';
 
 const ADVANTAGES = [
-  { number: '1', text: 'Learn to speak a new language naturally and conversationally.' },
-  { number: '2', text: 'Track your progress' },
-  { number: '3', text: 'Learn a language with a rich variety of learning activities' },
-  { number: '4', text: 'See results quickly with the proven method' },
+  { number: '1', text: 'Научитесь говорить на новом языке естественно и в разговорной речи.' },
+  { number: '2', text: 'Отслеживайте свой прогресс.' },
+  { number: '3', text: 'Изучайте язык с помощью разнообразных учебных методик.' },
+  { number: '4', text: 'Быстро увидите результаты с помощью автопроверки.' },
 ];
 
 function addAdvantages(props: Advantages) {
@@ -27,13 +27,13 @@ function addAdvantages(props: Advantages) {
 export default function Home() {
   const greetingComponent = () => {
     return (
-      <div className="main">
+      <div className="container container-home">
         <div className="main__greeting">
           <div className="greeting">
-            <p className="greeting__start">Start learning English right now!</p>
+            <p className="greeting__start">Начните учить английский прямо сейчас!</p>
             <p className="greeting__text">
-              <span className="greeting__rslang">RSLang</span> - the best application of studing
-              English you have ever met!
+              <span className="greeting__rslang">RSLang</span> - лучшее приложение для изучения
+              английского языка, которое вы когда-либо встречали!
             </p>
           </div>
           <img className="greeting__picture" src={pinguin} alt="martin" />
@@ -46,10 +46,10 @@ export default function Home() {
     );
   };
   return (
-    <div className="wrapper">
+    <>
       <Header />
-      {greetingComponent()}
+      <div className="main">{greetingComponent()}</div>
       <Footer />
-    </div>
+    </>
   );
 }
