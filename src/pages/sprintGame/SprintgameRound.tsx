@@ -7,7 +7,7 @@ import { usersAggregatedWordsApi } from '../../services/api/UsersAggregatedWords
 import useAuthStore from '../../services/storage/Auth';
 import useGamesStore from '../../services/storage/Games';
 import GameResults from '../../components/shared/GameResults';
-import { calcStatistic, recordWordsStatics, updateStaticGame } from '../../utils';
+import { calcStatistic, recordWordsStatics, shuffleWord, updateStaticGame } from '../../utils';
 
 export default function SprintGameRound() {
   const [words, setWords] = useState<Word[]>([]);
@@ -17,12 +17,15 @@ export default function SprintGameRound() {
   const [allResults, setAllResults] = useState<boolean[]>([]);
   const [isFinish, setFinish] = useState<boolean>(false);
   const [seconds, setSeconds] = useState(60);
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
   const [itemColorClass, setItemColorClass] = useState<string>();
   const auth = useAuthStore((state) => state.auth);
 
   const isAuth = auth.message === 'Authenticated';
   const currentPage = useGamesStore((state) => state.page);
   const currentGroup = useGamesStore((state) => state.group);
+
+  const [wordsIndex, setWordsIndex] = useState<number>(0);
 
   async function setStaticGame() {
     if (isAuth && auth.token && auth.userId) {
@@ -32,14 +35,16 @@ export default function SprintGameRound() {
   }
 
   function renderWord() {
-    const num = Math.floor(Math.random() * 2);
-    for (let i = words.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [words[i], words[j]] = [words[j], words[i]];
-    }
-    const options = words.slice(0, 2);
-    setItemEn(options[0]);
-    setItemRus(options[num]);
+    if (words.length === 0) return;
+    const isTrueAnswer = !!Math.floor(Math.random() * 2);
+    let randIndex;
+    do {
+      randIndex = Math.floor(Math.random() * words.length);
+    } while (randIndex === wordsIndex);
+
+    setItemEn(words[wordsIndex]);
+    const ru = isTrueAnswer ? words[wordsIndex] : words[randIndex];
+    setItemRus(ru);
   }
 
   async function loadWords() {
@@ -65,7 +70,7 @@ export default function SprintGameRound() {
     } else {
       newWords = await wordApi.getWords(currentGroup, page);
     }
-    setWords(newWords);
+    setWords(shuffleWord(newWords));
   }
 
   useEffect(() => {
@@ -78,15 +83,25 @@ export default function SprintGameRound() {
 
   useEffect(() => {
     if (seconds > 0) {
-      setTimeout(setSeconds, 1000, seconds - 1);
+      const id = setTimeout(setSeconds, 1000, seconds - 1);
+      setTimeoutId(id);
     } else {
       setFinish(true);
-      setStaticGame();
-      recordWordsStatics(auth, 'sprint', results);
     }
   }, [seconds]);
 
+  useEffect(() => {
+    if (isFinish) {
+      setStaticGame();
+      recordWordsStatics(auth, 'sprint', results);
+      setWordsIndex(0);
+      clearTimeout(timeoutId);
+      setSeconds(0);
+    }
+  }, [isFinish]);
+
   function isItTrue(ans: boolean) {
+    setWordsIndex(wordsIndex + 1);
     let answer = false;
     if ((itemEn === itemRus && ans) || (itemEn !== itemRus && !ans)) {
       answer = true;
@@ -106,10 +121,16 @@ export default function SprintGameRound() {
       results.set(itemEn as Word, { correct: +answer, incorrect: +!answer });
     }
     allResults.push(answer);
-    renderWord();
+
+    if (wordsIndex < words.length) {
+      renderWord();
+    } else {
+      setFinish(true);
+    }
   }
 
   const startAgain = () => {
+    loadWords();
     setFinish(false);
     setAllResults([]);
     setResults(new Map());

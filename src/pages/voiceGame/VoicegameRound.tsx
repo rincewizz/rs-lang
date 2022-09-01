@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react';
 import './voicegameRound.scss';
 import { Answer, IGameResults, Word } from '../../types';
@@ -7,12 +8,12 @@ import useAuthStore from '../../services/storage/Auth';
 import useGamesStore from '../../services/storage/Games';
 
 import { AUDIO_HOST } from '../../services/env';
-import { calcStatistic, recordWordsStatics, updateStaticGame } from '../../utils';
+import { calcStatistic, recordWordsStatics, shuffleWord, updateStaticGame } from '../../utils';
 import GameResults from '../../components/shared/GameResults';
 
 export default function VoiceGameRound() {
   const [words, setWords] = useState<Word[]>([]);
-  const [pageList, setList] = useState<Word[]>([]);
+  const [pageList, setPageList] = useState<Word[]>([]);
   const [word, setWord] = useState<Word>();
   const [result, setResult] = useState<Answer[]>([]);
   const [results, setResults] = useState<IGameResults>(new Map());
@@ -22,6 +23,8 @@ export default function VoiceGameRound() {
   const [isDisabledAudio, setDisableAudio] = useState<boolean>();
   const [isDisabledNext, setDisableNext] = useState<boolean>();
   const [itemColorClass, setItemColorClass] = useState<string>();
+
+  const [wordsIndex, setWordsIndex] = useState<number>(0);
 
   const auth = useAuthStore((state) => state.auth);
 
@@ -35,6 +38,17 @@ export default function VoiceGameRound() {
       updateStaticGame(auth.token, auth.userId, calcInfo, 'Voice');
     }
   }
+
+  const generateList = () => {
+    if (words.length === 0) return [];
+    const randomWords = shuffleWord(words.filter((el) => el !== words[wordsIndex])).slice(0, 3);
+    const list = shuffleWord(randomWords.concat(words[wordsIndex]));
+
+    setPageList(list);
+    setDisableAudio(false);
+    setDisableNext(true);
+    return list;
+  };
 
   async function loadWords() {
     let newWords;
@@ -60,8 +74,8 @@ export default function VoiceGameRound() {
       newWords = await wordApi.getWords(currentGroup, page);
     }
 
-    setWords(newWords);
-    setList(newWords.slice(0, 4));
+    setWords(shuffleWord(newWords));
+
     setClick(false);
     setDisableAudio(false);
     setDisableNext(true);
@@ -70,6 +84,10 @@ export default function VoiceGameRound() {
   useEffect(() => {
     loadWords();
   }, []);
+
+  useEffect(() => {
+    generateList();
+  }, [words]);
 
   function isRightAnswer(ans: Word) {
     const obj: Answer = { name: word as Word, answer: false };
@@ -95,7 +113,7 @@ export default function VoiceGameRound() {
       results.set(word as Word, { correct: +obj.answer, incorrect: +!obj.answer });
     }
 
-    if (result.length === 20) {
+    if (wordsIndex >= words.length) {
       const arr: Answer[] = [];
       result.forEach((el) => {
         let prop = false;
@@ -117,17 +135,9 @@ export default function VoiceGameRound() {
     setDisableNext(false);
   }
 
-  const updateList = () => {
-    const options = words.sort(() => Math.random() - 0.5).slice(0, 4);
-    setList(options);
-    setDisableAudio(false);
-    setDisableNext(true);
-    return options;
-  };
-
   function renderList(el: Word) {
     return (
-      <li className="answer-item" key={el.id}>
+      <li className="answer-item" key={el.id || el._id}>
         <button
           type="button"
           className="answer-item__button"
@@ -141,14 +151,17 @@ export default function VoiceGameRound() {
   }
 
   function playAudio() {
-    const num = Math.round(0 - 0.5 + Math.random() * (3 - 0 + 1));
-    new Audio(AUDIO_HOST + pageList[num].audio).play();
-    setWord(pageList[num]);
+    // const num = Math.round(0 - 0.5 + Math.random() * (3 - 0 + 1));
+    new Audio(AUDIO_HOST + words[wordsIndex].audio).play();
+    setWord(words[wordsIndex]);
+    setWordsIndex(wordsIndex + 1);
     setClick(true);
     setDisableAudio(true);
   }
 
   const startAgain = () => {
+    loadWords();
+    setWordsIndex(0);
     setFinish('');
     setResult([]);
     setAllResults([]);
@@ -174,7 +187,7 @@ export default function VoiceGameRound() {
           type="button"
           className="next-button"
           disabled={isDisabledNext}
-          onClick={() => updateList()}
+          onClick={() => generateList()}
         >
           Next
         </button>
