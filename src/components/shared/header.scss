@@ -15,19 +15,27 @@ $shadow: 1px 3px 4px rgb(0 0 0 / 20%);
     align-self: flex-end;
   }
   h1 {
-    font-family: 'Baloo Bhai';
+    font-family: 'Balsamiq';
     font-weight: 700;
-    font-size: 36px;
+    font-size: 30px;
     line-height: 57px;
+    margin-bottom: 0;
   }
   p {
     font-family: 'Roboto';
     font-weight: 400;
     font-size: 16px;
-    line-height: 24px;
+    margin: 0;
+    text-align: center;
   }
 }
-
+.header__welcome{
+  max-width:250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 .header__img {
   width: 160px;
 }
@@ -38,16 +46,29 @@ $shadow: 1px 3px 4px rgb(0 0 0 / 20%);
     ;
   }
 }
-
-.logo-user {
+.logo {
   border: transparent;
   width: 70px;
-  height: 70px;  
+  height: 70px;
+
   &:hover {
     border-radius: 50%;
     box-shadow: $shadow;
   }
 }
+@media screen and (max-width: 520px) {
+  .logo {
+    width: 20vw;
+    height: 20vw;
+    transition: all 0.5s ease;
+    ;
+  }
+}
+
+.logo-home {
+  background: url('../../assets/img/logo.svg')0 0 / 100% auto no-repeat;
+}
+
 .logout {
   background: url('../../assets/img/logout.svg')0 0 / 100% auto no-repeat;
 }
@@ -55,12 +76,5 @@ $shadow: 1px 3px 4px rgb(0 0 0 / 20%);
 .lognin {
   background: url('../../assets/img/user.svg')0 0 / 100% auto no-repeat;
 }
-.logo img {
-  width: 70px;
-  padding: 3px;
-  &:hover {
-      border-radius: 50%;
-      box-shadow: 1px 3px 4px rgb(0 0 0 / 20%);
-    }
-}
+
 
