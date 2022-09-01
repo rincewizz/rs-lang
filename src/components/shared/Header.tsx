@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import guy from '../../assets/img/guy.svg';
-/* import logo from '../../assets/img/logo.svg'; */
 import './header.scss';
 import useAuthStore from '../../services/storage/Auth';
 import Form from '../feature/Form';
@@ -24,7 +24,7 @@ function Header() {
     <>
       <div className="wrap wrap-header">
         <header className="header">
-          <button className="logo logo-home" type="button" aria-label="На главную" />
+          <Link className="logo logo-home" to="/" />
           <div className="header__welcome">
             <h1>RSLang</h1>
             <p>Приложение для изучения английского языка</p>
