@@ -23,6 +23,7 @@ export interface WordOptional {
     voice: IUserWordStaticstic;
   };
   new?: 'new' | 'old';
+  rightAnsvers?: number;
 }
 
 export interface UserWordOptions {
