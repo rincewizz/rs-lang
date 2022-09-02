@@ -8,7 +8,13 @@ import useAuthStore from '../../services/storage/Auth';
 import useGamesStore from '../../services/storage/Games';
 
 import { AUDIO_HOST } from '../../services/env';
-import { calcStatistic, recordWordsStatics, shuffleWord, updateStaticGame } from '../../utils';
+import {
+  addMoreWords,
+  calcStatistic,
+  recordWordsStatics,
+  shuffleWord,
+  updateStaticGame,
+} from '../../utils';
 import GameResults from '../../components/shared/GameResults';
 
 export default function VoiceGameRound() {
@@ -70,6 +76,11 @@ export default function VoiceGameRound() {
       });
 
       newWords = agrwords.paginatedResults;
+
+      if (currentPage !== null) {
+        newWords = newWords.filter((el) => el.userWord?.optional?.learned !== true);
+        newWords = await addMoreWords(newWords, auth, currentGroup, page - 1);
+      }
     } else {
       newWords = await wordApi.getWords(currentGroup, page);
     }
@@ -151,7 +162,6 @@ export default function VoiceGameRound() {
   }
 
   function playAudio() {
-    // const num = Math.round(0 - 0.5 + Math.random() * (3 - 0 + 1));
     new Audio(AUDIO_HOST + words[wordsIndex].audio).play();
     setWord(words[wordsIndex]);
     setWordsIndex(wordsIndex + 1);
