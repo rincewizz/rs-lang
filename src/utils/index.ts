@@ -188,3 +188,12 @@ export async function recordWordsStatics(
     else await usersWordsApi.createUserWord(apiParam);
   }
 }
+
+export function shuffleWord(wordsArr: Word[]) {
+  const shuffleArr = wordsArr;
+  for (let i = shuffleArr.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffleArr[i], shuffleArr[j]] = [shuffleArr[j], shuffleArr[i]];
+  }
+  return shuffleArr;
+}
