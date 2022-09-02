@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import './voicegameRound.scss';
-import { Link } from 'react-router-dom';
-import { Answer, Word } from '../../types';
+import { Answer, IGameResults, Word } from '../../types';
 import { wordApi } from '../../services/api/Words';
-import FinishGame from './VoicegameFinish';
 import { usersAggregatedWordsApi } from '../../services/api/UsersAggregatedWords';
 import useAuthStore from '../../services/storage/Auth';
 import useGamesStore from '../../services/storage/Games';
 
-import HOST from '../../services/env';
-import { calcStatistic, updateStaticGame } from '../../utils';
+import { AUDIO_HOST } from '../../services/env';
+import { calcStatistic, recordWordsStatics, updateStaticGame } from '../../utils';
+import GameResults from '../../components/shared/GameResults';
 
-function addAnswer() {
+export default function VoiceGameRound() {
   const [words, setWords] = useState<Word[]>([]);
   const [pageList, setList] = useState<Word[]>([]);
   const [word, setWord] = useState<Word>();
   const [result, setResult] = useState<Answer[]>([]);
+  const [results, setResults] = useState<IGameResults>(new Map());
   const [allResults, setAllResults] = useState<boolean[]>([]);
   const [click, setClick] = useState<boolean>();
   const [isFinish, setFinish] = useState<string>();
@@ -26,6 +26,7 @@ function addAnswer() {
   const auth = useAuthStore((state) => state.auth);
 
   const isAuth = auth.message === 'Authenticated';
+  const currentPage = useGamesStore((state) => state.page);
   const currentGroup = useGamesStore((state) => state.group);
 
   async function setStaticGame() {
@@ -35,19 +36,28 @@ function addAnswer() {
     }
   }
 
-  async function loadWords(group = 0, page = 0) {
+  async function loadWords() {
     let newWords;
+    let page = currentPage;
+    if (currentPage === null) {
+      const min = Math.ceil(0);
+      const max = Math.floor(29);
+      page = Math.floor(Math.random() * (max - min + 1)) + min;
+    } else {
+      page = currentPage;
+    }
     if (isAuth && auth.token && auth.userId) {
       const agrwords = await usersAggregatedWordsApi.getAggregatedWords({
         token: auth.token,
         userId: auth.userId,
-        group,
+        group: currentGroup,
         page,
         perPage: 20,
       });
+
       newWords = agrwords.paginatedResults;
     } else {
-      newWords = await wordApi.getWords(group, page);
+      newWords = await wordApi.getWords(currentGroup, page);
     }
 
     setWords(newWords);
@@ -66,7 +76,7 @@ function addAnswer() {
   }
 
   useEffect(() => {
-    loadWords(currentGroup);
+    loadWords();
   }, []);
 
   useEffect(() => {
@@ -92,6 +102,15 @@ function addAnswer() {
     result.push(obj);
     setResult(result);
     allResults.push(obj.answer);
+
+    const res = results.get(word as Word);
+    if (res) {
+      if (obj.answer) res.correct += 1;
+      else res.incorrect += 1;
+    } else {
+      results.set(word as Word, { correct: +obj.answer, incorrect: +!obj.answer });
+    }
+
     if (result.length === 20) {
       const arr: Answer[] = [];
       result.forEach((el) => {
@@ -107,6 +126,7 @@ function addAnswer() {
       });
 
       setResult(arr);
+      recordWordsStatics(auth, 'voice', results);
       setFinish('finish');
       setStaticGame();
     }
@@ -136,59 +156,46 @@ function addAnswer() {
     );
   }
 
-  function startAgain() {
+  function playAudio() {
+    const num = Math.round(0 - 0.5 + Math.random() * (3 - 0 + 1));
+    new Audio(AUDIO_HOST + pageList[num].audio).play();
+    setWord(pageList[num]);
+    setClick(true);
+    setDisableAudio(true);
+  }
+
+  const startAgain = () => {
     setFinish('');
     setResult([]);
     setAllResults([]);
+    setResults(new Map());
     setDisableAudio(false);
     setDisableNext(true);
-  }
+  };
 
-  function showFinish() {
-    return (
-      <div className="finish-game">
-        <Link to="/" className="close">
-          Close
-        </Link>
-        <button className="start-again" type="button" onClick={() => startAgain()}>
-          Start again
-        </button>
-        <table className="score-table">
-          <tbody>{result.map((el) => FinishGame(el))}</tbody>
-        </table>
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <button
-        className="audio-button"
-        type="button"
-        disabled={isDisabledAudio}
-        onClick={() => playAudio()}
-      >
-        Play
-      </button>
-
-      <ul className={`answer-list ${itemColorClass}`}>{pageList.map((el) => renderList(el))}</ul>
-      <button
-        type="button"
-        className="next-button"
-        disabled={isDisabledNext}
-        onClick={() => updateList()}
-      >
-        Next
-      </button>
-      {isFinish === 'finish' ? showFinish() : ''}
-    </>
-  );
-}
-
-export default function VoiceGameRound() {
   return (
     <div className="round-container">
-      <div className="game-container">{addAnswer()}</div>
+      <div className="game-container">
+        <button
+          className="audio-button"
+          type="button"
+          disabled={isDisabledAudio}
+          onClick={() => playAudio()}
+        >
+          Play
+        </button>
+
+        <ul className={`answer-list ${itemColorClass}`}>{pageList.map((el) => renderList(el))}</ul>
+        <button
+          type="button"
+          className="next-button"
+          disabled={isDisabledNext}
+          onClick={() => updateList()}
+        >
+          Next
+        </button>
+        {isFinish && <GameResults results={results} startAgainClick={startAgain} />}
+      </div>
     </div>
   );
 }

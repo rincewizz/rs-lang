@@ -6,9 +6,10 @@ import './wordcard.scss';
 import soundIco from '../../assets/img/sound.svg';
 import useAuthStore from '../../services/storage/Auth';
 import { usersWordsApi } from '../../services/api/UsersWords';
-import HOST from '../../services/env';
+import { AUDIO_HOST, IMAGE_HOST } from '../../services/env';
 import useTextbookStore from '../../services/storage/Textbook';
 import useWordsStore from '../../services/storage/Words';
+import { UserWordRequest } from '../../utils';
 
 export default function WordGroup(props: IWordCardProps) {
   const { word, playStatus, setPlayStatus, learnedCount, setLearnedCount } = props;
@@ -23,8 +24,8 @@ export default function WordGroup(props: IWordCardProps) {
   const [audioIndex, setAudioIndex] = useState(-1);
 
   const auth = useAuthStore((state) => state.auth);
+  const [isAuth, setIsAuth] = useState(auth.message === 'Authenticated');
 
-  const isAuth = auth.message === 'Authenticated';
   const [isDifficult, setDifficult] = useState(word.userWord?.difficulty === 'difficult');
   const [isLearned, setLearned] = useState(word.userWord?.optional?.learned === true);
   const [isMarkLearned, setMarkLearned] = useState(isLearned || isDifficult);
@@ -37,7 +38,7 @@ export default function WordGroup(props: IWordCardProps) {
 
     if (audioIndex >= 0 && audioIndex < audioArr.length) {
       setPlayStatus(true);
-      audio.src = HOST + audioArr[audioIndex];
+      audio.src = AUDIO_HOST + audioArr[audioIndex];
 
       audio.addEventListener('canplay', play);
     } else {
@@ -52,27 +53,7 @@ export default function WordGroup(props: IWordCardProps) {
   };
 
   useEffect(() => {
-    if (isDifficult) {
-      setLearned(false);
-    }
-  }, [isDifficult]);
-
-  useEffect(() => {
-    if (isLearned) {
-      setDifficult(false);
-    }
-  }, [isLearned]);
-
-  useEffect(() => {
-    setMarkLearned(isDifficult || isLearned);
-
-    if (currentGroup === 6 && (!isDifficult || isLearned)) {
-      setWords(words.filter((el) => el._id !== word._id));
-    }
-  }, [isLearned, isDifficult]);
-
-  useEffect(() => {
-    if (isLoaded) {
+    if (isAuth && isLoaded) {
       if (isMarkLearned) {
         setLearnedCount(learnedCount + 1);
       } else {
@@ -83,44 +64,58 @@ export default function WordGroup(props: IWordCardProps) {
     }
   }, [isMarkLearned]);
 
+  useEffect(() => {
+    setIsAuth(auth.message === 'Authenticated');
+  }, [auth]);
+
+  useEffect(() => {
+    setDifficult(word.userWord?.difficulty === 'difficult');
+    setLearned(word.userWord?.optional?.learned === true);
+  }, [word]);
+
+  useEffect(() => {
+    if (isDifficult && isAuth) {
+      setLearned(false);
+    }
+  }, [isDifficult]);
+
+  useEffect(() => {
+    if (isLearned && isAuth) {
+      setDifficult(false);
+    }
+  }, [isLearned]);
+
+  useEffect(() => {
+    if (currentGroup === 6 && (!isDifficult || isLearned)) {
+      setWords(words.filter((el) => el._id !== word._id));
+    }
+  }, [isLearned, isDifficult]);
+
   const handleDifficultLearnedBtnClick = async (button: 'difficult' | 'learned') => {
     if (auth.token && auth.userId && word._id) {
       let response;
-      let options;
 
+      const userWordRequest = new UserWordRequest(word);
       if (button === 'difficult') {
-        options = {
-          difficulty: isDifficult ? 'none' : 'difficult',
-          optional: {
-            learned: false,
-          },
-        };
+        userWordRequest.difficulty = isDifficult ? 'none' : 'difficult';
+        userWordRequest.learned = false;
       } else {
-        options = {
-          difficulty: 'none',
-          optional: {
-            learned: !isLearned,
-          },
-        };
+        userWordRequest.difficulty = 'none';
+        userWordRequest.learned = !isLearned;
       }
       const req = {
         token: auth.token,
         userId: auth.userId,
         wordId: word._id,
-        request: options,
+        request: userWordRequest.request,
       };
 
       if (word.userWord) {
         response = await usersWordsApi.updateUserWord(req);
-      }
-
-      if (!word.userWord) {
+      } else {
         response = await usersWordsApi.createUserWord(req);
-        word.userWord = {
-          difficulty: response.difficulty,
-          optional: response.optional,
-        };
       }
+      word.userWord = userWordRequest.request;
 
       if (button === 'difficult') {
         const difficultStatus = response?.difficulty === 'difficult';
@@ -131,16 +126,21 @@ export default function WordGroup(props: IWordCardProps) {
         const learnedStatus = response?.optional?.learned === true;
         setLearned(learnedStatus);
       }
+
+      setMarkLearned(response?.difficulty === 'difficult' || response?.optional?.learned === true);
     }
   };
 
   return (
     <div
       className={`word-card word-card--${currentGroup} ${
-        isDifficult ? 'word-card--difficult' : ''
-      } ${isLearned ? 'word-card--learned' : ''}`}
+        isDifficult && isAuth ? 'word-card--difficult' : ''
+      } ${isLearned && isAuth ? 'word-card--learned' : ''}`}
     >
-      <div className="word-card__img" style={{ backgroundImage: `url(${HOST + word.image})` }} />
+      <div
+        className="word-card__img"
+        style={{ backgroundImage: `url(${IMAGE_HOST + word.image})` }}
+      />
 
       <div className="word-card__text">
         <div className="word-card__word">
@@ -161,20 +161,25 @@ export default function WordGroup(props: IWordCardProps) {
         </div>
         {isAuth && (
           <>
-            <button
-              type="button"
-              className={`word-card__btn ${isDifficult ? 'word-card__btn--active' : ''}`}
-              onClick={() => handleDifficultLearnedBtnClick('difficult')}
-            >
-              {isDifficult ? '-' : '+'} Сложное слово
-            </button>
-            <button
-              type="button"
-              className={`word-card__btn ${isLearned ? 'word-card__btn--active' : ''}`}
-              onClick={() => handleDifficultLearnedBtnClick('learned')}
-            >
-              {isLearned ? '-' : '+'} Изученное слово
-            </button>
+            <div className="word-card__word-status">
+              <button
+                type="button"
+                className={`word-card__btn ${isDifficult ? 'word-card__btn--active' : ''}`}
+                onClick={() => handleDifficultLearnedBtnClick('difficult')}
+              >
+                {isDifficult && isAuth ? '-' : '+'} Сложное слово
+              </button>
+              <button
+                type="button"
+                className={`word-card__btn ${isLearned ? 'word-card__btn--active' : ''}`}
+                onClick={() => handleDifficultLearnedBtnClick('learned')}
+              >
+                {isLearned && isAuth ? '-' : '+'} Изученное слово
+              </button>
+              {word.userWord?.optional?.new === 'new' && (
+                <div className="word-card__btn word-card__new-word">Новое слово</div>
+              )}
+            </div>
             <div className="word-card__stats word-stats">
               <div className="word-stats__item word-stats__item--sprint">
                 <div className="word-stats__title">Sprint</div>

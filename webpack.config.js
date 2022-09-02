@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const { merge } = require('webpack-merge');
+const Dotenv = require('dotenv-webpack');
 
 const baseConfig = module.exports = {
   context: path.resolve(__dirname, 'src'),
@@ -74,6 +75,7 @@ const baseConfig = module.exports = {
       extensions: ["js", "jsx", "ts", "tsx"],
       exclude: 'node_modules'
     }),
+    new Dotenv(),
   ],
   };
 
