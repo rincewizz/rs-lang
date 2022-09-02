@@ -57,9 +57,25 @@ function addAnswer() {
     setDisableNext(true);
   }
 
+  function playAudio() {
+    const num = Math.round(0 - 0.5 + Math.random() * (3 - 0 + 1));
+    new Audio(HOST + pageList[num].audio).play();
+    setWord(pageList[num]);
+    setClick(true);
+    setDisableAudio(true);
+  }
+
   useEffect(() => {
     loadWords(currentGroup);
   }, []);
+
+  useEffect(() => {
+    window.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        playAudio();
+      }
+    });
+  }, [pageList]);
 
   function isRightAnswer(ans: Word) {
     const obj: Answer = { name: word as Word, answer: false };
@@ -118,14 +134,6 @@ function addAnswer() {
         </button>
       </li>
     );
-  }
-
-  function playAudio() {
-    const num = Math.round(0 - 0.5 + Math.random() * (3 - 0 + 1));
-    new Audio(HOST + pageList[num].audio).play();
-    setWord(pageList[num]);
-    setClick(true);
-    setDisableAudio(true);
   }
 
   function startAgain() {
