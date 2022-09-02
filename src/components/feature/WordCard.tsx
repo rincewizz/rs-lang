@@ -103,6 +103,8 @@ export default function WordGroup(props: IWordCardProps) {
         userWordRequest.difficulty = 'none';
         userWordRequest.learned = !isLearned;
       }
+      userWordRequest.rightAnsvers = 0;
+
       const req = {
         token: auth.token,
         userId: auth.userId,

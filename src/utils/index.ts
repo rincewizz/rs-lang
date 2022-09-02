@@ -100,6 +100,7 @@ export class UserWordRequest {
     return {
       learned: false,
       gamesStatistic: UserWordRequest.getNewGamesStatistic(),
+      rightAnsvers: 0,
     };
   }
 
@@ -142,6 +143,10 @@ export class UserWordRequest {
   set voiceGameStatistic(val: IUserWordStaticstic) {
     this.setGamesStatistic('voice', val);
   }
+
+  set rightAnsvers(val: number) {
+    if (this.request.optional) this.request.optional.rightAnsvers = val;
+  }
 }
 export async function recordWordsStatics(
   auth: Partial<IAuth>,
@@ -154,6 +159,25 @@ export async function recordWordsStatics(
     const userWordRequest = new UserWordRequest(word);
     userWordRequest[`${game}GameStatistic`] = answer;
     userWordRequest.new = word?.userWord?.optional?.new === undefined ? 'new' : 'old';
+
+    let rightAnswerCount = userWordRequest.request.optional?.rightAnsvers ?? 0;
+    if ((gameResults.get(word)?.incorrect ?? 0) > 0) {
+      userWordRequest.learned = false;
+      userWordRequest.rightAnsvers = 0;
+    } else {
+      rightAnswerCount += gameResults.get(word)?.correct ?? 0;
+      userWordRequest.rightAnsvers = rightAnswerCount;
+
+      if (
+        rightAnswerCount >= 5 ||
+        (userWordRequest.request.difficulty !== 'difficult' && rightAnswerCount >= 3)
+      ) {
+        userWordRequest.learned = true;
+        userWordRequest.difficulty = 'none';
+        userWordRequest.rightAnsvers = 0;
+      }
+    }
+
     const apiParam = {
       token: auth.token,
       userId: auth.userId,
@@ -163,4 +187,13 @@ export async function recordWordsStatics(
     if (word.userWord) await usersWordsApi.updateUserWord(apiParam);
     else await usersWordsApi.createUserWord(apiParam);
   }
+}
+
+export function shuffleWord(wordsArr: Word[]) {
+  const shuffleArr = wordsArr;
+  for (let i = shuffleArr.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffleArr[i], shuffleArr[j]] = [shuffleArr[j], shuffleArr[i]];
+  }
+  return shuffleArr;
 }
