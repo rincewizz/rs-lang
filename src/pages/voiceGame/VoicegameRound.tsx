@@ -69,7 +69,7 @@ export default function VoiceGameRound() {
 
   function playAudio() {
     const num = Math.round(0 - 0.5 + Math.random() * (3 - 0 + 1));
-    new Audio(HOST + pageList[num].audio).play();
+    new Audio(AUDIO_HOST + pageList[num].audio).play();
     setWord(pageList[num]);
     setClick(true);
     setDisableAudio(true);
@@ -154,14 +154,6 @@ export default function VoiceGameRound() {
         </button>
       </li>
     );
-  }
-
-  function playAudio() {
-    const num = Math.round(0 - 0.5 + Math.random() * (3 - 0 + 1));
-    new Audio(AUDIO_HOST + pageList[num].audio).play();
-    setWord(pageList[num]);
-    setClick(true);
-    setDisableAudio(true);
   }
 
   const startAgain = () => {
