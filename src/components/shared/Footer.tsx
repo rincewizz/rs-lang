@@ -5,7 +5,7 @@ import './footer.scss';
 
 function Footer() {
   return (
-    <div className="wrap wrap-footer">
+    <div className="container container-footer">
       <footer className="footer">
         <a href="https://rs.school/js/">
           <img src={rssLogo} className="footer__logo-rss" alt="logo rs school" />
