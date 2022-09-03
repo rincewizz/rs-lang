@@ -7,7 +7,13 @@ import { usersAggregatedWordsApi } from '../../services/api/UsersAggregatedWords
 import useAuthStore from '../../services/storage/Auth';
 import useGamesStore from '../../services/storage/Games';
 import GameResults from '../../components/shared/GameResults';
-import { calcStatistic, recordWordsStatics, shuffleWord, updateStaticGame } from '../../utils';
+import {
+  addMoreWords,
+  calcStatistic,
+  recordWordsStatics,
+  shuffleWord,
+  updateStaticGame,
+} from '../../utils';
 
 export default function SprintGameRound() {
   const [words, setWords] = useState<Word[]>([]);
@@ -36,11 +42,17 @@ export default function SprintGameRound() {
 
   function renderWord() {
     if (words.length === 0) return;
-    const isTrueAnswer = !!Math.floor(Math.random() * 2);
-    let randIndex;
-    do {
-      randIndex = Math.floor(Math.random() * words.length);
-    } while (randIndex === wordsIndex);
+    if (wordsIndex >= words.length) {
+      setFinish(true);
+      return;
+    }
+    const isTrueAnswer = words.length > 1 ? !!Math.floor(Math.random() * 2) : true;
+    let randIndex = 0;
+    if (!isTrueAnswer) {
+      do {
+        randIndex = Math.floor(Math.random() * words.length);
+      } while (randIndex === wordsIndex);
+    }
 
     setItemEn(words[wordsIndex]);
     const ru = isTrueAnswer ? words[wordsIndex] : words[randIndex];
@@ -67,6 +79,11 @@ export default function SprintGameRound() {
         perPage: 20,
       });
       newWords = agrwords.paginatedResults;
+
+      if (currentPage !== null) {
+        newWords = newWords.filter((el) => el.userWord?.optional?.learned !== true);
+        newWords = await addMoreWords(newWords, auth, currentGroup, page - 1);
+      }
     } else {
       newWords = await wordApi.getWords(currentGroup, page);
     }
@@ -79,7 +96,7 @@ export default function SprintGameRound() {
 
   useEffect(() => {
     renderWord();
-  }, [words]);
+  }, [words, wordsIndex]);
 
   useEffect(() => {
     if (seconds > 0) {
@@ -121,12 +138,6 @@ export default function SprintGameRound() {
       results.set(itemEn as Word, { correct: +answer, incorrect: +!answer });
     }
     allResults.push(answer);
-
-    if (wordsIndex < words.length) {
-      renderWord();
-    } else {
-      setFinish(true);
-    }
   }
 
   const startAgain = () => {
