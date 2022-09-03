@@ -6,7 +6,7 @@ import { wordApi } from '../../services/api/Words';
 import { usersAggregatedWordsApi } from '../../services/api/UsersAggregatedWords';
 import useAuthStore from '../../services/storage/Auth';
 import useGamesStore from '../../services/storage/Games';
-
+import sound from '../../assets/img/soundSprint.svg';
 import { AUDIO_HOST } from '../../services/env';
 import { calcStatistic, recordWordsStatics, shuffleWord, updateStaticGame } from '../../utils';
 import GameResults from '../../components/shared/GameResults';
@@ -20,7 +20,6 @@ export default function VoiceGameRound() {
   const [allResults, setAllResults] = useState<boolean[]>([]);
   const [click, setClick] = useState<boolean>();
   const [isFinish, setFinish] = useState<string>();
-  const [isDisabledAudio, setDisableAudio] = useState<boolean>();
   const [isDisabledNext, setDisableNext] = useState<boolean>();
   const [itemColorClass, setItemColorClass] = useState<string>();
 
@@ -39,14 +38,22 @@ export default function VoiceGameRound() {
     }
   }
 
+  function playAudio() {
+    // const num = Math.round(0 - 0.5 + Math.random() * (3 - 0 + 1));
+    new Audio(AUDIO_HOST + words[wordsIndex].audio).play();
+    setWord(words[wordsIndex]);
+    setWordsIndex(wordsIndex + 1);
+    setClick(true);
+  }
+
   const generateList = () => {
     if (words.length === 0) return [];
     const randomWords = shuffleWord(words.filter((el) => el !== words[wordsIndex])).slice(0, 3);
     const list = shuffleWord(randomWords.concat(words[wordsIndex]));
 
     setPageList(list);
-    setDisableAudio(false);
     setDisableNext(true);
+    playAudio();
     return list;
   };
 
@@ -77,7 +84,6 @@ export default function VoiceGameRound() {
     setWords(shuffleWord(newWords));
 
     setClick(false);
-    setDisableAudio(false);
     setDisableNext(true);
   }
 
@@ -135,6 +141,23 @@ export default function VoiceGameRound() {
     setDisableNext(false);
   }
 
+  useEffect(() => {
+    const onKeypress = (e: KeyboardEvent) => {
+      if (Number(e.key) < 5) {
+        isRightAnswer(pageList[Number(e.key) - 1]);
+      }
+      if (e.key === 'Enter' && !isDisabledNext) {
+        generateList();
+      }
+    };
+
+    document.addEventListener('keypress', onKeypress);
+
+    return () => {
+      document.removeEventListener('keypress', onKeypress);
+    };
+  });
+
   function renderList(el: Word) {
     return (
       <li className="answer-item" key={el.id || el._id}>
@@ -144,19 +167,10 @@ export default function VoiceGameRound() {
           onClick={() => (click === true ? isRightAnswer(el) : 0)}
           onKeyDown={() => (click === true ? isRightAnswer(el) : 0)}
         >
-          {el.wordTranslate}
+          {`${pageList.indexOf(el) + 1}: ${el.wordTranslate}`}
         </button>
       </li>
     );
-  }
-
-  function playAudio() {
-    // const num = Math.round(0 - 0.5 + Math.random() * (3 - 0 + 1));
-    new Audio(AUDIO_HOST + words[wordsIndex].audio).play();
-    setWord(words[wordsIndex]);
-    setWordsIndex(wordsIndex + 1);
-    setClick(true);
-    setDisableAudio(true);
   }
 
   const startAgain = () => {
@@ -166,21 +180,13 @@ export default function VoiceGameRound() {
     setResult([]);
     setAllResults([]);
     setResults(new Map());
-    setDisableAudio(false);
     setDisableNext(true);
   };
 
   return (
     <div className="round-container">
       <div className="game-container">
-        <button
-          className="audio-button"
-          type="button"
-          disabled={isDisabledAudio}
-          onClick={() => playAudio()}
-        >
-          Play
-        </button>
+        <img className="sound-picture" src={sound} alt="sound" />
 
         <ul className={`answer-list ${itemColorClass}`}>{pageList.map((el) => renderList(el))}</ul>
         <button
