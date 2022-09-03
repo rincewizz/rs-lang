@@ -1,5 +1,4 @@
-$shadow-grey: 1px 3px 4px rgb(0 0 0 / 10%);
-$shadow: 1px 3px 4px rgb(0 0 0 / 20%);
+@import '../../assets/styles/const.scss';
 .header {
   display: flex;
   align-items: center;
@@ -41,7 +40,7 @@ $shadow: 1px 3px 4px rgb(0 0 0 / 20%);
   justify-content: center;
 }
 .header__img {
-  width: 160px;
+  width: 143px;
 }
 @media screen and (max-width: 710px) {
   .header__img {
