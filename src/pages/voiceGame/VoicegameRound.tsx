@@ -6,7 +6,7 @@ import { wordApi } from '../../services/api/Words';
 import { usersAggregatedWordsApi } from '../../services/api/UsersAggregatedWords';
 import useAuthStore from '../../services/storage/Auth';
 import useGamesStore from '../../services/storage/Games';
-
+import sound from '../../assets/img/soundSprint.svg';
 import { AUDIO_HOST } from '../../services/env';
 import {
   addMoreWords,
@@ -21,12 +21,10 @@ export default function VoiceGameRound() {
   const [words, setWords] = useState<Word[]>([]);
   const [pageList, setPageList] = useState<Word[]>([]);
   const [word, setWord] = useState<Word>();
-  const [result, setResult] = useState<Answer[]>([]);
   const [results, setResults] = useState<IGameResults>(new Map());
   const [allResults, setAllResults] = useState<boolean[]>([]);
   const [click, setClick] = useState<boolean>();
   const [isFinish, setFinish] = useState<string>();
-  const [isDisabledAudio, setDisableAudio] = useState<boolean>();
   const [isDisabledNext, setDisableNext] = useState<boolean>();
   const [itemColorClass, setItemColorClass] = useState<string>();
 
@@ -40,9 +38,16 @@ export default function VoiceGameRound() {
 
   async function setStaticGame() {
     if (isAuth && auth.token && auth.userId) {
-      const calcInfo = calcStatistic(result.length, allResults);
+      const calcInfo = await calcStatistic(results, allResults);
       updateStaticGame(auth.token, auth.userId, calcInfo, 'Voice');
     }
+  }
+
+  function playAudio() {
+    new Audio(AUDIO_HOST + words[wordsIndex].audio).play();
+    setWord(words[wordsIndex]);
+    setWordsIndex(wordsIndex + 1);
+    setClick(true);
   }
 
   const generateList = () => {
@@ -51,8 +56,8 @@ export default function VoiceGameRound() {
     const list = shuffleWord(randomWords.concat(words[wordsIndex]));
 
     setPageList(list);
-    setDisableAudio(false);
     setDisableNext(true);
+    playAudio();
     return list;
   };
 
@@ -88,7 +93,6 @@ export default function VoiceGameRound() {
     setWords(shuffleWord(newWords));
 
     setClick(false);
-    setDisableAudio(false);
     setDisableNext(true);
   }
 
@@ -112,8 +116,7 @@ export default function VoiceGameRound() {
     setTimeout(() => {
       setItemColorClass('');
     }, 1000);
-    result.push(obj);
-    setResult(result);
+
     allResults.push(obj.answer);
 
     const res = results.get(word as Word);
@@ -125,26 +128,29 @@ export default function VoiceGameRound() {
     }
 
     if (wordsIndex >= words.length) {
-      const arr: Answer[] = [];
-      result.forEach((el) => {
-        let prop = false;
-        arr.forEach((elm) => {
-          if (elm.name.word === el.name.word) {
-            prop = true;
-          }
-        });
-        if (!prop) {
-          arr.push(el);
-        }
-      });
-
-      setResult(arr);
       recordWordsStatics(auth, 'voice', results);
       setFinish('finish');
       setStaticGame();
     }
     setDisableNext(false);
   }
+
+  useEffect(() => {
+    const onKeypress = (e: KeyboardEvent) => {
+      if (Number(e.key) < 5) {
+        isRightAnswer(pageList[Number(e.key) - 1]);
+      }
+      if (e.key === 'Enter' && !isDisabledNext) {
+        generateList();
+      }
+    };
+
+    document.addEventListener('keypress', onKeypress);
+
+    return () => {
+      document.removeEventListener('keypress', onKeypress);
+    };
+  });
 
   function renderList(el: Word) {
     return (
@@ -155,42 +161,25 @@ export default function VoiceGameRound() {
           onClick={() => (click === true ? isRightAnswer(el) : 0)}
           onKeyDown={() => (click === true ? isRightAnswer(el) : 0)}
         >
-          {el.wordTranslate}
+          {`${pageList.indexOf(el) + 1}: ${el.wordTranslate}`}
         </button>
       </li>
     );
-  }
-
-  function playAudio() {
-    new Audio(AUDIO_HOST + words[wordsIndex].audio).play();
-    setWord(words[wordsIndex]);
-    setWordsIndex(wordsIndex + 1);
-    setClick(true);
-    setDisableAudio(true);
   }
 
   const startAgain = () => {
     loadWords();
     setWordsIndex(0);
     setFinish('');
-    setResult([]);
     setAllResults([]);
     setResults(new Map());
-    setDisableAudio(false);
     setDisableNext(true);
   };
 
   return (
     <div className="round-container">
       <div className="game-container">
-        <button
-          className="audio-button"
-          type="button"
-          disabled={isDisabledAudio}
-          onClick={() => playAudio()}
-        >
-          Play
-        </button>
+        <img className="sound-picture" src={sound} alt="sound" />
 
         <ul className={`answer-list ${itemColorClass}`}>{pageList.map((el) => renderList(el))}</ul>
         <button

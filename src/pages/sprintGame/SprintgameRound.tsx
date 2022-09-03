@@ -7,6 +7,8 @@ import { usersAggregatedWordsApi } from '../../services/api/UsersAggregatedWords
 import useAuthStore from '../../services/storage/Auth';
 import useGamesStore from '../../services/storage/Games';
 import GameResults from '../../components/shared/GameResults';
+import rightArrow from '../../assets/img/rightArrow.svg';
+import leftArrow from '../../assets/img/leftArraw.svg';
 import {
   addMoreWords,
   calcStatistic,
@@ -35,7 +37,7 @@ export default function SprintGameRound() {
 
   async function setStaticGame() {
     if (isAuth && auth.token && auth.userId) {
-      const calcInfo = calcStatistic(results.size, allResults);
+      const calcInfo = calcStatistic(results, allResults);
       updateStaticGame(auth.token, auth.userId, calcInfo, 'Sprint');
     }
   }
@@ -140,6 +142,23 @@ export default function SprintGameRound() {
     allResults.push(answer);
   }
 
+  useEffect(() => {
+    const onKeypress = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') {
+        isItTrue(true);
+      }
+      if (e.key === 'ArrowLeft') {
+        isItTrue(false);
+      }
+    };
+
+    document.addEventListener('keydown', onKeypress);
+
+    return () => {
+      document.removeEventListener('keydown', onKeypress);
+    };
+  });
+
   const startAgain = () => {
     loadWords();
     setFinish(false);
@@ -162,12 +181,14 @@ export default function SprintGameRound() {
           <div>{itemRus?.wordTranslate}</div>
         </div>
         <div className="buttons">
+          <img className="arrow" src={leftArrow} alt="right arraw" />
           <button type="button" className="next-button" onClick={() => isItTrue(false)}>
             Неверно
           </button>
           <button className="audio-button" type="button" onClick={() => isItTrue(true)}>
             Верно
           </button>
+          <img className="arrow" src={rightArrow} alt="right arraw" />
         </div>
         {isFinish && <GameResults results={results} startAgainClick={startAgain} />}
       </div>

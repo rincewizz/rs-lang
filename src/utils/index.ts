@@ -27,9 +27,15 @@ export function getLengthCorrect(answers: boolean[]) {
   return Math.max(...chain);
 }
 
-export function calcStatistic(res: number, allRes: boolean[]) {
+export function calcStatistic(res: IGameResults, allRes: boolean[]) {
   const countCorrect = allRes.filter((el) => el === true).length;
-  const countNewWords = res;
+  let countNewWords = 0;
+  for (const word of res.keys()) {
+    if (word.userWord?.optional?.new === undefined) {
+      countNewWords += 1;
+    }
+  }
+
   const totalWords = allRes.length;
   const lengthCorrect = getLengthCorrect(allRes);
   const today = new Date();
