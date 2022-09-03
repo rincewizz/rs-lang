@@ -21,7 +21,6 @@ export default function VoiceGameRound() {
   const [words, setWords] = useState<Word[]>([]);
   const [pageList, setPageList] = useState<Word[]>([]);
   const [word, setWord] = useState<Word>();
-  const [result, setResult] = useState<Answer[]>([]);
   const [results, setResults] = useState<IGameResults>(new Map());
   const [allResults, setAllResults] = useState<boolean[]>([]);
   const [click, setClick] = useState<boolean>();
@@ -39,7 +38,7 @@ export default function VoiceGameRound() {
 
   async function setStaticGame() {
     if (isAuth && auth.token && auth.userId) {
-      const calcInfo = calcStatistic(result.length, allResults);
+      const calcInfo = await calcStatistic(results, allResults);
       updateStaticGame(auth.token, auth.userId, calcInfo, 'Voice');
     }
   }
@@ -117,8 +116,7 @@ export default function VoiceGameRound() {
     setTimeout(() => {
       setItemColorClass('');
     }, 1000);
-    result.push(obj);
-    setResult(result);
+
     allResults.push(obj.answer);
 
     const res = results.get(word as Word);
@@ -130,20 +128,6 @@ export default function VoiceGameRound() {
     }
 
     if (wordsIndex >= words.length) {
-      const arr: Answer[] = [];
-      result.forEach((el) => {
-        let prop = false;
-        arr.forEach((elm) => {
-          if (elm.name.word === el.name.word) {
-            prop = true;
-          }
-        });
-        if (!prop) {
-          arr.push(el);
-        }
-      });
-
-      setResult(arr);
       recordWordsStatics(auth, 'voice', results);
       setFinish('finish');
       setStaticGame();
@@ -187,7 +171,6 @@ export default function VoiceGameRound() {
     loadWords();
     setWordsIndex(0);
     setFinish('');
-    setResult([]);
     setAllResults([]);
     setResults(new Map());
     setDisableNext(true);
