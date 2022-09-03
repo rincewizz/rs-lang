@@ -1,23 +1,33 @@
-
+@import '../../assets/styles/const.scss';
 .textbook {
+  width: 80%;
+  @media screen and (max-width: 800px) {
+    width: 90%;
+  }
     &__groups {
         display: flex;
         justify-content: center;
         gap: 10px;
     }
     &__group {
-        color: #0C0B0B;
+        color: $color-black;
         background: transparent;
-        border: 2px solid #0C0B0B;
+        border: 2px solid $color-black;
         border-radius: 8px;
         padding: 10px 20px;
-        cursor: pointer;
+        font-family: 'Balsamiq';
+        font-weight: 400;
 
+        &:hover,
         &--active {
-            color: #fff;
-            background: #0C0B0B;
-            border: 2px solid #0C0B0B;
+            color: $color-white;
+            background: $color-black;
+            border: 2px solid $color-black;
+            transition: all 0.5s ease;
         }
-
+        @media screen and (max-width: 500px) {
+          padding: 5px 10px;
+        }
     }
+
 }

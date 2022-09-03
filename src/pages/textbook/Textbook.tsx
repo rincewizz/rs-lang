@@ -5,7 +5,6 @@ import Pagination from '../../components/shared/Pagination';
 import './style.scss';
 import Footer from '../../components/shared/Footer';
 import Header from '../../components/shared/Header';
-import Sidebar from '../../components/shared/Sidebar';
 import WordGroup from '../../components/feature/WordGroup';
 import WordCard from '../../components/feature/WordCard';
 import { usersAggregatedWordsApi } from '../../services/api/UsersAggregatedWords';
@@ -140,25 +139,26 @@ export default function Textbook() {
 
   return (
     <div className={isLearnedPage ? 'learned-page' : ''}>
-      <Sidebar />
       <Header />
-      <main className="textbook container">
-        <h1>Учебник</h1>
-        <WordGroup
-          currentGroup={currentGroup}
-          onClickWordGroup={handleWordGroupClick}
-          onClickDifficultWordGroup={handleDifficultWordGroupClick}
-        />
-        <h2>Слова</h2>
-        <div className="textbook__words">
-          {' '}
-          {words.length ? renderWords() : 'В этом разделе еще нет слов'}
-        </div>
-        {currentGroup !== 6 && (
-          <Pagination currentPage={currentPage} onClickPagination={handleWordPageClick} />
-        )}
-        <TextBookGames isLearnedPage={isLearnedPage} />
-      </main>
+      <div className="main">
+        <main className="textbook container">
+          <h2 className="title-page">Учебник</h2>
+          <WordGroup
+            currentGroup={currentGroup}
+            onClickWordGroup={handleWordGroupClick}
+            onClickDifficultWordGroup={handleDifficultWordGroupClick}
+          />
+          <h3 className="subtitle-page">Слова</h3>
+          <div className="textbook__words">
+            {' '}
+            {words.length ? renderWords() : 'В этом разделе еще нет слов'}
+          </div>
+          {currentGroup !== 6 && (
+            <Pagination currentPage={currentPage} onClickPagination={handleWordPageClick} />
+          )}
+          <TextBookGames isLearnedPage={isLearnedPage} />
+        </main>
+      </div>
       <Footer />
     </div>
   );
