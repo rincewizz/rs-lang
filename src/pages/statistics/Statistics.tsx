@@ -69,14 +69,16 @@ export default function Statistics() {
   }, []);
 
   return (
-    <div className="wrapper">
+    <>
       <Header />
       <div className="main">
-        <section className="statistics">
+        <section className="container statistics">
           {isAuth ? (
-            <h2>Статистика за день</h2>
+            <h2 className="title-page">Статистика за день</h2>
           ) : (
-            <h2>Статистика доступна только для авторизованных пользователей</h2>
+            <h2 className="title-page">
+              Статистика доступна только для авторизованных пользователей
+            </h2>
           )}
           <table className="statistics-table">
             <thead className="thead">
@@ -105,6 +107,6 @@ export default function Statistics() {
         </section>
       </div>
       <Footer />
-    </div>
+    </>
   );
 }
