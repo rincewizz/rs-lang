@@ -37,7 +37,7 @@ export default function SprintGameRound() {
 
   async function setStaticGame() {
     if (isAuth && auth.token && auth.userId) {
-      const calcInfo = calcStatistic(results.size, allResults);
+      const calcInfo = calcStatistic(results, allResults);
       updateStaticGame(auth.token, auth.userId, calcInfo, 'Sprint');
     }
   }
