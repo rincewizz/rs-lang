@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-restricted-syntax */
 import { userStatisticApi } from '../services/api/Statistic';
+import { usersAggregatedWordsApi } from '../services/api/UsersAggregatedWords';
 import { usersWordsApi } from '../services/api/UsersWords';
 import {
   IAuth,
@@ -196,4 +197,26 @@ export function shuffleWord(wordsArr: Word[]) {
     [shuffleArr[i], shuffleArr[j]] = [shuffleArr[j], shuffleArr[i]];
   }
   return shuffleArr;
+}
+
+export async function addMoreWords(
+  wordsArr: Word[],
+  auth: Partial<IAuth>,
+  group: number,
+  page: number
+): Promise<Word[]> {
+  if (wordsArr.length >= 20 || page < 0 || (!auth.token && !auth.userId))
+    return wordsArr.splice(0, 20);
+  const responseWords = await usersAggregatedWordsApi.getAggregatedWords({
+    token: auth.token as string,
+    userId: auth.userId as string,
+    group,
+    page,
+    perPage: 20,
+  });
+  let moreWords = wordsArr.concat(responseWords.paginatedResults);
+  moreWords = moreWords.filter((el) => el.userWord?.optional?.learned !== true);
+  return moreWords.length < 20
+    ? addMoreWords(moreWords, auth, group, page - 1)
+    : moreWords.splice(0, 20);
 }

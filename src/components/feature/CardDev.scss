@@ -4,12 +4,11 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 20px 0px;
   border-radius: 14px;
   box-shadow: $shadow-grey;
-  height: 370px;
-  width: 250px;
+  width: 80vw;
   padding: 10px;
 
   img {
@@ -22,20 +21,25 @@
   }
 
   h2 {
-    font-family: 'Baloo Bhai';
+    font-family: 'Balsamiq';
     font-weight: 700;
     font-size: 24px;
-    line-height: 38px;
+    margin: 0;
   }
 
   p {
     align-self: flex-start;
+    font-family: 'Balsamiq';
+    font-weight: 400;
+    text-align: justify;
   }
 }
 .info-devs {
   display: flex;
+  flex-direction: column;
   justify-content: space-evenly;
   flex-wrap: wrap;
+  gap:20px;
 }
 .team {
   display: flex;

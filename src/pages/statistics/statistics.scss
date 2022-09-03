@@ -7,13 +7,12 @@
   text-align: center;
 }
 .statistics-table {
-  max-width: 800px;
-  min-width: 400px;
+  max-width: 680px;
   width: 100%;
-    display: table;
-    border-spacing: 0;
-    border-collapse: collapse;
-    vertical-align: middle;
+  display: table;
+  border-spacing: 0;
+  border-collapse: collapse;
+  vertical-align: middle;
     .thead {
       background-color: $bg-grey;
       padding: 3px;
@@ -31,5 +30,16 @@
     }
     .tbody tr:nth-last-child(1){
       background-color: $bg-grey;
+    }
+
+    @media screen and (max-width: 800px) {
+      font-size: 14px;
+      .tbody th {
+        font-size: 12px;
+      }
+      .title-page {
+        font-size: 20px;
+        line-height: 10px;
+      }
     }
 }

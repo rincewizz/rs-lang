@@ -3,14 +3,14 @@ $navColor: black;
 $sizes: (
   'xs': 320px,
   'sm': 576px,
-  'md': 768px,
+  'md': 800px,
   'lg': 992px,
   'xl': 1200px,
 );
 @mixin media($minmax, $media) {
   @each $size, $resolution in $sizes {
     @if $media == $size {
-      @media screen and (#{$minmax}-device-width: $resolution) {
+      @media screen and (#{$minmax}-width: $resolution) {
         @content;
       }
     }
@@ -34,7 +34,7 @@ $sizes: (
     width: $navW * 3;
     height: calc(100vh - 30px);
   }
-  @media screen and (max-device-width: 768px) {
+  @media screen and (max-width: 800px) {
     height: 40px;
     width: 40px;
     top: 8px;
