@@ -50,6 +50,16 @@ export function calcStatistic(res: IGameResults, allRes: boolean[]) {
   return gameSprintStat;
 }
 
+export function clearStatistics(gameName: IStatisticGame) {
+  const game = { ...gameName };
+  game.date = '';
+  game.countCorrect = 0;
+  game.countNewWords = 0;
+  game.lengthCorrect = 0;
+  game.totalWords = 0;
+  return game;
+}
+
 export async function updateStaticGame(
   token: string,
   userId: string,
@@ -65,13 +75,18 @@ export async function updateStaticGame(
   });
 
   const { optional, learnedWords } = oldStat;
-  const game = nameGame === 'Sprint' ? optional?.gameSprint : optional?.gameVoice;
+  const game = nameGame === 'Sprint' ? optional.gameSprint : optional.gameVoice;
+  let gameAnother = nameGame === 'Sprint' ? optional.gameVoice : optional.gameSprint;
+  const notCurGame = nameGame === 'Sprint' ? 'gameVoice' : 'gameSprint';
+  if (gameAnother.date !== date) {
+    gameAnother = clearStatistics(gameAnother);
+  }
+  optional[notCurGame] = gameAnother;
   let newOptional = {
     ...optional,
     [`game${nameGame}`]: calcInfo,
   };
-
-  if (game?.date === date) {
+  if (game.date === date) {
     countNewWords = game.countNewWords + countNewWords;
     lengthCorrect = lengthCorrect > game.lengthCorrect ? lengthCorrect : game.lengthCorrect;
     countCorrect = game.countCorrect + countCorrect;

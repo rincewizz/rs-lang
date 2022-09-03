@@ -190,9 +190,9 @@ export interface IStatisticGame {
 export interface IUserStatistic {
   userId: number;
   learnedWords: number;
-  optional?: {
-    gameVoice?: IStatisticGame;
-    gameSprint?: IStatisticGame;
+  optional: {
+    gameVoice: IStatisticGame;
+    gameSprint: IStatisticGame;
   };
 }
 export interface IUserStatisticParams {

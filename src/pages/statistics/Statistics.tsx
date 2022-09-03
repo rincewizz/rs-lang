@@ -6,6 +6,7 @@ import { userStatisticApi } from '../../services/api/Statistic';
 import useAuthStore from '../../services/storage/Auth';
 import { IStatGameForTable, IStatisticGame } from '../../types';
 import './statistics.scss';
+import { clearStatistics } from '../../utils';
 
 function createObjForStat(count: number, perc: number, length: number) {
   return {
@@ -40,10 +41,10 @@ function getTotalStat(gameS: IStatisticGame, gameV: IStatisticGame) {
 
 export default function Statistics() {
   const auth = useAuthStore((state) => state.auth);
-  const isAuth = auth.message === 'Authenticated';
   const [gameVoice, setGameVoice] = useState<IStatGameForTable>(createObjForStat(0, 0, 0));
   const [gameSprint, setGameSprint] = useState<IStatGameForTable>(createObjForStat(0, 0, 0));
   const [totalStat, setTotalStat] = useState<IStatGameForTable>(createObjForStat(0, 0, 0));
+  const [isAuth, setIsAuth] = useState(auth.message === 'Authenticated');
 
   async function updateStatistics() {
     const userStat = await userStatisticApi.getUserStatistic({
@@ -51,14 +52,21 @@ export default function Statistics() {
       userId: auth.userId as string,
     });
     const { optional } = userStat;
-    const statGameVoice = getStatForTable(optional?.gameVoice as IStatisticGame);
-    setGameVoice(statGameVoice);
-    const statGameSprint = getStatForTable(optional?.gameSprint as IStatisticGame);
-    setGameSprint(statGameSprint);
-    const statGamesTotal = getTotalStat(
-      optional?.gameVoice as IStatisticGame,
-      optional?.gameSprint as IStatisticGame
-    );
+    const today = new Date();
+    const date = today.toLocaleDateString('en-US');
+    let infoVoice = clearStatistics(optional.gameVoice);
+    let infoSprint = clearStatistics(optional.gameSprint);
+    if (date === optional.gameVoice.date) {
+      const statGameVoice = getStatForTable(optional.gameVoice);
+      setGameVoice(statGameVoice);
+      infoVoice = optional.gameVoice;
+    }
+    if (date === optional.gameSprint.date) {
+      const statGameSprint = getStatForTable(optional.gameSprint);
+      setGameSprint(statGameSprint);
+      infoSprint = optional.gameSprint;
+    }
+    const statGamesTotal = getTotalStat(infoVoice, infoSprint);
     setTotalStat(statGamesTotal);
   }
 
@@ -66,7 +74,8 @@ export default function Statistics() {
     if (isAuth && auth.token && auth.userId) {
       updateStatistics();
     }
-  }, []);
+    setIsAuth(auth.message === 'Authenticated');
+  }, [auth]);
 
   return (
     <>
@@ -74,7 +83,7 @@ export default function Statistics() {
       <div className="main">
         <section className="container statistics">
           {isAuth ? (
-            <h2 className="title-page">Статистика за день</h2>
+            <h2 className="title-page">Статистика за сегодня</h2>
           ) : (
             <h2 className="title-page">
               Статистика доступна только для авторизованных пользователей
