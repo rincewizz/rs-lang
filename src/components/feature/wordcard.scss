@@ -29,14 +29,14 @@
     }
 
     &--difficult {
-        box-shadow: 0 8px 6px -1px rgb(255 0 0 / 25%), 0 4px 4px -2px rgb(255 0 0 / 60%);
+        box-shadow: $glow-red;
     }
     &--learned {
-        box-shadow: 0 8px 6px -1px rgb(0 255 60 / 25%), 0 4px 4px -2px rgb(0 255 60 / 60%);
+        box-shadow: $glow-green;
     }
     &__img {
-        width: 40%;
-        background-size: contain;
+        width: 45%;
+        background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
         flex: 0 0 auto;
@@ -73,13 +73,15 @@
     }
     &__word-status {
         display: flex;
+        align-items: center;
+        margin-top: 10px;
+        justify-content: center;
     }
     &__btn {
         background: $color-white;
         border: 2px solid $color-black;
         padding: 7px 10px;
         border-radius: 7px;
-        margin-top: 10px;
         margin-right: 10px;
 
         &--active,
@@ -90,9 +92,9 @@
         }
     }
     &__new-word {
-        background: #7ece9b;
-        border: 1px solid #16a34a;
-        color: #135c00;
+        text-shadow: $glow-text-red;
+        color: $color-white;
+        text-align:center;
     }
 }
 
@@ -121,11 +123,12 @@
         }
     }
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 950px) {
   .word-card {
     flex-direction: column-reverse;
     align-items: center;
     &__img {
+      background-size:contain;
       height: 150px;
       width: 100%;
       margin-bottom: 20px;

@@ -169,17 +169,17 @@ export default function WordGroup(props: IWordCardProps) {
                 className={`word-card__btn ${isDifficult ? 'word-card__btn--active' : ''}`}
                 onClick={() => handleDifficultLearnedBtnClick('difficult')}
               >
-                {isDifficult && isAuth ? '-' : '+'} Сложное слово
+                {isDifficult && isAuth ? '-' : '+'} Сложное
               </button>
               <button
                 type="button"
                 className={`word-card__btn ${isLearned ? 'word-card__btn--active' : ''}`}
                 onClick={() => handleDifficultLearnedBtnClick('learned')}
               >
-                {isLearned && isAuth ? '-' : '+'} Изученное слово
+                {isLearned && isAuth ? '-' : '+'} Изученное
               </button>
               {word.userWord?.optional?.new === 'new' && (
-                <div className="word-card__btn word-card__new-word">Новое слово</div>
+                <div className="word-card__new-word">Новое слово</div>
               )}
             </div>
             <div className="word-card__stats word-stats">
