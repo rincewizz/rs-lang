@@ -48,12 +48,21 @@
 }
 .answer-item__button {
   width: 100%;
-  height: 50px;
-  background: #e6e6ef;
-  border-radius: 46%;
+  height: auto;
+  color: #0c0b0b;
+  background: transparent;
+  outline: none;
+  border: 2px solid #0c0b0b !important;
+  border-radius: 8px;
+  padding: 10px 20px;
   &:hover {
     cursor: pointer;
-    background: #d2d2d8;
+    background: black;
+    color: white;
+  }
+  @media screen and (max-device-width: 800px) {
+    font-size: 50%;
+    padding: 10px 8px;
   }
 }
 .finish-game {
@@ -71,6 +80,11 @@
   background: #f5f5f7;
   border-radius: 14px;
   overflow-y: scroll;
+  @media screen and (max-device-width: 1000px) {
+    height: 100vh;
+    width: 90%;
+    top: 0;
+  }
 }
 .answer-img {
   width: 10px;
@@ -79,22 +93,52 @@
 .score-table {
   max-width: 400px;
   width: 100%;
+  border-collapse: collapse;
+  padding: 10px 20px;
+}
+tbody tr:nth-child(odd) {
+  background-color: white;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f5f5f7;
+}
+.next-button,
+.close,
+.start-again {
+  color: white;
+  background: #0c0b0b;
+  border-radius: 8px;
+  padding: 10px 20px;
+  transition: all 0.5s;
+  &:hover {
+    background: transparent;
+    color: black !important;
+  }
+}
+.close {
+  top: 5%;
+  right: 5%;
+  color: white !important;
+  @media screen and (max-device-width: 1000px) {
+    top: 1.5%;
+    right: 26%;
+    padding: 5px 5px;
+  }
+}
+.start-again {
+  top: 14%;
+  right: 5%;
+  @media screen and (max-device-width: 1000px) {
+    top: 1.5%;
+    right: 53%;
+    padding: 5px 5px;
+  }
 }
 .close,
 .start-again {
   position: absolute;
-  right: 5%;
-}
-.close {
-  top: 5%;
-}
-.start-again {
-  top: 10%;
-}
-.answer-item__button {
-  width: 100%;
-  border: none;
-  outline: none;
+  border: 2px solid #0c0b0b;
 }
 .right-answer {
   background-color: #96eda7;

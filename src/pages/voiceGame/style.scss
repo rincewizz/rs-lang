@@ -42,21 +42,29 @@
       padding: 0;
     }
     &__level-item {
-      font-family: 'Baloo Bhai';
+      font-family: 'Balsamiq';
       font-weight: 700;
-      font-size: 30px;
+      font-size: 24px;
       border-radius: 50%;
       width: 40px;
       height: 40px;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #e6e6eb;
+      background: transparent;
       &:hover {
         box-shadow: 1px 3px 4px rgb(0 0 0 / 10%);
-        background: #d2d2d8;
+        background: #000;
+        color: white;
         cursor: pointer;
       }
     }
   }
+}
+.game__level-item {
+  color: #0c0b0b;
+  background: transparent;
+  border: 2px solid #0c0b0b;
+  border-radius: 8px;
+  padding: 10px 20px;
 }
