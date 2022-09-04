@@ -8,7 +8,7 @@ export default function GameResultsItems(props: Answer) {
   return (
     <tr key={name.id}>
       <td>{name.word}</td>
-      <td>{name.transcription}</td>
+      <td className="transcription">{name.transcription}</td>
       <td>{name.wordTranslate}</td>
       <td>
         <img className="answer-img" src={answer === true ? plus : minus} alt="answer" />
