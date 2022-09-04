@@ -47,6 +47,20 @@
   }
   .buttons {
     display: flex;
+    justify-content: space-between;
+    width: 370px;
+  }
+}
+.audio-button {
+  background: black;
+  color: white;
+  border: 2px solid #0c0b0b;
+  border-radius: 8px;
+  padding: 10px 20px;
+  transition: all 0.5s;
+  &:hover {
+    color: #0c0b0b;
+    background: transparent;
   }
 }
 .game-words {
@@ -72,10 +86,17 @@
 }
 .count-container {
   display: flex;
-  width: 100px;
+  width: 200px;
   justify-content: space-between;
 }
 .arrow {
   width: 50px;
   margin: 10px;
+}
+.game__level-item {
+  color: #0c0b0b;
+  background: transparent;
+  border: 2px solid #0c0b0b;
+  border-radius: 8px;
+  padding: 10px 20px;
 }

@@ -40,7 +40,7 @@ export default function SprintGame() {
   return (
     <div className="start-game">
       <div className="game">
-        <h3 className="game__header">Спринт</h3>
+        <h3 className="title-page">Спринт</h3>
         <p className="game__description">
           Игра для тренировки быстрого перевода с английского языка на русский. Необходимо указать
           является ли перевод слова правильным.

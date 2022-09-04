@@ -142,13 +142,24 @@ export default function SprintGameRound() {
     allResults.push(answer);
   }
 
+  const startAgain = () => {
+    loadWords();
+    setFinish(false);
+    setAllResults([]);
+    setResults(new Map());
+    setSeconds(60);
+  };
+
   useEffect(() => {
     const onKeypress = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') {
+      if (e.key === 'ArrowRight' && !isFinish) {
         isItTrue(true);
       }
-      if (e.key === 'ArrowLeft') {
+      if (e.key === 'ArrowLeft' && !isFinish) {
         isItTrue(false);
+      }
+      if (e.key === 'Enter' && isFinish) {
+        startAgain();
       }
     };
 
@@ -159,20 +170,12 @@ export default function SprintGameRound() {
     };
   });
 
-  const startAgain = () => {
-    loadWords();
-    setFinish(false);
-    setAllResults([]);
-    setResults(new Map());
-    setSeconds(60);
-  };
-
   return (
     <div className="round-container">
       <div className="game-container">
         <div className="count-container">
           {' '}
-          <div>{seconds}</div>
+          <div className="title-page">{seconds}</div>
           <div className={`${itemColorClass}`} />
         </div>
 
@@ -182,7 +185,7 @@ export default function SprintGameRound() {
         </div>
         <div className="buttons">
           <img className="arrow" src={leftArrow} alt="right arraw" />
-          <button type="button" className="next-button" onClick={() => isItTrue(false)}>
+          <button type="button" className="audio-button" onClick={() => isItTrue(false)}>
             Неверно
           </button>
           <button className="audio-button" type="button" onClick={() => isItTrue(true)}>

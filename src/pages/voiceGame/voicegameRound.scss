@@ -49,11 +49,15 @@
 .answer-item__button {
   width: 100%;
   height: 50px;
-  background: #e6e6ef;
-  border-radius: 46%;
+  color: #0c0b0b;
+  background: transparent;
+  border: 2px solid #0c0b0b !important;
+  border-radius: 8px;
+  padding: 10px 20px;
   &:hover {
     cursor: pointer;
-    background: #d2d2d8;
+    background: black;
+    color: white;
   }
 }
 .finish-game {
@@ -79,17 +83,28 @@
 .score-table {
   max-width: 400px;
   width: 100%;
+  border-collapse: collapse;
+  padding: 10px 20px;
+}
+tbody tr:nth-child(odd) {
+  background-color: white;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f5f5f7;
 }
 .close,
 .start-again {
   position: absolute;
   right: 5%;
+  border: 2px solid #0c0b0b;
 }
 .close {
   top: 5%;
+  color: white !important;
 }
 .start-again {
-  top: 10%;
+  top: 14%;
 }
 .answer-item__button {
   width: 100%;
@@ -104,4 +119,17 @@
 }
 .sound-picture {
   width: 50px;
+}
+.next-button,
+.close,
+.start-again {
+  color: white;
+  background: #0c0b0b;
+  border-radius: 8px;
+  padding: 10px 20px;
+  transition: all 0.5s;
+  &:hover {
+    background: transparent;
+    color: black !important;
+  }
 }

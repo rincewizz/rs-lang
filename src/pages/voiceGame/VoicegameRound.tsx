@@ -115,7 +115,7 @@ export default function VoiceGameRound() {
     }
     setTimeout(() => {
       setItemColorClass('');
-    }, 1000);
+    }, 500);
 
     allResults.push(obj.answer);
 
@@ -134,23 +134,6 @@ export default function VoiceGameRound() {
     }
     setDisableNext(false);
   }
-
-  useEffect(() => {
-    const onKeypress = (e: KeyboardEvent) => {
-      if (Number(e.key) < 5) {
-        isRightAnswer(pageList[Number(e.key) - 1]);
-      }
-      if (e.key === 'Enter' && !isDisabledNext) {
-        generateList();
-      }
-    };
-
-    document.addEventListener('keypress', onKeypress);
-
-    return () => {
-      document.removeEventListener('keypress', onKeypress);
-    };
-  });
 
   function renderList(el: Word) {
     return (
@@ -175,6 +158,26 @@ export default function VoiceGameRound() {
     setResults(new Map());
     setDisableNext(true);
   };
+
+  useEffect(() => {
+    const onKeypress = (e: KeyboardEvent) => {
+      if (Number(e.key) < 5) {
+        isRightAnswer(pageList[Number(e.key) - 1]);
+      }
+      if (e.key === 'Enter' && !isDisabledNext && !isFinish) {
+        generateList();
+      }
+      if (e.key === 'Enter' && isFinish === 'finish') {
+        startAgain();
+      }
+    };
+
+    document.addEventListener('keypress', onKeypress);
+
+    return () => {
+      document.removeEventListener('keypress', onKeypress);
+    };
+  });
 
   return (
     <div className="round-container">

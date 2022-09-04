@@ -36,7 +36,7 @@ export default function VoiceGame() {
   return (
     <div className="start-game">
       <div className="game">
-        <h3 className="game__header">Аудиовызов</h3>
+        <h3 className="title-page">Аудиовызов</h3>
         <p className="game__description">Игра для тренировки восприятия английской речи на слух.</p>
         <p className="game__choose-level">Выберите один из предложенных уровней сложности:</p>
         <ul className="game__level-list">{NUMBERS.map((item) => addNumbers(item))}</ul>
