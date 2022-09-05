@@ -9,7 +9,10 @@ interface IUserApi {
   createUser: (payload: ICreateUser) => Promise<{ dataUser: IUser; message: string }>;
   signIn: (payload: ILoginUser) => Promise<{ userAuth: IAuth; message: string }>;
   getUserData: ({ userId, token }: IParamAuth) => Promise<IUser>;
+  getNewToken: ({ userId, token }: IParamAuth) => Promise<Pick<IAuth, 'token' | 'refreshToken'>>;
 }
+
+const AuthService = axios.create();
 
 const userApi: IUserApi = {
   async createUser(payload) {
@@ -45,6 +48,16 @@ const userApi: IUserApi = {
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
+  },
+  async getNewToken({ userId, token: refreshToken }) {
+    try {
+      const response = await AuthService.get(`${urlServerUsers}/${userId}/tokens`, {
+        headers: { Authorization: `Bearer ${refreshToken}` },
+      });
+      return response.data;
+    } catch {
+      return { message: 'nonAuth' };
+    }
   },
 };
 export default userApi;
