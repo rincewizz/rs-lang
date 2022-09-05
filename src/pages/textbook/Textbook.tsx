@@ -35,9 +35,11 @@ export default function Textbook() {
   const auth = useAuthStore((state) => state.auth);
 
   const [isAuth, setIsAuth] = useState(auth.message === 'Authenticated');
+  const [loading, setLoadnig] = useState(false);
 
   async function loadWords(group = 0, page = 0) {
     let newWords;
+    setLoadnig(true);
     if (isAuth && auth.token && auth.userId) {
       const agrwords = await usersAggregatedWordsApi.getAggregatedWords({
         token: auth.token,
@@ -62,10 +64,12 @@ export default function Textbook() {
     setWords(newWords);
     setCurrentPage(page);
     setCurrentGroup(group);
+    setLoadnig(false);
   }
 
   async function loadDifficultWords() {
     let newWords;
+    setLoadnig(true);
     if (isAuth && auth.token && auth.userId) {
       const agrwords = await usersAggregatedWordsApi.getAggregatedWords({
         token: auth.token,
@@ -83,6 +87,7 @@ export default function Textbook() {
       loadWords(0, 0);
     }
     setLearnedCount(0);
+    setLoadnig(false);
   }
 
   useEffect(() => {
@@ -150,8 +155,13 @@ export default function Textbook() {
           />
           <h3 className="subtitle-page">Слова</h3>
           <div className="textbook__words">
-            {' '}
-            {words.length ? renderWords() : 'В этом разделе еще нет слов'}
+            {loading && (
+              <div className="loader-wrap">
+                <span className="loader" />
+              </div>
+            )}{' '}
+            {!loading && !words.length && 'В этом разделе еще нет слов'}
+            <div className="textbook__word-container">{renderWords()}</div>
           </div>
           {currentGroup !== 6 && (
             <Pagination currentPage={currentPage} onClickPagination={handleWordPageClick} />
