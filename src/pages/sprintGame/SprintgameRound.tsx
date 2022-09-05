@@ -7,8 +7,8 @@ import { usersAggregatedWordsApi } from '../../services/api/UsersAggregatedWords
 import useAuthStore from '../../services/storage/Auth';
 import useGamesStore from '../../services/storage/Games';
 import GameResults from '../../components/shared/GameResults';
-import rightArrow from '../../assets/img/ArrowLeft.png';
-import leftArrow from '../../assets/img/ArrowRight.png';
+import rightArrow from '../../assets/img/arrowLeft.png';
+import leftArrow from '../../assets/img/arrowRight.png';
 import {
   addMoreWords,
   calcStatistic,
