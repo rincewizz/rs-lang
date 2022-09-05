@@ -14,7 +14,7 @@
   font-size: 20px;
   line-height: 24px;
   padding-left: 30px;
-  @media screen and (max-device-width: 1150px) {
+  @media screen and (max-width: 1150px) {
     width: 90%;
   }
   .game {
@@ -28,8 +28,8 @@
     border-radius: 14px;
     padding-top: 20px;
     box-shadow: $glow-grey;
-    @media screen and (max-device-width: 550px) {
-      width: 90%;
+    @media screen and (max-width: 550px) {
+      width: 92%;
     }
     &__header {
       font-family: 'Baloo Bhai';
@@ -46,7 +46,7 @@
       width: 80%;
       list-style: none;
       padding: 0;
-      @media screen and (max-device-width: 550px) {
+      @media screen and (max-width: 550px) {
         width: 100%;
       }
     }
