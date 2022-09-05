@@ -1,0 +1,49 @@
+@import '../../assets/styles/const.scss';
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: #F5F5F7;
+  box-shadow: $shadow-grey inset;
+  border-radius: 14px 14px 0 0;
+  padding: 0 10px;
+  flex: 0 0 auto;
+  
+  .footer__logo {
+    width: 30px;
+    height: 30px;
+  }
+  .footer__logo-rss {
+    height: 35px;
+  }
+  .footer__title {
+    font-family: 'Balsamiq';
+    font-weight: 700;
+    font-size: 18px;
+    text-align: center;
+  }
+  .footer__info a {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+  }
+  
+  @media screen and (max-width: 710px) {
+      .footer__title span:nth-last-child(1) {
+        font-size: 0px;
+        transition: all 0.5s ease;
+      }
+      .footer__info a{
+        font-size: 10px;
+      }
+      .footer__title {
+        font-size: 12px;
+      }
+      .footer__logo-rss {
+        height: 20px;
+      }
+    }
+}
+
+
