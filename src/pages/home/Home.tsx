@@ -8,10 +8,10 @@ import martin from '../../assets/img/martin.png';
 import pinguin from '../../assets/img/pngwing.png';
 
 const ADVANTAGES = [
-  { number: '1', text: 'Научитесь говорить на новом языке естественно и в разговорной речи.' },
+  { number: '1', text: 'Учитесь говорить на новом языке естественно в разговорной речи.' },
   { number: '2', text: 'Отслеживайте свой прогресс.' },
   { number: '3', text: 'Изучайте язык с помощью разнообразных учебных методик.' },
-  { number: '4', text: 'Быстро увидите результаты с помощью автопроверки.' },
+  { number: '4', text: 'Анализируйте свои результаты с помощью автопроверки.' },
 ];
 
 function addAdvantages(props: Advantages) {
@@ -30,10 +30,10 @@ export default function Home() {
       <div className="container container-home">
         <div className="main__greeting">
           <div className="greeting">
-            <p className="greeting__start">Начните учить английский прямо сейчас!</p>
+            <p className="greeting__start">Начинайте изучать английский язык прямо сейчас!</p>
             <p className="greeting__text">
-              <span className="greeting__rslang">RSLang</span> - лучшее приложение для изучения
-              английского языка, которое вы когда-либо встречали!
+              <span className="greeting__rslang">RSLang</span> - увлекательное приложение для
+              изучения английского языка, с помощью интерактивного учебника и занимательных игр!
             </p>
           </div>
           <img className="greeting__picture" src={pinguin} alt="martin" />

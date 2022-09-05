@@ -1,3 +1,4 @@
+@import '../../assets/styles/const.scss';
 .round-container {
   display: flex;
   flex-direction: column;
@@ -17,6 +18,12 @@
     width: 90%;
   }
 }
+.right-answer {
+  box-shadow: $glow-green-game !important;
+}
+.false-answer {
+  box-shadow: $glow-red-game !important;
+}
 .game-container {
   display: flex;
   flex-direction: column;
@@ -24,12 +31,17 @@
   width: 80%;
   height: 50vh;
   align-items: center;
+  padding: 0 10px;
   .answer-list {
-    width: 100%;
+    width: 95%;
     list-style: none;
     display: flex;
     justify-content: space-between;
     padding: 5% 0;
+    @media screen and (max-device-width: 550px) {
+      flex-direction: column;
+      padding: 2% 0;
+    }
     &-item {
       width: 30%;
       height: 50px;
@@ -54,15 +66,15 @@
   outline: none;
   border: 2px solid #0c0b0b !important;
   border-radius: 8px;
-  padding: 10px 20px;
+  padding: 10px 8px;
+  transition: all 0.5s;
   &:hover {
     cursor: pointer;
     background: black;
     color: white;
   }
   @media screen and (max-device-width: 800px) {
-    font-size: 50%;
-    padding: 10px 8px;
+    font-size: 70%;
   }
 }
 .finish-game {
@@ -95,6 +107,9 @@
   width: 100%;
   border-collapse: collapse;
   padding: 10px 20px;
+  @media screen and (max-device-width: 400px) {
+    font-size: 80%;
+  }
 }
 tbody tr:nth-child(odd) {
   background-color: white;
@@ -109,7 +124,7 @@ tbody tr:nth-child(even) {
   color: white;
   background: #0c0b0b;
   border-radius: 8px;
-  padding: 10px 20px;
+  padding: 10px 10px;
   transition: all 0.5s;
   &:hover {
     background: transparent;
@@ -139,13 +154,20 @@ tbody tr:nth-child(even) {
 .start-again {
   position: absolute;
   border: 2px solid #0c0b0b;
-}
-.right-answer {
-  background-color: #96eda7;
-}
-.false-answer {
-  background-color: #ed9696;
+  @media screen and (max-device-width: 400px) {
+    font-size: 70%;
+  }
 }
 .sound-picture {
   width: 50px;
+}
+.next-button {
+  &:disabled {
+    color: #b7b7b7;
+    border: 2px solid #b7b7b7;
+    pointer-events: none;
+  }
+  @media screen and (max-device-width: 800px) {
+    font-size: 70%;
+  }
 }
