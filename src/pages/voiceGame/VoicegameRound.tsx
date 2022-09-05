@@ -181,17 +181,17 @@ export default function VoiceGameRound() {
 
   return (
     <div className="round-container">
-      <div className="game-container">
+      <div className={`game-container ${itemColorClass}`}>
         <img className="sound-picture" src={sound} alt="sound" />
 
-        <ul className={`answer-list ${itemColorClass}`}>{pageList.map((el) => renderList(el))}</ul>
+        <ul className="answer-list">{pageList.map((el) => renderList(el))}</ul>
         <button
           type="button"
           className="next-button"
           disabled={isDisabledNext}
           onClick={() => generateList()}
         >
-          Next
+          Далее
         </button>
         {isFinish && <GameResults results={results} startAgainClick={startAgain} />}
       </div>

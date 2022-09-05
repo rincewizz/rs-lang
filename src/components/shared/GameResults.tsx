@@ -17,10 +17,10 @@ export default function GameResults(props: { results: IGameResults; startAgainCl
   return (
     <div className="finish-game">
       <Link to="/" className="close">
-        Close
+        Закрыть
       </Link>
       <button className="start-again" type="button" onClick={startAgainClick}>
-        Start again
+        Начать снова
       </button>
       <table className="score-table">
         <tbody>{resultsArr}</tbody>

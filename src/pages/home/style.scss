@@ -46,6 +46,9 @@
     font-weight: 700;
     text-align: center;
   }
+  @media screen and (max-width: 500px) {
+    width: auto;
+  }
 }
 
 .advantages {
@@ -82,6 +85,9 @@
     height: 67%;
     margin: 0 20px;
   }
+  @media screen and (max-width: 500px) {
+    display: none;
+  }
 }
 .advantages__picture {
   width: 20%;
@@ -89,5 +95,8 @@
   @media screen and (max-width: 800px) {
     display: block;
     width: 33%;
+  }
+  @media screen and (max-width: 500px) {
+    display: none;
   }
 }

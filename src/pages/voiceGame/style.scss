@@ -1,3 +1,4 @@
+@import '../../assets/styles/const.scss';
 .start-game {
   display: flex;
   flex-direction: column;
@@ -25,6 +26,11 @@
     box-shadow: 1px 3px 4px rgb(0 0 0 / 10%);
     background: #f5f5f7;
     border-radius: 14px;
+    padding-top: 20px;
+    box-shadow: $glow-grey;
+    @media screen and (max-device-width: 550px) {
+      width: 90%;
+    }
     &__header {
       font-family: 'Baloo Bhai';
       font-weight: 700;
@@ -40,6 +46,9 @@
       width: 80%;
       list-style: none;
       padding: 0;
+      @media screen and (max-device-width: 550px) {
+        width: 100%;
+      }
     }
     &__level-item {
       font-family: 'Balsamiq';
@@ -52,11 +61,11 @@
       justify-content: center;
       align-items: center;
       background: transparent;
+      transition: all 0.5s;
       &:hover {
         box-shadow: 1px 3px 4px rgb(0 0 0 / 10%);
         background: #000;
         color: white;
-        cursor: pointer;
       }
     }
   }
