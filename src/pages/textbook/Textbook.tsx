@@ -159,14 +159,16 @@ export default function Textbook() {
               <div className="loader-wrap">
                 <span className="loader" />
               </div>
-            )}{' '}
+            )}
             {!loading && !words.length && 'В этом разделе еще нет слов'}
             <div className="textbook__word-container">{renderWords()}</div>
           </div>
           {currentGroup !== 6 && (
-            <Pagination currentPage={currentPage} onClickPagination={handleWordPageClick} />
+            <>
+              <Pagination currentPage={currentPage} onClickPagination={handleWordPageClick} />
+              <TextBookGames isLearnedPage={isLearnedPage} />
+            </>
           )}
-          <TextBookGames isLearnedPage={isLearnedPage} />
         </main>
       </div>
       <Footer />
