@@ -97,7 +97,7 @@ export interface IInputProps {
   placeholder: string;
 }
 export interface IpropsCardDev {
-  [key: string]: { foto: string; name: string; text: string };
+  [key: string]: { foto: string; name: string; text: string; link: string };
 }
 
 export interface IWordGroupProps {
