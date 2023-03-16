@@ -1,0 +1,52 @@
+@import url(../../../node_modules/normalize.css/normalize.css);
+@import './fonts.scss';
+@import './const.scss';
+
+a,
+a:visited,
+a:focus,
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #0C0B0B;
+
+  font-family: 'Roboto';
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.main {
+  flex: 1 1 auto;
+  margin: 20px 0;
+}
+
+.container {
+    max-width: 1200px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.title-page {
+  font-family: 'Balsamiq';
+  font-weight: 700;
+  font-size: 26px;
+  margin: 0 0 20px 0;
+  text-align:center;
+}
+
+.subtitle-page {
+  font-family: 'Balsamiq';
+  font-weight: 700;
+  font-size: 24px;
+  margin: 20px 0;
+  text-align: center;
+}

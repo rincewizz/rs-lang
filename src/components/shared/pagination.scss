@@ -1,0 +1,45 @@
+@import '../../assets/styles/const.scss';
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;    
+
+    &__control {
+        display: flex;
+        align-items: center;
+        background: $color-white;
+        border: 2px solid $color-black;
+        border-radius: 100px;
+        box-sizing: border-box;
+        width: 40px;
+        height: 40px;
+        padding: 10px;
+        line-height: 0;
+        &:hover {
+          background: $color-black;
+          transition: all 0.5s ease;
+          color: $color-white;
+        }
+
+        &:disabled {
+            color: #b7b7b7;
+            border: 2px solid #b7b7b7;
+            pointer-events: none;
+        }
+    }
+
+    &__page {
+        font-size: 30px;
+        text-align: center;
+        width: 50px;
+        background: #F5F5F7;
+        border: 1px solid #c3c3c3;
+        border-radius: 7px;
+        margin: 0 10px;
+
+        .learned-page & {
+            background: #53d254;
+        }
+    }
+}

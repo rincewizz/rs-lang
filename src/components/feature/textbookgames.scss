@@ -1,0 +1,40 @@
+@import '../../assets/styles/const.scss';
+.textbook-games {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top:20px;
+    flex-wrap: wrap;
+    gap:20px;
+
+    &__link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 170px;
+        background:$bg-grey;
+        border-radius: 7px;
+        padding: 10px;
+        box-shadow: $shadow-grey;
+        font-family: 'Balsamiq';
+        font-weight: 700;
+        font-size: 20px;
+        transition: all 0.5s ease;
+
+        &--voice {
+          border: 2px solid #c2c2ff;
+          &:hover {
+            background: #c2c2ff;
+          }
+        }
+        &--sprint {
+          border: 2px solid #9ff29c;
+          &:hover {
+            background: #9ff29c;
+          }
+        }
+        &--disabled {
+            pointer-events: none;
+            background: #d6d6d6;
+        }
+    }
+}

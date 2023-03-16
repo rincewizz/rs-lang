@@ -1,0 +1,53 @@
+@import '../../assets/styles/const.scss';
+
+.card-dev {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  align-items: center;
+  border-radius: 14px;
+  box-shadow: $shadow-grey;
+  width: 80vw;
+  padding: 10px;
+
+  img {
+    width: 150px;
+    border-radius: 50%;
+    transition: all 0.5s ease;
+    box-shadow: $glow-grey;
+      margin-bottom: 20px;
+    &:hover {
+      transform: rotate(-20deg);
+    }
+  }
+
+  h2 {
+    font-family: 'Balsamiq';
+    font-weight: 700;
+    font-size: 24px;
+    margin: 0;
+  }
+
+  p {
+    align-self: flex-start;
+    font-family: 'Balsamiq';
+    font-weight: 400;
+    text-align: justify;
+  }
+}
+.info-devs {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  gap:20px;
+}
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  h2 {
+    text-align: center;
+  }
+}
